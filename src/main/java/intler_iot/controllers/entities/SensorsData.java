@@ -3,7 +3,7 @@ package intler_iot.controllers.entities;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class DeviceData {
+public class SensorsData {
     private HashMap<String, Double> sensorsValue;
 
     public void setSensorsValue(HashMap<String, Double> sensorsValue) {
@@ -18,7 +18,7 @@ public class DeviceData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DeviceData that = (DeviceData) o;
+        SensorsData that = (SensorsData) o;
         return sensorsValue.equals(that.sensorsValue);
     }
 
