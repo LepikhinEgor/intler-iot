@@ -1,6 +1,7 @@
 package intler_iot.dao.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -17,6 +18,9 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Device> deviceList;
 
     public long getId() {
         return id;

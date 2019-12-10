@@ -16,12 +16,7 @@ public class DeviceService {
         this.userDao = userDao;
     }
 
-    public void receiveDeviceData(SensorsData sensorsData) {
-        User user = new User();
-        user.setEmail("mail228@ua.ru");
-        user.setLogin("iban");
-        user.setPassword("qwerty");
-        userDao.create(user);
+    public void connectDevice(String deviceName, String deviceType) {
+        //TODO continue
     }
-
 }

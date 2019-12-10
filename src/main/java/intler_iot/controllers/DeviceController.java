@@ -28,8 +28,11 @@ public class DeviceController {
 
     @GetMapping(value = "{login}/connect-device")
     @ResponseBody
-    public void connectDevice(@RequestParam("device_id") String deviceId, @PathVariable("login") String login, ModelAndView modelAndView) {
-        System.out.println(deviceId + " + login " + login);
+    public void connectDevice(@PathVariable("login") String login,
+                              @RequestParam("device_name") String deviceName,
+                              @RequestParam("device_type") String deviceType,
+                              ModelAndView modelAndView) {
+        System.out.println("Board " + deviceType + " with name " + deviceName);
 
         deviceService.receiveDeviceData(null);
 
