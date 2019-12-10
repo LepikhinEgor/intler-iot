@@ -11,7 +11,7 @@
         <property name="show_sql">true</property> <!-- Show SQL in console -->
         <property name="format_sql">true</property> <!-- Show SQL formatted -->
 
-        <mapping class="intler_iot.dao.UserDao"/>
+        <mapping class="intler_iot.dao.entities.User"/>
 
     </session-factory>
 </hibernate-configuration>

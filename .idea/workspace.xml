@@ -9,9 +9,11 @@
     <list default="true" id="b686e24e-c7ae-4a79-ae80-439009f0f6e2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intler_iot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/intler_iot.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/intler_iot/config/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intler_iot/config/SpringConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/intler_iot/controllers/DeviceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intler_iot/controllers/DeviceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/intler_iot/controllers/entities/DeviceData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intler_iot/controllers/entities/SensorsData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/intler_iot/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intler_iot/dao/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/intler_iot/services/DeviceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/intler_iot/services/DeviceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -242,7 +244,8 @@
       <updated>1575553080791</updated>
       <workItem from="1575553088030" duration="1370000" />
       <workItem from="1575631055867" duration="8843000" />
-      <workItem from="1575871934453" duration="18116000" />
+      <workItem from="1575871934453" duration="18719000" />
+      <workItem from="1575978755981" duration="3960000" />
     </task>
     <servers />
   </component>
