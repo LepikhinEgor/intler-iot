@@ -1,4 +1,7 @@
 package intler_iot.dao;
 
-public class DeviceDao {
+import intler_iot.dao.entities.Device;
+
+public abstract class DeviceDao {
+    public abstract void connectDevice(Device device);
 }

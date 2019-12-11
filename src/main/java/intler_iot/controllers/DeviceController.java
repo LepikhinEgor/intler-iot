@@ -31,10 +31,11 @@ public class DeviceController {
     public void connectDevice(@PathVariable("login") String login,
                               @RequestParam("device_name") String deviceName,
                               @RequestParam("device_type") String deviceType,
+                              @RequestParam("password") String password,
                               ModelAndView modelAndView) {
         System.out.println("Board " + deviceType + " with name " + deviceName);
 
-        deviceService.receiveDeviceData(null);
+        deviceService.connectDevice(login, password, deviceName, deviceType);
 
         modelAndView.setStatus(HttpStatus.OK);
     }
