@@ -23,11 +23,13 @@ public class DeviceDaoHibernate extends DeviceDao {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        session.update(device);
+        Device foundDevice = session.get(Device.class, device.getKey());
+        if (foundDevice == null)
+            session.save(device);
+        else
+            session.update(device);
 
         transaction.commit();
         session.close();
-
-
     }
 }

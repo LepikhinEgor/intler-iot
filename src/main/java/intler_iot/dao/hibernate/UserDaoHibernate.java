@@ -33,16 +33,23 @@ public class UserDaoHibernate extends UserDao{
 
     @Override
     public User getByLogin(String login) {
+        System.out.println(login + " received");
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("from User where login = :login");
-        query.setParameter("login", login);
-        User foundUser = (User)query.getSingleResult();
+        Query query = session.createQuery("from User where login = :loginParam");
+        query.setParameter("loginParam", login);
+//        Query query = session.createQuery("from User");
+//        User foundUser = (User)query.list().get(0);
+
+//        for (Object user: query.list()) {
+//            System.out.println(user.toString());
+//        }
 
         transaction.commit();
         session.close();
 
-        return foundUser;
+//        return foundUser;
+        return null;
     }
 }

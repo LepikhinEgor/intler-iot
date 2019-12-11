@@ -52,6 +52,10 @@ public class Device {
         this.lastDeviceMessageTime = lastDeviceMessageTime;
     }
 
+    public DeviceKey getKey() {
+        return new DeviceKey(name, owner);
+    }
+
     public User getOwner() {
         return owner;
     }
@@ -63,6 +67,13 @@ public class Device {
     public class DeviceKey implements Serializable {
         private String name;
         private User owner;
+
+        public DeviceKey() {};
+
+        public DeviceKey(String name, User user) {
+            this.name = name;
+            this.owner = user;
+        }
 
         public String getName() {
             return name;
