@@ -22,12 +22,8 @@ public class DeviceDaoHibernate extends DeviceDao {
     public void connectDevice(Device device) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-
-        Device foundDevice = session.get(Device.class, device.getKey());
-        if (foundDevice == null)
-            session.save(device);
-        else
-            session.update(device);
+        
+        session.saveOrUpdate(device);
 
         transaction.commit();
         session.close();

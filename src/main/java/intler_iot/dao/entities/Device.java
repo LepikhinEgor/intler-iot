@@ -56,6 +56,32 @@ public class Device {
         return new DeviceKey(name, owner);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Device device = (Device) o;
+        return Objects.equals(name, device.name) &&
+                Objects.equals(type, device.type) &&
+                Objects.equals(lastDeviceMessageTime, device.lastDeviceMessageTime) &&
+                Objects.equals(owner, device.owner);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type, lastDeviceMessageTime, owner);
+    }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", lastDeviceMessageTime=" + lastDeviceMessageTime +
+                ", owner=" + owner +
+                '}';
+    }
+
     public User getOwner() {
         return owner;
     }
@@ -64,11 +90,15 @@ public class Device {
         this.owner = owner;
     }
 
-    public class DeviceKey implements Serializable {
+    public static class DeviceKey implements Serializable {
+        static final long serialVersionUID = 1L;
+
         private String name;
         private User owner;
 
-        public DeviceKey() {};
+        public DeviceKey() {
+            super();
+        }
 
         public DeviceKey(String name, User user) {
             this.name = name;

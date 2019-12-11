@@ -62,7 +62,6 @@ public class User {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", deviceList=" + deviceList +
                 '}';
     }
 
