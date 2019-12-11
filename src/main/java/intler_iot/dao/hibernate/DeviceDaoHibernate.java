@@ -22,7 +22,7 @@ public class DeviceDaoHibernate extends DeviceDao {
     public void connectDevice(Device device) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        
+
         session.saveOrUpdate(device);
 
         transaction.commit();

@@ -19,7 +19,7 @@ public class DeviceController {
     }
 
     @PostMapping(value = "send-device-data")
-    public ModelAndView receiveDeviceData(@RequestBody SensorsData sensorsData, ModelAndView modelAndView) {
+    public ModelAndView receiveSensorsData(@RequestBody SensorsData sensorsData, ModelAndView modelAndView) {
         System.out.println("Received data " + sensorsData.toString());
         modelAndView.setStatus(HttpStatus.OK);
 

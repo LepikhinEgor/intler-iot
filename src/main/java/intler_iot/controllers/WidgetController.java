@@ -9,6 +9,7 @@ public class WidgetController {
 
     @GetMapping(value = {"/**", "/dashboard"})
     public String getDashboardPage() {
+        System.out.println("GET");
         return "dashboard";
     }
 }
