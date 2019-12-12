@@ -9,10 +9,11 @@
         <property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
 
         <property name="show_sql">true</property> <!-- Show SQL in console -->
-        <property name="format_sql">true</property> <!-- Show SQL formatted -->
+        <property name="format_sql">false</property> <!-- Show SQL formatted -->
 
         <mapping class="intler_iot.dao.entities.User"/>
         <mapping class="intler_iot.dao.entities.Device"/>
+        <mapping class="intler_iot.dao.entities.Sensor"/>
 
     </session-factory>
 </hibernate-configuration>
