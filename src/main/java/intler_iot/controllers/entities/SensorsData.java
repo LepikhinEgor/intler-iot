@@ -8,6 +8,7 @@ public class SensorsData {
     private String login;
     private String password;
     private String deviceName;
+    private String deviceType;
 
     private HashMap<String, Double> sensorsValue;
 
@@ -43,12 +44,21 @@ public class SensorsData {
         this.deviceName = deviceName;
     }
 
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
     @Override
     public String toString() {
         return "SensorsData{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", deviceName='" + deviceName + '\'' +
+                ", deviceType='" + deviceType + '\'' +
                 ", sensorsValue=" + sensorsValue +
                 '}';
     }
@@ -61,11 +71,12 @@ public class SensorsData {
         return Objects.equals(login, that.login) &&
                 Objects.equals(password, that.password) &&
                 Objects.equals(deviceName, that.deviceName) &&
+                Objects.equals(deviceType, that.deviceType) &&
                 Objects.equals(sensorsValue, that.sensorsValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password, deviceName, sensorsValue);
+        return Objects.hash(login, password, deviceName, deviceType, sensorsValue);
     }
 }

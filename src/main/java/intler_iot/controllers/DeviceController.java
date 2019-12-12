@@ -2,6 +2,7 @@ package intler_iot.controllers;
 
 import intler_iot.controllers.entities.SensorsData;
 import intler_iot.services.DeviceService;
+import intler_iot.services.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class DeviceController {
 
     private DeviceService deviceService;
+    private SensorService sensorService;
+
+    @Autowired
+    public void setSensorService(SensorService sensorService) {
+        this.sensorService = sensorService;
+    }
 
     @Autowired
     public void setDeviceService(DeviceService deviceService) {
@@ -21,8 +28,10 @@ public class DeviceController {
     @PostMapping(value = "send-device-data")
     public ModelAndView receiveSensorsData(@RequestBody SensorsData sensorsData, ModelAndView modelAndView) {
         System.out.println("Received data " + sensorsData.toString());
-        modelAndView.setStatus(HttpStatus.OK);
 
+        sensorService.receiveSensors(sensorsData);
+
+        modelAndView.setStatus(HttpStatus.OK);
         return modelAndView;
     }
 

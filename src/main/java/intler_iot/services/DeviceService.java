@@ -1,17 +1,11 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.DeviceConnectionData;
-import intler_iot.controllers.entities.SensorsData;
+
 import intler_iot.dao.DeviceDao;
-import intler_iot.dao.UserDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.User;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 @Service
 public class DeviceService {
@@ -39,5 +33,12 @@ public class DeviceService {
         device.setOwner(owner);
 
         deviceDao.connectDevice(device);
+    }
+
+    public Device getDeviceById(User user, String deviceName) {
+
+        Device foundDevice = deviceDao.getUserDeviceByName(deviceName, user);
+
+        return foundDevice;
     }
 }

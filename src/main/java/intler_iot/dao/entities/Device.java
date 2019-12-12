@@ -3,16 +3,18 @@ package intler_iot.dao.entities;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "devices")
-@IdClass(Device.DeviceKey.class)
 public class Device {
 
     @Id
+    @GeneratedValue
+    private long id;
+
     @Column(name = "name")
     private String name;
 
@@ -23,10 +25,12 @@ public class Device {
     @Column(name = "last_connection")
     private Timestamp lastDeviceMessageTime;
 
-    @Id
     @JoinColumn(name = "owner_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
+
+    @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Sensor> sensors;
 
     public String getName() {
         return name;
@@ -50,10 +54,6 @@ public class Device {
 
     public void setLastDeviceMessageTime(Timestamp lastDeviceMessageTime) {
         this.lastDeviceMessageTime = lastDeviceMessageTime;
-    }
-
-    public DeviceKey getKey() {
-        return new DeviceKey(name, owner);
     }
 
     @Override
@@ -86,53 +86,23 @@ public class Device {
         return owner;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public long getId() {
+        return id;
     }
 
-    public static class DeviceKey implements Serializable {
-        static final long serialVersionUID = 1L;
+    public void setId(long id) {
+        this.id = id;
+    }
 
-        private String name;
-        private User owner;
+    public List<Sensor> getSensors() {
+        return sensors;
+    }
 
-        public DeviceKey() {
-            super();
-        }
+    public void setSensors(List<Sensor> sensors) {
+        this.sensors = sensors;
+    }
 
-        public DeviceKey(String name, User user) {
-            this.name = name;
-            this.owner = user;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public User getOwner() {
-            return owner;
-        }
-
-        public void setOwner(User owner) {
-            this.owner = owner;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            DeviceKey deviceKey = (DeviceKey) o;
-            return Objects.equals(name, deviceKey.name) &&
-                    Objects.equals(owner, deviceKey.owner);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(name, owner);
-        }
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }
