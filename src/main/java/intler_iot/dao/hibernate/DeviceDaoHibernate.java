@@ -3,10 +3,10 @@ package intler_iot.dao.hibernate;
 import intler_iot.dao.DeviceDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.User;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,24 +27,19 @@ public class DeviceDaoHibernate extends DeviceDao {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        Query getDeviceQuery = session.createQuery("from Device where name = :name and owner = :user");
-        getDeviceQuery.setParameter("user", device.getOwner().getId());
+        Query getDeviceQuery = session.createQuery("from Device d where name = :name and d.owner = :owner");
+        getDeviceQuery.setParameter("owner", device.getOwner());
         getDeviceQuery.setParameter("name", device.getName());
-        List<Device> foundDevices = null;
-        try {
-            foundDevices = getDeviceQuery.list();
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        System.out.println("Passed");
+        List<Device> foundDevices = getDeviceQuery.list();
 
-        if (foundDevices.isEmpty())
+        if (foundDevices.isEmpty()) {
             session.save(device);
+        }
         else {
-            Query query = session.createQuery("update Device set type = :deviceType where name = :name and owner = :user");
-            query.setParameter("deviceType", device.getType());
+            Query query = session.createQuery("update Device set lastDeviceMessageTime = :time where name = :name and owner = :user");
+            query.setParameter("time", device.getLastDeviceMessageTime());
             query.setParameter("name", device.getName());
-            query.setParameter("user", device.getOwner().getId());
+            query.setParameter("user", device.getOwner());
         }
 
         transaction.commit();

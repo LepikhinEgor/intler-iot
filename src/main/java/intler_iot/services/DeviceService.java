@@ -7,6 +7,8 @@ import intler_iot.dao.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class DeviceService {
 
@@ -31,6 +33,7 @@ public class DeviceService {
         device.setName(deviceName);
         device.setType(deviceType);
         device.setOwner(owner);
+        device.setLastDeviceMessageTime(new Timestamp(System.currentTimeMillis()));
 
         deviceDao.connectDevice(device);
     }

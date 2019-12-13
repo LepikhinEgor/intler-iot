@@ -4,6 +4,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +22,6 @@ public class Device {
     @Column(name = "type")
     private String type;
 
-    @UpdateTimestamp
     @Column(name = "last_connection")
     private Timestamp lastDeviceMessageTime;
 

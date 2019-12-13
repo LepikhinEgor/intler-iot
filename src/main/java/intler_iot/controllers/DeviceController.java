@@ -44,7 +44,11 @@ public class DeviceController {
                               ModelAndView modelAndView) {
         System.out.println("Board " + deviceType + " with name " + deviceName);
 
-        deviceService.connectDevice(login, password, deviceName, deviceType);
+        try {
+            deviceService.connectDevice(login, password, deviceName, deviceType);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
         modelAndView.setStatus(HttpStatus.OK);
     }
