@@ -26,13 +26,16 @@ public class DeviceController {
     }
 
     @PostMapping(value = "send-device-data")
-    public ModelAndView receiveSensorsData(@RequestBody SensorsData sensorsData, ModelAndView modelAndView) {
+    @ResponseBody
+    public void receiveSensorsData(@RequestBody SensorsData sensorsData) {
         System.out.println("Received data " + sensorsData.toString());
 
-        sensorService.receiveSensors(sensorsData);
-
-        modelAndView.setStatus(HttpStatus.OK);
-        return modelAndView;
+        try {
+            sensorService.receiveSensors(sensorsData);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+//        modelAndView.setStatus(HttpStatus.OK);
     }
 
     @GetMapping(value = "{login}/connect-device")

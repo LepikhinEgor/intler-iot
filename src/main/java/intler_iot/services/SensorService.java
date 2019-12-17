@@ -29,10 +29,14 @@ public class SensorService {
         this.userService = userService;
     }
 
-
+    @Autowired
+    public void setSensorDao(SensorDao sensorDao) {
+        this.sensorDao = sensorDao;
+    }
 
     public void receiveSensors(SensorsData sensorsData) {
         List<Sensor> sensors = new ArrayList<Sensor>();
+        System.out.println("receiveSensors");
 
         User user = userService.getUserByLogin(sensorsData.getLogin());
         System.out.println(user);
