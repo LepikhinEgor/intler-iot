@@ -11,6 +11,8 @@
         <property name="show_sql">true</property> <!-- Show SQL in console -->
         <property name="format_sql">false</property> <!-- Show SQL formatted -->
 
+        <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <mapping class="intler_iot.dao.entities.User"/>
         <mapping class="intler_iot.dao.entities.Device"/>
         <mapping class="intler_iot.dao.entities.Sensor"/>

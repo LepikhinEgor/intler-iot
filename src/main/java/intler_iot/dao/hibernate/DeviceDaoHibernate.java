@@ -24,7 +24,7 @@ public class DeviceDaoHibernate extends DeviceDao {
 
     @Override
     public void connectDevice(Device device) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         Query getDeviceQuery = session.createQuery("from Device d where name = :name and d.owner = :owner");
@@ -34,30 +34,31 @@ public class DeviceDaoHibernate extends DeviceDao {
 
         if (foundDevices.isEmpty()) {
             session.save(device);
+            System.out.println("EMptry");
         }
         else {
             Query query = session.createQuery("update Device set lastDeviceMessageTime = :time where name = :name and owner = :user");
             query.setParameter("time", device.getLastDeviceMessageTime());
             query.setParameter("name", device.getName());
             query.setParameter("user", device.getOwner());
+
+            query.executeUpdate();
         }
 
         transaction.commit();
-        session.close();
     }
 
     @Override
     public Device getUserDeviceByName(String name, User user) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         Query query = session.createQuery("FROM Device WHERE owner = :ownerId AND name = :name");
-        query.setParameter("ownerId", user.getId());
+        query.setParameter("ownerId", user);
         query.setParameter("name", name);
         Device foundDevice = (Device)query.list().get(0);
 
         transaction.commit();
-        session.close();
 
         return foundDevice;
     }

@@ -6,9 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class SensorDaoHibernate extends SensorDao {
 
     SessionFactory sessionFactory;
@@ -31,13 +33,13 @@ public class SensorDaoHibernate extends SensorDao {
 
     @Override
     public void recordAll(List<Sensor> sensors) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         for (Sensor sensor : sensors)
             session.save(sensor);
 
         transaction.commit();
-        session.close();
+//        session.close();
     }
 }
