@@ -5,9 +5,10 @@ import intler_iot.dao.CloudOrderDao;
 import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.User;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CloudOrderService {
 
     private UserService userService;
