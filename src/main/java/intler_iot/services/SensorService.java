@@ -6,6 +6,8 @@ import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -14,12 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
+@EnableScheduling
 public class SensorService {
 
     private DeviceService deviceService;
     private UserService userService;
 
     private SensorDao sensorDao;
+
+    private static final long DAY_IN_MILLIS = 1000*60*60*24;
 
     @Autowired
     public void setDeviceService(DeviceService deviceService) {
@@ -42,10 +47,9 @@ public class SensorService {
         Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
 
         recordSensorsValues(device, sensorsData.getSensorsValue());
-        removeOldSensorsValue(device);
     }
 
-    public void recordSensorsValues(Device device, HashMap<String, Double> sensorsValues) {
+    private void recordSensorsValues(Device device, HashMap<String, Double> sensorsValues) {
         List<Sensor> sensors = new ArrayList<Sensor>();
 
         for (String sensorName: sensorsValues.keySet()) {
@@ -60,10 +64,8 @@ public class SensorService {
         sensorDao.recordAll(sensors);
     }
 
-    public void removeOldSensorsValue(Device device) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis() - 1000*60*60);
-        sensorDao.removeOldValues(device, timestamp);
+    public void removeOldSensorsValue() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis() - DAY_IN_MILLIS);
+        sensorDao.removeOldValues(timestamp);
     }
-
-
 }

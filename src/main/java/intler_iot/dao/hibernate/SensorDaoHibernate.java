@@ -46,14 +46,13 @@ public class SensorDaoHibernate extends SensorDao {
         transaction.commit();
     }
 
-    public void removeOldValues(Device device, Timestamp deadline) {
+    public void removeOldValues(Timestamp deadline) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("delete from Sensor where device = :device and arriveTime < :deadline");
-        query.setParameter("device", device);
+        Query query = session.createQuery("delete from Sensor where arriveTime < :deadline");
         query.setParameter("deadline", deadline);
-        System.out.println(query.executeUpdate());
+        query.executeUpdate();
 
         transaction.commit();
     }
