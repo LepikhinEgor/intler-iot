@@ -31,7 +31,7 @@ public class DeviceController {
         System.out.println("Received data " + sensorsData.toString());
 
         try {
-            sensorService.receiveSensors(sensorsData);
+            sensorService.updateSensorsValues(sensorsData);
         } catch (Exception e) {
             System.err.println(e);
         }

@@ -8,7 +8,9 @@ import intler_iot.dao.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -34,27 +36,33 @@ public class SensorService {
         this.sensorDao = sensorDao;
     }
 
-    public void receiveSensors(SensorsData sensorsData) {
-        List<Sensor> sensors = new ArrayList<Sensor>();
-        System.out.println("receiveSensors");
-
+    public void updateSensorsValues(SensorsData sensorsData) {
         User user = userService.getUserByLogin(sensorsData.getLogin());
-        System.out.println(user);
         deviceService.connectDevice(sensorsData.getLogin(), sensorsData.getPassword(), sensorsData.getDeviceName(), sensorsData.getDeviceType());
-        System.out.println("Connecteed");
         Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
-        System.out.println(device);
 
-        for (String sensorName: sensorsData.getSensorsValue().keySet()) {
+        recordSensorsValues(device, sensorsData.getSensorsValue());
+        removeOldSensorsValue(device);
+    }
+
+    public void recordSensorsValues(Device device, HashMap<String, Double> sensorsValues) {
+        List<Sensor> sensors = new ArrayList<Sensor>();
+
+        for (String sensorName: sensorsValues.keySet()) {
             Sensor sensor = new Sensor();
             sensor.setName(sensorName);
-            sensor.setValue(sensorsData.getSensorsValue().get(sensorName));
+            sensor.setValue(sensorsValues.get(sensorName));
             sensor.setDevice(device);
 
             sensors.add(sensor);
         }
 
         sensorDao.recordAll(sensors);
+    }
+
+    public void removeOldSensorsValue(Device device) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis() - 1000*60*60);
+        sensorDao.removeOldValues(device, timestamp);
     }
 
 
