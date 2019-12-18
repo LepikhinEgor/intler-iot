@@ -47,6 +47,7 @@ public class SensorDaoHibernate extends SensorDao {
     }
 
     public void removeOldValues(Timestamp deadline) {
+        System.out.println(deadline);
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 

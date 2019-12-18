@@ -16,7 +16,7 @@ public class CleanerService {
         this.sensorService = sensorService;
     }
 
-    @Scheduled(cron = "0 0 13 * * ?")
+    @Scheduled(cron = "0 0 12 * * ?")
     public void removeOldSensorsVal() {
         sensorService.removeOldSensorsValue();
     }
