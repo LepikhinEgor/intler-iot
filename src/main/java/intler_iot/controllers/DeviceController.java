@@ -5,6 +5,8 @@ import intler_iot.dao.entities.CloudOrder;
 import intler_iot.services.CloudOrderService;
 import intler_iot.services.DeviceService;
 import intler_iot.services.SensorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,8 @@ import java.util.List;
 
 @RestController
 public class DeviceController {
+
+    private static final Logger logger = LoggerFactory.getLogger(DeviceService.class);
 
     private DeviceService deviceService;
     private SensorService sensorService;
@@ -35,7 +39,7 @@ public class DeviceController {
 
     @PostMapping(value = "send-device-data")
     public HashMap<String, Double> receiveSensorsData(@RequestBody SensorsData sensorsData) {
-        System.out.println("Received data " + sensorsData.toString());
+        logger.info("Received data " + sensorsData.toString());
         HashMap<String, Double> orders = new HashMap<>();
 
         try {
