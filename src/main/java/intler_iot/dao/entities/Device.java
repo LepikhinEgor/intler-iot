@@ -32,6 +32,9 @@ public class Device {
     @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Sensor> sensors;
 
+    @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<CloudOrder> orders;
+
     public String getName() {
         return name;
     }

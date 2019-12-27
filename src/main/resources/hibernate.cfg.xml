@@ -1,11 +1,9 @@
 <hibernate-configuration>
     <session-factory>
-
         <property name="connection.url">jdbc:postgresql://localhost/intler_iot</property> <!-- BD Mane -->
         <property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
         <property name="connection.username">egor</property> <!-- DB User -->
         <property name="connection.password">1111</property> <!-- DB Password -->
-
         <property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
 
         <property name="show_sql">true</property> <!-- Show SQL in console -->
@@ -26,6 +24,7 @@
         <mapping class="intler_iot.dao.entities.User"/>
         <mapping class="intler_iot.dao.entities.Device"/>
         <mapping class="intler_iot.dao.entities.Sensor"/>
+        <mapping class="intler_iot.dao.entities.CloudOrder"/>
 
     </session-factory>
 </hibernate-configuration>

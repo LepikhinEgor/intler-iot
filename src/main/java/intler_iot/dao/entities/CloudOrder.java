@@ -24,6 +24,7 @@ public class CloudOrder {
     @Column(name = "timing")
     private Timestamp timing;
 
+    @JoinColumn(name = "device_id")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Device device;
 

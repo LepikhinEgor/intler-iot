@@ -42,8 +42,11 @@ public class SensorService {
     }
 
     public void updateSensorsValues(SensorsData sensorsData) {
+        System.out.println("1 test");
         User user = userService.getUserByLogin(sensorsData.getLogin());
+        System.out.println("2 test");
         deviceService.connectDevice(sensorsData.getLogin(), sensorsData.getPassword(), sensorsData.getDeviceName(), sensorsData.getDeviceType());
+        System.out.println("3 test");
         Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
 
         recordSensorsValues(device, sensorsData.getSensorsValue());

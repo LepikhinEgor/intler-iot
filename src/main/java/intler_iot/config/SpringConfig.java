@@ -1,5 +1,7 @@
 package intler_iot.config;
 
+import intler_iot.controllers.entities.OrderData;
+import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
@@ -22,6 +24,7 @@ public class SpringConfig {
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Device.class);
         configuration.addAnnotatedClass(Sensor.class);
+        configuration.addAnnotatedClass(CloudOrder.class);
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
         SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
 
