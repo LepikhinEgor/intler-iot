@@ -32,13 +32,13 @@ public class UserDaoHibernate extends UserDao{
     }
 
     @Override
-    public User getByLogin(String login) {
-        System.out.println(login + " received");
+    public User getByLoginPassword(String login, String password) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("from User where login = :loginParam");
+        Query query = session.createQuery("from User where login = :loginParam and password = :password");
         query.setParameter("loginParam", login);
+        query.setParameter("password", password);
 
         User foundUser = (User)query.getSingleResult();
 

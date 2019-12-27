@@ -27,7 +27,7 @@ public class DeviceService {
     }
 
     public void connectDevice(String login, String password, String deviceName, String deviceType) {
-        User owner = userService.getUserByLogin(login);
+        User owner = userService.authUser(login, password);
 
         Device device = new Device();
         device.setName(deviceName);

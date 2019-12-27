@@ -15,8 +15,8 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public User getUserByLogin(String login) {
-        User user = userDao.getByLogin(login);
+    public User authUser(String login, String password) {
+        User user = userDao.getByLoginPassword(login, password);
 
         return user;
     }

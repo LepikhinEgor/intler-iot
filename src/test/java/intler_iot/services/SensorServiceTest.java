@@ -100,7 +100,7 @@ public class SensorServiceTest {
         Device device = getValidDevice();
         device.setOwner(user);
 
-        when(userServiceMock.getUserByLogin(user.getLogin())).thenReturn(user);
+        when(userServiceMock.authUser(user.getLogin(), user.getPassword())).thenReturn(user);
         when(deviceServiceMock.getDeviceById(user, device.getName())).thenReturn(device);
         doNothing().when(deviceServiceMock).connectDevice(user.getLogin(), user.getPassword(), device.getName(), device.getType());
         doNothing().when(sensorDaoMock).recordAll(getSensorsList());

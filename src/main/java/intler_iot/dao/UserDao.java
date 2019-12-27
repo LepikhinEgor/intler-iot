@@ -7,5 +7,5 @@ import javax.persistence.*;
 public abstract class UserDao {
 
    public abstract void create(User user);
-   public abstract User getByLogin(String login);
+   public abstract User getByLoginPassword(String login, String password);
 }
