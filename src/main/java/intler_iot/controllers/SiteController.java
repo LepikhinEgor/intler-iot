@@ -25,6 +25,6 @@ public class SiteController {
         } catch (Exception e) {
             return new RestResponce(RestResponce.FAIL, e.toString());
         }
-        return  new RestResponce(RestResponce.SUCCESS);
+        return new RestResponce(RestResponce.SUCCESS);
     }
 }
