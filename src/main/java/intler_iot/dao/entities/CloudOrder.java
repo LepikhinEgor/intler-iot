@@ -27,6 +27,9 @@ public class CloudOrder {
     @Column(name = "used")
     private boolean used;
 
+    @Column(name = "removed")
+    private boolean removed;
+
     @JoinColumn(name = "device_id")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Device device;
@@ -79,16 +82,12 @@ public class CloudOrder {
         this.used = used;
     }
 
-    @Override
-    public String toString() {
-        return "CloudOrder{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", value=" + value +
-                ", timing=" + timing +
-                ", used=" + used +
-                ", device=" + device +
-                '}';
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
     }
 
     @Override
@@ -99,6 +98,7 @@ public class CloudOrder {
         return id == that.id &&
                 Double.compare(that.value, value) == 0 &&
                 used == that.used &&
+                removed == that.removed &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(timing, that.timing) &&
                 Objects.equals(device, that.device);
@@ -106,6 +106,20 @@ public class CloudOrder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, value, timing, used, device);
+        return Objects.hash(id, name, value, timing, used, removed, device);
     }
+
+    @Override
+    public String toString() {
+        return "CloudOrder{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", value=" + value +
+                ", timing=" + timing +
+                ", used=" + used +
+                ", removed=" + removed +
+                ", device=" + device +
+                '}';
+    }
+
 }

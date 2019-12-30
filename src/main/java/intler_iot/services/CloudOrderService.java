@@ -1,6 +1,7 @@
 package intler_iot.services;
 
 import intler_iot.controllers.entities.OrderData;
+import intler_iot.controllers.entities.SensorsData;
 import intler_iot.dao.CloudOrderDao;
 import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.Device;
@@ -45,6 +46,7 @@ public class CloudOrderService {
         order.setDevice(device);
         order.setTiming(new Timestamp(System.currentTimeMillis()));
         order.setUsed(false);
+        order.setRemoved(false);
 
         cloudOrderDao.save(order);
     }
@@ -58,8 +60,15 @@ public class CloudOrderService {
         return ordersToMap(orders);
     }
 
-    private void deleteOldOrders() {
+    public void deleteOldOrders() {
 //        cloudOrderDao.deleteOld();
+    }
+
+    public void markOldOrdersAsUsed(SensorsData sensorsData) {
+        User user = userService.authUser(sensorsData.getLogin(), sensorsData.getPassword());
+        Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
+
+        cloudOrderDao.markRemoved(sensorsData.getOrdersAccepted(), device);
     }
 
     private HashMap<String, Double> ordersToMap(List<CloudOrder> ordersList) {

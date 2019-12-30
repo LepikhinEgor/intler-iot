@@ -1,6 +1,11 @@
 package intler_iot.controllers.entities;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class SensorsData {
@@ -9,6 +14,7 @@ public class SensorsData {
     private String password;
     private String deviceName;
     private String deviceType;
+    private List<String> ordersAccepted;
 
     private HashMap<String, Double> sensorsValue;
 
@@ -52,6 +58,14 @@ public class SensorsData {
         this.deviceType = deviceType;
     }
 
+    public List<String> getOrdersAccepted() {
+        return ordersAccepted;
+    }
+
+    public void setOrdersAccepted(List<String> ordersAccepted) {
+        this.ordersAccepted = ordersAccepted;
+    }
+
     @Override
     public String toString() {
         return "SensorsData{" +
@@ -59,6 +73,7 @@ public class SensorsData {
                 ", password='" + password + '\'' +
                 ", deviceName='" + deviceName + '\'' +
                 ", deviceType='" + deviceType + '\'' +
+                ", ordersAccepted=" + ordersAccepted +
                 ", sensorsValue=" + sensorsValue +
                 '}';
     }
@@ -72,11 +87,12 @@ public class SensorsData {
                 Objects.equals(password, that.password) &&
                 Objects.equals(deviceName, that.deviceName) &&
                 Objects.equals(deviceType, that.deviceType) &&
+                Objects.equals(ordersAccepted, that.ordersAccepted) &&
                 Objects.equals(sensorsValue, that.sensorsValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password, deviceName, deviceType, sensorsValue);
+        return Objects.hash(login, password, deviceName, deviceType, ordersAccepted, sensorsValue);
     }
 }

@@ -8,4 +8,6 @@ import java.util.List;
 public abstract class CloudOrderDao {
     public abstract void save(CloudOrder order);
     public abstract List<CloudOrder> getDeviceOrders(Device device);
+    public abstract void deleteOld(Device device);
+    public abstract void markRemoved(List<String> ordersName, Device device);
 }

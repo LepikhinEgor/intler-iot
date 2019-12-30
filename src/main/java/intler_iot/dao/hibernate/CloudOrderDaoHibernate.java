@@ -50,4 +50,32 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
 
         return orders;
     }
+
+    @Override
+    public void deleteOld(Device device) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("delete from CloudOrder where device = :device and used = true");
+        query.setParameter("device", device);
+
+        query.executeUpdate();
+
+        transaction.commit();
+    }
+
+    @Override
+    public void markRemoved(List<String> ordersName, Device device) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("update CloudOrder set used = true where device = :device and name in (:names)");
+        query.setParameter("device", device);
+        query.setParameter("names", ordersName);
+        query.executeUpdate();
+
+        query.executeUpdate();
+
+        transaction.commit();
+    }
 }

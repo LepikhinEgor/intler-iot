@@ -47,6 +47,7 @@ public class DeviceController {
             orders = cloudOrderService.getDeviceOrders(sensorsData.getDeviceName(),
                     sensorsData.getLogin(),
                     sensorsData.getPassword());
+            cloudOrderService.markOldOrdersAsUsed(sensorsData);
         } catch (Exception e) {
             System.err.println(e);
         }
