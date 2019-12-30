@@ -44,6 +44,7 @@ public class CloudOrderService {
         order.setValue(orderData.getValue());
         order.setDevice(device);
         order.setTiming(new Timestamp(System.currentTimeMillis()));
+        order.setUsed(false);
 
         cloudOrderDao.save(order);
     }
@@ -55,6 +56,10 @@ public class CloudOrderService {
         List<CloudOrder> orders = cloudOrderDao.getDeviceOrders(device);
 
         return ordersToMap(orders);
+    }
+
+    private void deleteOldOrders() {
+//        cloudOrderDao.deleteOld();
     }
 
     private HashMap<String, Double> ordersToMap(List<CloudOrder> ordersList) {
