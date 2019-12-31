@@ -10,14 +10,25 @@ import org.springframework.stereotype.Service;
 public class CleanerService {
 
     private SensorService sensorService;
+    private CloudOrderService cloudOrderService;
 
     @Autowired
     public void setSensorService(SensorService sensorService) {
         this.sensorService = sensorService;
     }
 
+    @Autowired
+    public void setCloudOrderService(CloudOrderService cloudOrderService) {
+        this.cloudOrderService = cloudOrderService;
+    }
+
     @Scheduled(cron = "0 0 12 * * ?")
     public void removeOldSensorsVal() {
         sensorService.removeOldSensorsValue();
+    }
+
+    @Scheduled(cron = "0 0 12 * * ?")
+    public void cleanOldCloudOrders() {
+        cloudOrderService.deleteOldOrders();
     }
 }

@@ -37,7 +37,7 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        Query getQuery = session.createQuery("FROM CloudOrder where device = :device");
+        Query getQuery = session.createQuery("FROM CloudOrder where device = :device and used = false");
         getQuery.setParameter("device", device);
 
         List<CloudOrder> orders = getQuery.list();
@@ -52,12 +52,11 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
     }
 
     @Override
-    public void deleteOld(Device device) {
+    public void deleteOld() {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("delete from CloudOrder where device = :device and used = true");
-        query.setParameter("device", device);
+        Query query = session.createQuery("delete from CloudOrder where removed = true");
 
         query.executeUpdate();
 
@@ -79,17 +78,4 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
         transaction.commit();
     }
 
-    @Override
-    public void markUsed(Device device) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-
-        Query query = session.createQuery("update CloudOrder set used = true where device = :device");
-        query.setParameter("device", device);
-        query.executeUpdate();
-
-        query.executeUpdate();
-
-        transaction.commit();
-    }
 }

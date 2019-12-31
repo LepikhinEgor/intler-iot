@@ -61,7 +61,7 @@ public class CloudOrderService {
     }
 
     public void deleteOldOrders() {
-//        cloudOrderDao.deleteOld();
+        cloudOrderDao.deleteOld();
     }
 
     public void markOldOrdersAsUsed(SensorsData sensorsData) {
