@@ -69,9 +69,23 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("update CloudOrder set used = true where device = :device and name in (:names)");
+        Query query = session.createQuery("update CloudOrder set removed = true where device = :device and name in (:names)");
         query.setParameter("device", device);
         query.setParameter("names", ordersName);
+        query.executeUpdate();
+
+        query.executeUpdate();
+
+        transaction.commit();
+    }
+
+    @Override
+    public void markUsed(Device device) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("update CloudOrder set used = true where device = :device");
+        query.setParameter("device", device);
         query.executeUpdate();
 
         query.executeUpdate();

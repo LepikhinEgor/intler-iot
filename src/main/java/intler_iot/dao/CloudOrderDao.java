@@ -10,4 +10,5 @@ public abstract class CloudOrderDao {
     public abstract List<CloudOrder> getDeviceOrders(Device device);
     public abstract void deleteOld(Device device);
     public abstract void markRemoved(List<String> ordersName, Device device);
+    public abstract void markUsed(Device device);
 }
