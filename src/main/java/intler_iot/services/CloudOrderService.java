@@ -64,9 +64,12 @@ public class CloudOrderService {
         cloudOrderDao.deleteOld();
     }
 
-    public void markOldOrdersAsUsed(SensorsData sensorsData) {
+    public void markOldOrdersAsRemoved(SensorsData sensorsData) {
         User user = userService.authUser(sensorsData.getLogin(), sensorsData.getPassword());
         Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
+
+        if (sensorsData.getOrdersAccepted().size() == 0)
+            return;
 
         cloudOrderDao.markRemoved(sensorsData.getOrdersAccepted(), device);
     }
