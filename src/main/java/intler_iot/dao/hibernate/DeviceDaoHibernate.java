@@ -62,4 +62,18 @@ public class DeviceDaoHibernate extends DeviceDao {
 
         return foundDevice;
     }
+
+    @Override
+    public List<Device> getUserDevices(User user) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("FROM Device WHERE owner = :ownerId");
+        query.setParameter("ownerId", user);
+        List<Device> foundDevices = query.list();
+
+        transaction.commit();
+
+        return foundDevices;
+    }
 }

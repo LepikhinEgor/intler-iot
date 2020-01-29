@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class DeviceService {
@@ -39,9 +40,14 @@ public class DeviceService {
     }
 
     public Device getDeviceById(User user, String deviceName) {
-
         Device foundDevice = deviceDao.getUserDeviceByName(deviceName, user);
 
         return foundDevice;
+    }
+
+    public List<Device> getUserDevices(User user) {
+        List<Device> devices = deviceDao.getUserDevices(user);
+
+        return devices;
     }
 }
