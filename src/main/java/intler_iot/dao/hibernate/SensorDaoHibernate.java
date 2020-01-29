@@ -46,6 +46,7 @@ public class SensorDaoHibernate extends SensorDao {
         transaction.commit();
     }
 
+    @Override
     public void removeOldValues(Timestamp deadline) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -55,5 +56,17 @@ public class SensorDaoHibernate extends SensorDao {
         query.executeUpdate();
 
         transaction.commit();
+    }
+
+    @Override
+    public List<Sensor> getAll(List<Device> userDevices) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("select Sensor.name from Sensor where Sensor.device in (:devices) group by Sensor.name");
+        query.setParameter("devices", userDevices);
+        List<Sensor> userSensors = query.list();
+
+        return userSensors;
     }
 }

@@ -1,5 +1,6 @@
 package intler_iot.services;
 
+import intler_iot.controllers.entities.SensorLog;
 import intler_iot.controllers.entities.SensorsData;
 import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
@@ -11,9 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 @EnableScheduling
@@ -67,5 +66,46 @@ public class SensorService {
     public void removeOldSensorsValue() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() - DAY_IN_MILLIS);
         sensorDao.removeOldValues(timestamp);
+    }
+
+    public List<SensorLog> getUserSensors(String login, String password) {
+        User user = userService.authUser(login, password);
+        List<Device> userDevices = deviceService.getUserDevices(user);
+
+        List<Sensor> sensors = sensorDao.getAll(userDevices);
+        List<SensorLog> lastUnicSensors = transformToSensorLogs(sensors,userDevices);
+
+        return lastUnicSensors;
+    }
+
+    private List<SensorLog> transformToSensorLogs(List<Sensor> sensors, List<Device> devices) {
+        //TODO test and optimize and insert device name
+        HashSet<String> unicSensors = new HashSet<String>();
+        List<SensorLog> sensorLogs = new ArrayList<>();
+
+        for(Sensor sensor : sensors) {
+            unicSensors.add(sensor.getName());
+        }
+
+        sensors.sort((Sensor s1, Sensor s2) -> s1.getArriveTime().compareTo(s2.getArriveTime()));
+
+        for (String name : unicSensors) {
+            SensorLog sensorLog = new SensorLog();
+            sensorLog.setSensorName(name);
+
+            int sensorsFounded = 0;
+            for (Sensor sensor : sensors) {
+                if (sensor.getName().equals(name)) {
+                    sensorLog.getSensorsLogs().put(sensor.getArriveTime(), sensor.getValue());
+                    sensorsFounded++;
+                    if (sensorsFounded >= 10)
+                        break;
+                }
+            }
+
+            sensorLogs.add(sensorLog);
+        }
+
+        return sensorLogs;
     }
 }

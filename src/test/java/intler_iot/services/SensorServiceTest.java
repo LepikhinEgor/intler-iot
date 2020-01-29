@@ -109,4 +109,20 @@ public class SensorServiceTest {
         sensorService.updateSensorsValues(getValidSensorData());
         assert(true);
     }
+
+    @Test
+    public void updateSensorsValues_failByAuthUser() {
+        User user = getValidUser();
+        Device device = getValidDevice();
+        device.setOwner(user);
+
+        when(userServiceMock.authUser(user.getLogin(), user.getPassword())).thenReturn(user);
+        when(deviceServiceMock.getDeviceById(user, device.getName())).thenReturn(device);
+        doNothing().when(deviceServiceMock).connectDevice(user.getLogin(), user.getPassword(), device.getName(), device.getType());
+        doNothing().when(sensorDaoMock).recordAll(getSensorsList());
+        inject();
+
+        sensorService.updateSensorsValues(getValidSensorData());
+        assert(true);
+    }
 }
