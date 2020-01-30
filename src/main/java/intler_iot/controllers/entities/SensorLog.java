@@ -1,15 +1,19 @@
 package intler_iot.controllers.entities;
 
+import javafx.util.Pair;
+
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class SensorLog {
     private String sensorName;
-    private HashMap<Timestamp, Double> sensorsLogs;
+    private List<Pair<Timestamp, Double>> sensorsLogs;
 
     public SensorLog() {
-        sensorsLogs = new HashMap<>();
+        sensorsLogs = new ArrayList<>();
     }
 
     @Override
@@ -34,19 +38,19 @@ public class SensorLog {
         return Objects.hash(sensorName, sensorsLogs);
     }
 
-    public HashMap<Timestamp, Double> getSensorsLogs() {
-        return sensorsLogs;
-    }
-
-    public void setSensorsLogs(HashMap<Timestamp, Double> sensorsLogs) {
-        this.sensorsLogs = sensorsLogs;
-    }
-
     public String getSensorName() {
         return sensorName;
     }
 
     public void setSensorName(String sensorName) {
         this.sensorName = sensorName;
+    }
+
+    public List<Pair<Timestamp, Double>> getSensorsLogs() {
+        return sensorsLogs;
+    }
+
+    public void setSensorsLogs(List<Pair<Timestamp, Double>> sensorsLogs) {
+        this.sensorsLogs = sensorsLogs;
     }
 }

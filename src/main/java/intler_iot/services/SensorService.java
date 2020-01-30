@@ -7,6 +7,7 @@ import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
 import intler_iot.services.exceptions.NotAuthException;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -97,7 +98,8 @@ public class SensorService {
             int sensorsFounded = 0;
             for (Sensor sensor : sensors) {
                 if (sensor.getName().equals(name)) {
-                    sensorLog.getSensorsLogs().put(sensor.getArriveTime(), sensor.getValue());
+                    Pair<Timestamp, Double> sensorVal = new Pair<>(sensor.getArriveTime(), sensor.getValue());
+                    sensorLog.getSensorsLogs().add(sensorVal);
                     sensorsFounded++;
                     if (sensorsFounded >= 10)
                         break;
