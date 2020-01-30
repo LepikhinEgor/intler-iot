@@ -6,6 +6,8 @@
     <title>Whitesquare</title>
     <link rel="stylesheet" href="../resources/css/consoleStyle.css"/>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+    <script src="../resources/js/jquery-3.4.1.js" type="text/javascript"></script>
+    <script src="../resources/js/sensorsLogs.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->

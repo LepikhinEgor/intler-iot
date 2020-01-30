@@ -2,23 +2,51 @@ package intler_iot.controllers.site;
 
 import intler_iot.controllers.entities.SensorLog;
 import intler_iot.services.SensorService;
+import intler_iot.services.exceptions.NotAuthException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
+@Controller
 public class SensorsLogsController {
 
+    private static final Logger logger = LoggerFactory.getLogger(SensorsLogsController.class);
+
+    private SensorService sensorService;
+
     @Autowired
-    SensorService sensorService;
+    public void setSensorService(SensorService sensorService) {
+        this.sensorService = sensorService;
+    }
 
     @GetMapping("console/get-sensors-logs")
+    @ResponseBody
     public List<SensorLog> getSensorLogs() {
-        String login = "";
-        String password = "";
+        String login = "admin";
+        String password = "qwerty";
 
-        List<SensorLog> sensorLogs = sensorService.getUserSensors(login, password);
-
+        List<SensorLog> sensorLogs;
+        try {
+            sensorLogs = sensorService.getUserSensors(login, password);
+        } catch (NotAuthException e) {
+            logger.error(e.getMessage(),e);
+            return  new ArrayList<SensorLog>();
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return null;
+        }
         return sensorLogs;
+    }
+
+    @GetMapping("console/logs")
+    public String getSensorsLogPage() {
+        return "sensorsLogs";
     }
 }
