@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,5 +49,14 @@ public class SensorsLogsController {
     @GetMapping("console/logs")
     public String getSensorsLogPage() {
         return "sensorsLogs";
+    }
+
+    @GetMapping("console/get-sensor-logs-page")
+    @ResponseBody
+    public SensorLog getSensorLogsPage(@RequestParam("name") String sensorName, @RequestParam("pageNum") int pageNum) {
+        String login = "admin";
+        String password = "qwerty";
+
+        return sensorService.getSensorLogPage(login, password, sensorName, pageNum);
     }
 }

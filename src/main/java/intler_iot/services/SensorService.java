@@ -80,6 +80,10 @@ public class SensorService {
         return lastUnicSensors;
     }
 
+    public SensorLog getSensorLogPage(String login, String password, String sensorName, int pageNum) {
+        return new SensorLog();//TODO
+    }
+
     private List<SensorLog> transformToSensorLogs(List<Sensor> sensors, List<Device> devices) {
         //TODO test and optimize and insert device name
         HashSet<String> unicSensors = new HashSet<String>();
