@@ -6,6 +6,7 @@ import intler_iot.dao.CloudOrderDao;
 import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.User;
+import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class CloudOrderService {
         this.cloudOrderDao = cloudOrderDao;
     }
 
-    public void recordNewOrder(OrderData orderData) {
+    public void recordNewOrder(OrderData orderData) throws NotAuthException {
         User user = userService.authUser(orderData.getLogin(), orderData.getPassword());
         Device device = deviceService.getDeviceById(user, orderData.getDeviceName());
 
@@ -51,7 +52,7 @@ public class CloudOrderService {
         cloudOrderDao.save(order);
     }
 
-    public HashMap<String, Double> getDeviceOrders(String deviceName, String login, String password) {
+    public HashMap<String, Double> getDeviceOrders(String deviceName, String login, String password) throws NotAuthException {
         User user = userService.authUser(login, password);
         Device device = deviceService.getDeviceById(user, deviceName);
 
@@ -64,7 +65,7 @@ public class CloudOrderService {
         cloudOrderDao.deleteOld();
     }
 
-    public void markOldOrdersAsRemoved(SensorsData sensorsData) {
+    public void markOldOrdersAsRemoved(SensorsData sensorsData) throws NotAuthException {
         User user = userService.authUser(sensorsData.getLogin(), sensorsData.getPassword());
         Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
 

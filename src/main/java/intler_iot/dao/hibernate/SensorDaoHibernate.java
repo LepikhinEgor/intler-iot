@@ -26,13 +26,12 @@ public class SensorDaoHibernate extends SensorDao {
 
     @Override
     public void create(Sensor sensor) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         session.save(sensor);
 
         transaction.commit();
-        session.close();
     }
 
     @Override
@@ -63,9 +62,11 @@ public class SensorDaoHibernate extends SensorDao {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("select Sensor.name from Sensor where Sensor.device in (:devices) group by Sensor.name");
-        query.setParameter("devices", userDevices);
+        Query query = session.createQuery("from Sensor s where s.device in (:devices)");
+        query.setParameterList("devices", userDevices);
         List<Sensor> userSensors = query.list();
+
+        transaction.commit();
 
         return userSensors;
     }

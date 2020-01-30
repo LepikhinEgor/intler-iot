@@ -88,7 +88,7 @@ public class SensorService {
             unicSensors.add(sensor.getName());
         }
 
-        sensors.sort((Sensor s1, Sensor s2) -> s1.getArriveTime().compareTo(s2.getArriveTime()));
+        sensors.sort((Sensor s1, Sensor s2) -> s2.getArriveTime().compareTo(s1.getArriveTime()));
 
         for (String name : unicSensors) {
             SensorLog sensorLog = new SensorLog();

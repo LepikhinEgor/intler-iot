@@ -8,6 +8,10 @@ public class SensorLog {
     private String sensorName;
     private HashMap<Timestamp, Double> sensorsLogs;
 
+    public SensorLog() {
+        sensorsLogs = new HashMap<>();
+    }
+
     @Override
     public String toString() {
         return "SensorLog{" +
