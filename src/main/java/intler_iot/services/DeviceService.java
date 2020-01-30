@@ -4,6 +4,7 @@ package intler_iot.services;
 import intler_iot.dao.DeviceDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.User;
+import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class DeviceService {
         this.deviceDao = deviceDao;
     }
 
-    public void connectDevice(String login, String password, String deviceName, String deviceType) {
+    public void connectDevice(String login, String password, String deviceName, String deviceType) throws NotAuthException {
         User owner = userService.authUser(login, password);
 
         Device device = new Device();

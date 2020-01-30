@@ -5,6 +5,7 @@ import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
+import intler_iot.services.exceptions.NotAuthException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -95,7 +96,7 @@ public class SensorServiceTest {
     }
 
     @Test
-    public void updateSensorsValues_successUpdated() {
+    public void updateSensorsValues_successUpdated() throws NotAuthException {
         User user = getValidUser();
         Device device = getValidDevice();
         device.setOwner(user);
@@ -111,7 +112,7 @@ public class SensorServiceTest {
     }
 
     @Test
-    public void updateSensorsValues_failByAuthUser() {
+    public void updateSensorsValues_failByAuthUser() throws NotAuthException {
         User user = getValidUser();
         Device device = getValidDevice();
         device.setOwner(user);

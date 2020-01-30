@@ -6,6 +6,7 @@ import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
+import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -40,7 +41,7 @@ public class SensorService {
         this.sensorDao = sensorDao;
     }
 
-    public void updateSensorsValues(SensorsData sensorsData) {
+    public void updateSensorsValues(SensorsData sensorsData) throws NotAuthException {
         User user = userService.authUser(sensorsData.getLogin(), sensorsData.getPassword());
         deviceService.connectDevice(sensorsData.getLogin(), sensorsData.getPassword(), sensorsData.getDeviceName(), sensorsData.getDeviceType());
         Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
@@ -68,7 +69,7 @@ public class SensorService {
         sensorDao.removeOldValues(timestamp);
     }
 
-    public List<SensorLog> getUserSensors(String login, String password) {
+    public List<SensorLog> getUserSensors(String login, String password) throws NotAuthException {
         User user = userService.authUser(login, password);
         List<Device> userDevices = deviceService.getUserDevices(user);
 
