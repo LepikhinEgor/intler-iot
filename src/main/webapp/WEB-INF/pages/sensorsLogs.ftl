@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="content-panel">
-            <h1>Показания датчиков</h1>
+            <div><h1>Показания датчиков</h1></div>
             <div class="tables-wrap">
             </div>
         </div>

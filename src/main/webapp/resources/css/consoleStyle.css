@@ -455,6 +455,10 @@ footer p {
 .pag-input-page-num {
 	margin: 0px 5px;
 }
+.tables-wrap {
+	margin: 0px auto;
+	overflow: auto;
+}
 
 
 
