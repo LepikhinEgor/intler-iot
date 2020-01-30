@@ -28,7 +28,7 @@ public class WebConfig {
         viewResolver.setOrder(1);
         viewResolver.setPrefix("");
         viewResolver.setSuffix(".ftl");
-        viewResolver.setContentType("text/html; charset=windows-1251");
+        viewResolver.setContentType("text/html; charset=UTF-8");
 
         return viewResolver;
     }
