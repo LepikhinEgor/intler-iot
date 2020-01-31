@@ -57,6 +57,12 @@ public class SensorsLogsController {
         String login = "admin";
         String password = "qwerty";
 
-        return sensorService.getSensorLogPage(login, password, sensorName, pageNum);
+        SensorLog sensorLog = null;
+        try {
+            sensorLog = sensorService.getSensorLogPage(login, password, sensorName, pageNum);
+        } catch (Exception e) {
+            logger.info(e.getMessage(),e);
+        }
+        return sensorLog;
     }
 }

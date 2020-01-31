@@ -70,4 +70,19 @@ public class SensorDaoHibernate extends SensorDao {
 
         return userSensors;
     }
+
+    public List<Sensor> getSensorValues(String sensorName, User user) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("select s from Sensor s inner join Device d on d = s.device where s.name = :sensorName and d.owner = :user");
+        query.setParameter("user", user);
+        query.setParameter("sensorName", sensorName);
+
+        List<Sensor> sensors = query.list();
+
+        transaction.commit();
+
+        return sensors;
+    }
 }

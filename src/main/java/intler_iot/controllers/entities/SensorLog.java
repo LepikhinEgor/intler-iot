@@ -10,10 +10,19 @@ import java.util.Objects;
 
 public class SensorLog {
     private String sensorName;
+    private int currentPage;
+    private int pagesCount;
     private List<Pair<Timestamp, Double>> sensorsLogs;
 
     public SensorLog() {
         sensorsLogs = new ArrayList<>();
+    }
+
+    public SensorLog(String sensorName, int currentPage, int pagesCount, List<Pair<Timestamp, Double>> sensorsLogs) {
+        this.sensorName = sensorName;
+        this.currentPage = currentPage;
+        this.pagesCount = pagesCount;
+        this.sensorsLogs = sensorsLogs;
     }
 
     @Override
@@ -22,20 +31,6 @@ public class SensorLog {
                 "sensorName='" + sensorName + '\'' +
                 ", sensorsLogs=" + sensorsLogs +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SensorLog sensorLog = (SensorLog) o;
-        return Objects.equals(sensorName, sensorLog.sensorName) &&
-                Objects.equals(sensorsLogs, sensorLog.sensorsLogs);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sensorName, sensorsLogs);
     }
 
     public String getSensorName() {
@@ -52,5 +47,37 @@ public class SensorLog {
 
     public void setSensorsLogs(List<Pair<Timestamp, Double>> sensorsLogs) {
         this.sensorsLogs = sensorsLogs;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getPagesCount() {
+        return pagesCount;
+    }
+
+    public void setPagesCount(int pagesCount) {
+        this.pagesCount = pagesCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SensorLog sensorLog = (SensorLog) o;
+        return currentPage == sensorLog.currentPage &&
+                pagesCount == sensorLog.pagesCount &&
+                Objects.equals(sensorName, sensorLog.sensorName) &&
+                Objects.equals(sensorsLogs, sensorLog.sensorsLogs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sensorName, currentPage, pagesCount, sensorsLogs);
     }
 }

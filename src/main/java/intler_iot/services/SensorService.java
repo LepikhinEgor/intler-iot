@@ -13,12 +13,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Service
 @EnableScheduling
 public class SensorService {
+
+    private static final int SENSORS_ON_PAGE = 10;
 
     private DeviceService deviceService;
     private UserService userService;
@@ -80,12 +83,28 @@ public class SensorService {
         return lastUnicSensors;
     }
 
-    public SensorLog getSensorLogPage(String login, String password, String sensorName, int pageNum) {
-        return new SensorLog();//TODO
+    public SensorLog getSensorLogPage(String login, String password, String sensorName, int pageNum) throws NotAuthException {
+        User user = userService.authUser(login, password);
+        List<Sensor> sensors = sensorDao.getSensorValues(sensorName, user);
+        List<Sensor> sensorsPage = pullSensorPage(sensors, pageNum);
+        int pagesCount = sensors.size() / SENSORS_ON_PAGE + 1;
+        System.out.println("size" + sensors.size());
+
+        SensorLog sensorLog = new SensorLog(sensorName, pageNum, pagesCount, sensorsToPairs(sensorsPage));
+
+        return sensorLog;//TODO
+    }
+
+    public List<Sensor> pullSensorPage(List<Sensor> sensors, int pageNum) {
+        sensors.sort((Sensor s1, Sensor s2) -> s2.getArriveTime().compareTo(s1.getArriveTime()));
+
+        int startPage = SENSORS_ON_PAGE * pageNum;
+        int endPage = startPage + SENSORS_ON_PAGE;
+
+        return sensors.subList(startPage, endPage);
     }
 
     private List<SensorLog> transformToSensorLogs(List<Sensor> sensors, List<Device> devices) {
-        //TODO test and optimize and insert device name
         HashSet<String> unicSensors = new HashSet<String>();
         List<SensorLog> sensorLogs = new ArrayList<>();
 
@@ -114,5 +133,15 @@ public class SensorService {
         }
 
         return sensorLogs;
+    }
+
+    private List<Pair<Timestamp, Double>> sensorsToPairs(List<Sensor> sensors) {
+        List<Pair<Timestamp, Double>> sensorPairs = new LinkedList<Pair<Timestamp, Double>>();
+
+        for (Sensor sensor : sensors) {
+            sensorPairs.add(new Pair<>(sensor.getArriveTime(), sensor.getValue()));
+        }
+
+        return sensorPairs;
     }
 }

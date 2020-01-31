@@ -12,4 +12,5 @@ public abstract class SensorDao {
     public abstract void recordAll(List<Sensor> sensors);
     public abstract void removeOldValues(Timestamp deadline);
     public abstract List<Sensor> getAll(List<Device> userDevices);
+    public abstract List<Sensor> getSensorValues(String sensorName, User user);
 }
