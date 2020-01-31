@@ -26,7 +26,7 @@ function requestSensorsLogs() {
             for (var key in data) {
                 var sensor = data[key];
                 var sensLogs = sensor["sensorsLogs"];
-                addSensorTable(sensor["sensorName"], sensLogs);
+                addSensorTable(sensor["sensorName"], sensLogs, sensor["currentPage"], sensor["pagesCount"]);
                 var newSensorInfo = {
                     name: sensor["sensorName"],
                     currentPage: 0,
@@ -39,7 +39,7 @@ function requestSensorsLogs() {
     });
 }
 
-function addSensorTable(sensorName, sensorLogs) {
+function addSensorTable(sensorName, sensorLogs, curPage, maxPage) {
     var tableHtml = "<table class=\"table_blur\" id=\"" + sensorName + "\">\n" +
         "                    <thead>\n" +
         "                        <caption class=\"table-sensor-name\">" + "Датчик " +"<a href=\"#\">"+ sensorName +"</a></caption>\n" +
@@ -53,7 +53,7 @@ function addSensorTable(sensorName, sensorLogs) {
         "                        <td colspan=\"2\">\n" +
         "                            <input type=\"button\" class=\"pag-button first-pag-button\" value=\"&lt&lt\">\n" +
         "                            <input type=\"button\" class=\"pag-button dec-pag-button\" value=\"&lt\">\n" +
-        "                            <span class=\"pag-input-page-num\">1 из 9999</span>\n" +
+        "                            <span class=\"pag-input-page-num\"></span>\n" +
         "                            <input type=\"button\" class=\"pag-button inc-pag-button\" value=\"&gt\">\n" +
         "                            <input type=\"button\" class=\"pag-button last-pag-button\" value=\"&gt&gt\">\n" +
         "                        </td>\n" +
@@ -67,6 +67,7 @@ function addSensorTable(sensorName, sensorLogs) {
         addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
             sensorLogs[sensorLog]["value"] + "</td></tr>");
     }
+    $(".pag-input-page-num").html((curPage + 1) + " из " + maxPage);
 }
 
 function parseTimestamp(timestamp) {
@@ -137,7 +138,7 @@ function requestSensorPage(sensorName, pageNum) {
         success: function(data) {
              console.log(data);
             var sensLogs = data["sensorsLogs"];
-            fillSensorTable(data["sensorName"], sensLogs);
+            fillSensorTable(data["sensorName"], sensLogs, data["currentPage"], data["pagesCount"]);
 
             for (var sensInfo in sensorsInfo) {
                 if (sensorsInfo[sensInfo]["name"] === data["sensorName"]) {
@@ -149,11 +150,12 @@ function requestSensorPage(sensorName, pageNum) {
     });
 }
 
-function fillSensorTable(sensorName, sensorLogs) {
+function fillSensorTable(sensorName, sensorLogs, curPage, maxPage) {
     var addedTable = $("#" + sensorName);
     addedTable.find(".sensorVal").remove();
     for (var sensorLog in sensorLogs) {
         addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
             sensorLogs[sensorLog]["value"] + "</td></tr>");
     }
+    $(".pag-input-page-num").html((curPage + 1) + " из " + maxPage);
 }
