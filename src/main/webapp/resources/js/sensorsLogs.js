@@ -30,10 +30,9 @@ function requestSensorsLogs() {
                 var newSensorInfo = {
                     name: sensor["sensorName"],
                     currentPage: 0,
-                    pagesCount: 9999
+                    pagesCount: sensor["pagesCount"]
                 }
                 sensorsInfo.push(newSensorInfo);
-                console.log(sensorsInfo);
             }
             refreshEmpEventHandlers();
         }
@@ -65,7 +64,7 @@ function addSensorTable(sensorName, sensorLogs) {
 
     for (var sensorLog in sensorLogs) {
         var addedTable = $("#" + sensorName);
-        addedTable.find(".pagination").before("<tr><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
+        addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
             sensorLogs[sensorLog]["value"] + "</td></tr>");
     }
 }
@@ -93,13 +92,7 @@ function toFirstPage() {
 function toLastPage() {
     var parentTable = $(this).closest("table");
     var sensorName = parentTable.attr("id");
-    var pageNum = 0;
-
-    for (var sensInfo in sensorsInfo) {
-        if (sensorsInfo[sensInfo]["name"] === sensorName) {
-            pageNum = sensorsInfo[sensInfo]["pagesCount"] - 1;
-        }
-    }
+    var pageNum = -1;
 
     requestSensorPage(sensorName, pageNum);
 }
@@ -142,7 +135,25 @@ function requestSensorPage(sensorName, pageNum) {
         url: "/intler_iot_war_exploded/console/get-sensor-logs-page?name="+sensorName + "&pageNum=" + pageNum,
         contentType: 'application/json',
         success: function(data) {
-            console.log(data);
+             console.log(data);
+            var sensLogs = data["sensorsLogs"];
+            fillSensorTable(data["sensorName"], sensLogs);
+
+            for (var sensInfo in sensorsInfo) {
+                if (sensorsInfo[sensInfo]["name"] === data["sensorName"]) {
+                    sensorsInfo[sensInfo]["currentPage"] = data["currentPage"];
+                    sensorsInfo[sensInfo]["pagesCount"] = data["pagesCount"];
+                }
+            }
         }
     });
+}
+
+function fillSensorTable(sensorName, sensorLogs) {
+    var addedTable = $("#" + sensorName);
+    addedTable.find(".sensorVal").remove();
+    for (var sensorLog in sensorLogs) {
+        addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
+            sensorLogs[sensorLog]["value"] + "</td></tr>");
+    }
 }

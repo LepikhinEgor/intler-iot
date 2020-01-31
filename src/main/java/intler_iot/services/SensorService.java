@@ -86,9 +86,12 @@ public class SensorService {
     public SensorLog getSensorLogPage(String login, String password, String sensorName, int pageNum) throws NotAuthException {
         User user = userService.authUser(login, password);
         List<Sensor> sensors = sensorDao.getSensorValues(sensorName, user);
+        if (pageNum == -1)
+            pageNum = sensors.size() / SENSORS_ON_PAGE;
+        else
+            pageNum = pageNum;
+        int pagesCount = calulatePagesCount(sensors.size());
         List<Sensor> sensorsPage = pullSensorPage(sensors, pageNum);
-        int pagesCount = sensors.size() / SENSORS_ON_PAGE + 1;
-        System.out.println("size" + sensors.size());
 
         SensorLog sensorLog = new SensorLog(sensorName, pageNum, pagesCount, sensorsToPairs(sensorsPage));
 
@@ -97,11 +100,16 @@ public class SensorService {
 
     public List<Sensor> pullSensorPage(List<Sensor> sensors, int pageNum) {
         sensors.sort((Sensor s1, Sensor s2) -> s2.getArriveTime().compareTo(s1.getArriveTime()));
+        List<Sensor> sensorsPage = new LinkedList<>();
 
-        int startPage = SENSORS_ON_PAGE * pageNum;
+        int startPage = pageNum * SENSORS_ON_PAGE;
         int endPage = startPage + SENSORS_ON_PAGE;
 
-        return sensors.subList(startPage, endPage);
+        for (int i = startPage; i < sensors.size() && i < endPage;i++) {
+                sensorsPage.add(sensors.get(i));
+        }
+
+        return sensorsPage;
     }
 
     private List<SensorLog> transformToSensorLogs(List<Sensor> sensors, List<Device> devices) {
@@ -121,14 +129,15 @@ public class SensorService {
             int sensorsFounded = 0;
             for (Sensor sensor : sensors) {
                 if (sensor.getName().equals(name)) {
-                    Pair<Timestamp, Double> sensorVal = new Pair<>(sensor.getArriveTime(), sensor.getValue());
-                    sensorLog.getSensorsLogs().add(sensorVal);
+                    if (sensorsFounded < 10) {
+                        Pair<Timestamp, Double> sensorVal = new Pair<>(sensor.getArriveTime(), sensor.getValue());
+                        sensorLog.getSensorsLogs().add(sensorVal);
+                    }
                     sensorsFounded++;
-                    if (sensorsFounded >= 10)
-                        break;
                 }
             }
 
+            sensorLog.setPagesCount(calulatePagesCount(sensorsFounded));
             sensorLogs.add(sensorLog);
         }
 
@@ -143,5 +152,15 @@ public class SensorService {
         }
 
         return sensorPairs;
+    }
+
+    private int calulatePagesCount(int sensorsCount) {
+        int pagesCount;
+        if (sensorsCount % 10 == 0)
+            pagesCount = sensorsCount / SENSORS_ON_PAGE;
+        else
+            pagesCount = sensorsCount / SENSORS_ON_PAGE + 1;
+
+        return pagesCount;
     }
 }
