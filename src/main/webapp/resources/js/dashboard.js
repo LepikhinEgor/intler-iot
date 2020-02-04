@@ -1,11 +1,11 @@
 $(document).ready(function() {
-    requestSensors();
+    requestWidgets();
 });
 
 function requestWidgets() {
     $.ajax({
         type: "GET",
-        url: "/intler_iot_war_exploded/console/get-widgets",
+        url: "/intler_iot_war_exploded/console/dashboard/get-widgets",
         contentType: 'application/json',
         success: function(data) {
             console.log(data);
