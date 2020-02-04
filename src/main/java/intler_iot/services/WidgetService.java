@@ -1,0 +1,76 @@
+package intler_iot.services;
+
+import intler_iot.dao.WidgetDao;
+import intler_iot.dao.entities.Sensor;
+import intler_iot.dao.entities.User;
+import intler_iot.dao.entities.Widget;
+import intler_iot.services.exceptions.NotAuthException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class WidgetService {
+
+    private UserService userService;
+    private SensorService sensorService;
+
+    private WidgetDao widgetDao;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setSensorService(SensorService sensorService) {
+        this.sensorService = sensorService;
+    }
+
+    @Autowired
+    public void setWidgetDao(WidgetDao widgetDao) {
+        this.widgetDao = widgetDao;
+    }
+
+    public List<Widget> getWidgetsList(String login, String password) throws NotAuthException {
+        User user = userService.authUser(login, password);
+        List<Sensor> lastSensors = sensorService.getLastSensors(user);
+        List<Widget> widgets = widgetDao.getWidgets(user);
+
+        List<Sensor> newSensors = getSensorsWithoutWidget(lastSensors, widgets);
+        List<Widget> createdWidgets = createWidgets(newSensors);
+        widgetDao.recordWidgets(createdWidgets);
+
+        widgets.addAll(createdWidgets);
+
+        return widgets;
+    }
+
+    private List<Sensor> getSensorsWithoutWidget(List<Sensor> lastSensors,List<Widget> widgets) {
+        List<Sensor> newSensors = new ArrayList<>();
+        for (Sensor sensor : lastSensors) {
+            boolean isExist = false;
+            for (Widget widget: widgets) {
+                if (sensor.getName().equals(widget.getSensor().getName())) {
+                    isExist = true;
+                }
+            }
+            if (!isExist)
+                newSensors.add(sensor);
+        }
+
+        return newSensors;
+    }
+
+    private List<Widget> createWidgets(List<Sensor> newSensors) {
+        List<Widget> widgets = new ArrayList<>();
+
+        for (Sensor sensor: newSensors) {
+            widgets.add(new Widget(sensor));
+        }
+
+        return widgets;
+    }
+}

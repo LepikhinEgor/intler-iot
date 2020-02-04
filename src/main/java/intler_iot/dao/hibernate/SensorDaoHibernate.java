@@ -93,12 +93,13 @@ public class SensorDaoHibernate extends SensorDao {
         Transaction transaction = session.beginTransaction();
 
         Query query = session.createSQLQuery("select * from sensors s1 " +
-                "inner join (select s1.name, max(s1.arrive_time) as arrive_time from sensors s1 group by s1.name) s2 \n" +
+                "inner join (select s1.name, max(s1.arrive_time) as arrive_time from sensors s1 group by s1.name) s2 " +
                 "on s1.name = s2.name and s1.arrive_time = s2.arrive_time " +
-                "inner join devices d on s1.device_id = d.id where d.owner_id = :user_id;");
+                "inner join devices d on s1.device_id = d.id where d.owner_id = :user_id").addEntity(Sensor.class);
         query.setParameter("user_id", user.getId());
 
         List<Sensor> lastSensors = query.list();
+        transaction.commit();
 
         return lastSensors;
     }

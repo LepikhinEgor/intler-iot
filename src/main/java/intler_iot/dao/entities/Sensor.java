@@ -1,5 +1,6 @@
 package intler_iot.dao.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -21,6 +22,7 @@ public class Sensor {
     @Column(name = "value")
     private double value;
 
+    @JsonIgnore
     @JoinColumn(name = "device_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Device device;
