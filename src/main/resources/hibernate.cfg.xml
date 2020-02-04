@@ -25,6 +25,6 @@
         <mapping class="intler_iot.dao.entities.Device"/>
         <mapping class="intler_iot.dao.entities.Sensor"/>
         <mapping class="intler_iot.dao.entities.CloudOrder"/>
-
+        <mapping class="intler_iot.dao.entities.Widget" />
     </session-factory>
 </hibernate-configuration>

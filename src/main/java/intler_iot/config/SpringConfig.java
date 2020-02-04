@@ -1,10 +1,7 @@
 package intler_iot.config;
 
 import intler_iot.controllers.entities.OrderData;
-import intler_iot.dao.entities.CloudOrder;
-import intler_iot.dao.entities.Device;
-import intler_iot.dao.entities.Sensor;
-import intler_iot.dao.entities.User;
+import intler_iot.dao.entities.*;
 import intler_iot.dao.hibernate.UserDaoHibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -25,6 +22,7 @@ public class SpringConfig {
         configuration.addAnnotatedClass(Device.class);
         configuration.addAnnotatedClass(Sensor.class);
         configuration.addAnnotatedClass(CloudOrder.class);
+        configuration.addAnnotatedClass(Widget.class);
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
         SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
 
