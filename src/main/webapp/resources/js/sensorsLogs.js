@@ -157,5 +157,5 @@ function fillSensorTable(sensorName, sensorLogs, curPage, maxPage) {
         addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
             sensorLogs[sensorLog]["value"] + "</td></tr>");
     }
-    $(".pag-input-page-num").html((curPage + 1) + " из " + maxPage);
+    addedTable.find(".pag-input-page-num").html((curPage + 1) + " из " + maxPage);
 }
