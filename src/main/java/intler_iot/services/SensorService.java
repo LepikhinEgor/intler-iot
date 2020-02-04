@@ -73,6 +73,12 @@ public class SensorService {
         sensorDao.removeOldValues(timestamp);
     }
 
+    public List<Sensor> getLastSensors(User user) {
+        List<Sensor> lastSensors = sensorDao.getLastSensors(user);
+
+        return lastSensors;
+    }
+
     public List<SensorLog> getUserSensors(String login, String password) throws NotAuthException {
         User user = userService.authUser(login, password);
         List<Device> userDevices = deviceService.getUserDevices(user);

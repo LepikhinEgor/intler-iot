@@ -85,4 +85,21 @@ public class SensorDaoHibernate extends SensorDao {
 
         return sensors;
     }
+
+    @Override
+    public List<Sensor> getLastSensors(User user) {
+
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createSQLQuery("select * from sensors s1 " +
+                "inner join (select s1.name, max(s1.arrive_time) as arrive_time from sensors s1 group by s1.name) s2 \n" +
+                "on s1.name = s2.name and s1.arrive_time = s2.arrive_time " +
+                "inner join devices d on s1.device_id = d.id where d.owner_id = :user_id;");
+        query.setParameter("user_id", user.getId());
+
+        List<Sensor> lastSensors = query.list();
+
+        return lastSensors;
+    }
 }
