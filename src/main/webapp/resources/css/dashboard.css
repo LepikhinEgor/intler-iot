@@ -1,0 +1,10 @@
+.widgets-wrap {
+    margin: 5px 10px;
+}
+
+.widget {
+    width: 200px;
+    height: 200px;
+    background: #fff;
+    float:left;
+}

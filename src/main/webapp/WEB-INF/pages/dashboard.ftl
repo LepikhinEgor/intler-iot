@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Whitesquare</title>
     <link rel="stylesheet" href="../resources/css/consoleStyle.css"/>
+    <link rel="stylesheet" href="../resources/css/dashboard.css"/>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
     <script src="../resources/js/jquery-3.4.1.js" type="text/javascript"></script>
     <script src="../resources/js/dashboard.js" type="text/javascript"></script>
@@ -38,7 +39,15 @@
         </div>
         <div class="content-panel">
             <div><h1>Dashboard</h1></div>
-            <div class="tables-wrap">
+            <div class="widgets-wrap">
+                <div class="widget" style="border: 1px solid rgba(0, 200, 0, 0.3);; border-radius: 2px">
+                    <div class="widget-top">
+                        <div class="widget-config-wrap">
+                            
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </section>
