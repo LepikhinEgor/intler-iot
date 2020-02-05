@@ -40,10 +40,20 @@
         <div class="content-panel">
             <div><h1>Dashboard</h1></div>
             <div class="widgets-wrap">
-                <div class="widget" style="border: 1px solid rgba(0, 200, 0, 0.3);; border-radius: 2px">
+                <div class="widget" style="border: 1px solid rgba(0, 100, 0, 0.3);; border-radius: 2px">
                     <div class="widget-top">
+                        <div class="widget-name">
+                            <h3>Light sensor</h3>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+
+                    </div>
+                    <div class="widget-footer">
                         <div class="widget-config-wrap">
-                            
+                            <button class="widget-config-button">
+                                <img src="prop.jpg">
+                            </button>
                         </div>
                     </div>
 

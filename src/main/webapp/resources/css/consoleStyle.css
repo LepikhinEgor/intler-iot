@@ -25,9 +25,8 @@ input[type="text"] {
 
 button {
 	color: #fff;
-	background-color: #29c5e6;
+	/*background-color: #29c5e6;*/
 	border: none;
-	height: 32px;
 	font-family: 'Oswald', sans-serif;
 }
 
