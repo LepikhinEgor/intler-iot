@@ -35,6 +35,10 @@
     margin: auto;
 }
 
+.widget-config-wrap > img:hover {
+  cursor: pointer;
+}
+
 .widget-name {
     height: 30px;
     text-align: center;

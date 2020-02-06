@@ -17,7 +17,7 @@
 <div id="wrapper">
     <aside>
         <p>
-            <img src="../resources/images/userf_icon.png" class="logo" alt="Our offices">
+            <img src="../resources/images/logo.png" class="logo" alt="Our offices">
         </p>
         <nav>
             <ul class="aside-menu">
@@ -25,8 +25,6 @@
                 <li class="active"><a href="/console/dashboard">Dashboard</a></li>
                 <li><a href="/intler_iot_war_exploded/console/logs/">Database</a></li>
                 <li><a href="/etiam/">Code</a></li>
-                <li><a href="/phasellus/">PHASELLUS PLACERAT</a></li>
-                <li><a href="/cras/">CRAS ET NISI VITAE ODIO</a></li>
             </ul>
         </nav>
     </aside>
