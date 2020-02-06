@@ -35,7 +35,7 @@ public class Widget {
     private User user;
 
     @JoinColumn(name = "sensor_id")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Sensor sensor;
 
     public long getId() {
