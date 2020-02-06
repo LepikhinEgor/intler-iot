@@ -40,27 +40,6 @@
         <div class="content-panel">
             <div><h1>Dashboard</h1></div>
             <div class="widgets-wrap">
-                <div class="widget" style="border: 1px solid rgba(100, 100, 100, 0.3);; border-radius: 2px">
-                    <table class="widget-table">
-                        <tr>
-                            <td class="widget-name" colspan="3"><span>Light sensor</span></td>
-                        </tr>
-                        <tr>
-                            <td class="widget-content" colspan="3">
-                                <h1 style="color: green">228</h1>
-                                <p>volts</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="widget-icon-wrap">
-                            </td>
-                            <td class="widget-keyword">light</td>
-                            <td class="widget-config-wrap">
-                                <img src="../resources/images/config.png">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
             </div>
         </div>
     </section>
