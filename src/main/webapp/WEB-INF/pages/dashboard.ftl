@@ -17,13 +17,13 @@
 <div id="wrapper">
     <aside>
         <p>
-            <img src="images/sample.png" class="logo" alt="Our offices">
+            <img src="../resources/images/userf_icon.png" class="logo" alt="Our offices">
         </p>
         <nav>
             <ul class="aside-menu">
                 <li>Statistics</li>
-                <li class="active"><a href="/donec/">Dashboard</a></li>
-                <li><a href="/vestibulum/">Database</a></li>
+                <li class="active"><a href="/console/dashboard">Dashboard</a></li>
+                <li><a href="/intler_iot_war_exploded/console/logs/">Database</a></li>
                 <li><a href="/etiam/">Code</a></li>
                 <li><a href="/phasellus/">PHASELLUS PLACERAT</a></li>
                 <li><a href="/cras/">CRAS ET NISI VITAE ODIO</a></li>
@@ -34,28 +34,13 @@
         <div class="top-panel">
             <div class="user-bar">
                 <span id="user-login">LepikhinEgor</span>
-                <img src="images/sample.png">
+                <img src="../resources/images/user_icon.png">
             </div>
         </div>
         <div class="content-panel">
             <div><h1>Dashboard</h1></div>
             <div class="widgets-wrap">
                 <div class="widget" style="border: 1px solid rgba(100, 100, 100, 0.3);; border-radius: 2px">
-<#--                    <div class="widget-top">-->
-<#--                        <div class="widget-name">-->
-<#--                            <h3>Light sensor</h3>-->
-<#--                        </div>-->
-<#--                    </div>-->
-<#--                    <div class="widget-content">-->
-
-<#--                    </div>-->
-<#--                    <div class="widget-footer">-->
-<#--                        <div class="widget-config-wrap">-->
-<#--                            <button class="widget-config-button">-->
-<#--                                <img src="prop.jpg">-->
-<#--                            </button>-->
-<#--                        </div>-->
-<#--                    </div>-->
                     <table class="widget-table">
                         <tr>
                             <td class="widget-name" colspan="3"><span>Light sensor</span></td>
@@ -75,7 +60,6 @@
                             </td>
                         </tr>
                     </table>
-
                 </div>
             </div>
         </div>
