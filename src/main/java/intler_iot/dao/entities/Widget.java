@@ -1,8 +1,10 @@
 package intler_iot.dao.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "widgets")
@@ -13,13 +15,13 @@ public class Widget {
     }
 
     public Widget(Sensor sensor) {
+        this.measure = 2;
         this.name = sensor.getName();
         this.sensor = sensor;
         this.user = sensor.getDevice().getOwner();
     }
 
     @Id
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
 
@@ -28,6 +30,9 @@ public class Widget {
 
     @Column(name = "color")
     private int color;
+
+    @Column(name = "measure")
+    private int measure;
 
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -78,14 +83,41 @@ public class Widget {
         this.user = user;
     }
 
+    public int getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(int measure) {
+        this.measure = measure;
+    }
+
     @Override
     public String toString() {
         return "Widget{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", color=" + color +
+                ", measure=" + measure +
                 ", user=" + user +
                 ", sensor=" + sensor +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Widget widget = (Widget) o;
+        return id == widget.id &&
+                color == widget.color &&
+                measure == widget.measure &&
+                Objects.equals(name, widget.name) &&
+                Objects.equals(user, widget.user) &&
+                Objects.equals(sensor, widget.sensor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, color, measure, user, sensor);
     }
 }

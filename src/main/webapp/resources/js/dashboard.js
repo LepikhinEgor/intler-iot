@@ -10,13 +10,14 @@ function requestWidgets() {
         success: function(data) {
             console.log(data);
             for (var widget_num in data) {
+                let id = data[widget_num]["id"];
                 let name = data[widget_num]["name"];
                 let color = data[widget_num]["color"];
+                let measure = data[widget_num]["measure"];
+
                 let sensor = data[widget_num]["sensor"];
-                let id = data[widget_num]["id"];
                 let keyward = sensor["name"];
                 let value = sensor["value"];
-                let measure = sensor["measure"];
                 let arriveTime = sensor["arriveTime"];
                 addWidget(name, color, sensor, id, keyward, value, measure, arriveTime);
             }
@@ -27,6 +28,7 @@ function requestWidgets() {
 function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime) {
     var borderColor = getBorderColorString(color);
     var valueColor = getValueColorString(color);
+    var widgetMeasure = getMeasureForWidget(measure);
 
     var widgetHtml = " <div id='" + id + "' class=\"widget\" style=\"border: 1px solid " + borderColor + "; border-radius: 2px\">\n" +
         "                    <table class=\"widget-table\">\n" +
@@ -36,7 +38,7 @@ function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime)
         "                        <tr>\n" +
         "                            <td class=\"widget-content\" colspan=\"3\">\n" +
         "                                <h1 style=\"color: " + valueColor + "\"> " + value + "</h1>\n" +
-        "                                <p>volts</p>\n" +
+        "                                <p>" + widgetMeasure + "</p>\n" +
         "                            </td>\n" +
         "                        </tr>\n" +
         "                        <tr>\n" +
@@ -77,6 +79,21 @@ function getValueColorString(colorNum) {
         case 4: colorString = "#ff0"; break;//yellow
         case 5: colorString = "#0ff"; break;//aqumarine
         case 6: colorString = "#f0f"; break;//magenta
+    }
+
+    return colorString;
+}
+
+function getMeasureForWidget(measureNum) {
+    var colorString = "";
+    switch (measureNum) {
+        case 0: colorString = ""; break;
+        case 1: colorString = "%"; break;
+        case 2: colorString = "вольт (В)"; break;
+        case 3: colorString = "амрер(А)"; break;
+        case 4: colorString = "метр"; break;
+        case 5: colorString = "паскаль(Па)"; break;
+        case 6: colorString = "ньютон(Н)"; break;
     }
 
     return colorString;
