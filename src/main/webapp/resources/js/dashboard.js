@@ -3,6 +3,14 @@ function dashboardPageStart() {
     setInterval(requestWidgets, 10000);
 }
 
+function refreshWidgetHandlers() {
+    $(".widget-config-button").on("click", openModalWindow);
+}
+
+function openModalWindow() {
+    document.location.href = "#contract_modal_window";
+}
+
 function requestWidgets() {
     $.ajax({
         type: "GET",
@@ -50,13 +58,15 @@ function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime)
         "                            </td>\n" +
         "                            <td class=\"widget-keyword\">" + keyward + "</td>\n" +
         "                            <td class=\"widget-config-wrap\">\n" +
-        "                                <img style='background: " + configColor + "' src=\"./resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
+        "                                <img class='widget-config-button' style='background: " + configColor + "' src=\"./resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
         "onmouseout=\"this.style.backgroundColor='" +  configColor+ "'\">\n" +
         "                            </td>\n" +
         "                        </tr>\n" +
         "                    </table>\n" +
         "                </div>";
     $(".widgets-wrap").append(widgetHtml);
+
+    refreshWidgetHandlers();
 }
 
 function getBorderColorString(colorNum, opacity) {
