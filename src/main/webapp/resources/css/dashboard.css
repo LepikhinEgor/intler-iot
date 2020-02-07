@@ -134,19 +134,25 @@
 
 .close_modal_contract,
 .close_modal_contract_team{
+    width : 100px;
+    height: 30px;
+    border-radius: 3px;
     display: inline-block;
-    border: 1px solid #0000cc;
-    color: #0000cc;
     padding: 0 12px;
     margin: 10px;
     text-decoration: none;
-    background: #f2f2f2;
-    font-size: 14pt;
+    background: #2e8b00;
+    font-size: 10pt;
     cursor:pointer;
     vertical-align: bottom;
+    color: #eee;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 30px;
 }
 .close_modal_contract:hover
-{background: #e6e6ff;}
+{background: #267200;}
 
 .modal-field-name {
     margin: 5px 0px 2px 0px;
