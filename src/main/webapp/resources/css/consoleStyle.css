@@ -38,6 +38,7 @@ h1 {
 	color: #444;
 	background: url(../images/bg.png);
 	font: 24px 'Palatino', sans-serif;
+	margin-left: 12px;
 }
 
 #wrapper {

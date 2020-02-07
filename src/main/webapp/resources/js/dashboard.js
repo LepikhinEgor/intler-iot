@@ -28,7 +28,6 @@ function requestWidgets() {
 function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime) {
     var borderColor = getBorderColorString(color, 0.3);
     var valueColor = getValueColorString(color);
-    var widgetMeasure = getMeasureForWidget(measure);
     var configColor = getBorderColorString(color, 0.4);
     var configActiveColor = getBorderColorString(color, 1);
 
@@ -40,7 +39,7 @@ function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime)
         "                        <tr>\n" +
         "                            <td class=\"widget-content\" colspan=\"3\">\n" +
         "                                <h1 style=\"color: " + valueColor + "\"> " + value + "</h1>\n" +
-        "                                <p>" + widgetMeasure + "</p>\n" +
+        "                                <p>" + measure + "</p>\n" +
         "                            </td>\n" +
         "                        </tr>\n" +
         "                        <tr>\n" +
@@ -82,21 +81,6 @@ function getValueColorString(colorNum) {
         case 4: colorString = "#ff0"; break;//yellow
         case 5: colorString = "#0ff"; break;//aqumarine
         case 6: colorString = "#f0f"; break;//magenta
-    }
-
-    return colorString;
-}
-
-function getMeasureForWidget(measureNum) {
-    var colorString = "";
-    switch (measureNum) {
-        case 0: colorString = ""; break;
-        case 1: colorString = "%"; break;
-        case 2: colorString = "вольт (В)"; break;
-        case 3: colorString = "амрер(А)"; break;
-        case 4: colorString = "метр"; break;
-        case 5: colorString = "паскаль(Па)"; break;
-        case 6: colorString = "ньютон(Н)"; break;
     }
 
     return colorString;

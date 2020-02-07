@@ -15,7 +15,7 @@ public class Widget {
     }
 
     public Widget(Sensor sensor) {
-        this.measure = 2;
+        this.measure = "";
         this.name = sensor.getName();
         this.sensor = sensor;
         this.user = sensor.getDevice().getOwner();
@@ -32,7 +32,7 @@ public class Widget {
     private int color;
 
     @Column(name = "measure")
-    private int measure;
+    private String measure;
 
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -83,11 +83,11 @@ public class Widget {
         this.user = user;
     }
 
-    public int getMeasure() {
+    public String getMeasure() {
         return measure;
     }
 
-    public void setMeasure(int measure) {
+    public void setMeasure(String measure) {
         this.measure = measure;
     }
 
@@ -97,7 +97,7 @@ public class Widget {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", color=" + color +
-                ", measure=" + measure +
+                ", measure='" + measure + '\'' +
                 ", user=" + user +
                 ", sensor=" + sensor +
                 '}';
