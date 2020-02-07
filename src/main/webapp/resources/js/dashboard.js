@@ -1,6 +1,6 @@
-$(document).ready(function() {
+function dashboardPageStart() {
     requestWidgets();
-});
+}
 
 function requestWidgets() {
     $.ajax({
@@ -47,7 +47,7 @@ function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime)
         "                            </td>\n" +
         "                            <td class=\"widget-keyword\">" + keyward + "</td>\n" +
         "                            <td class=\"widget-config-wrap\">\n" +
-        "                                <img style='background: " + configColor + "' src=\"../resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
+        "                                <img style='background: " + configColor + "' src=\"./resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
         "onmouseout=\"this.style.backgroundColor='" +  configColor+ "'\">\n" +
         "                            </td>\n" +
         "                        </tr>\n" +

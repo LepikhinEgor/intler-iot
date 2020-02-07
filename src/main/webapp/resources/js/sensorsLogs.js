@@ -2,6 +2,10 @@ $(document).ready(function() {
     requestSensorsLogs();
 });
 
+function sensorsLogPageStart() {
+    requestSensorsLogs();
+}
+
 function refreshEmpEventHandlers() {
     $('.first-pag-button').off('click');
     $('.dec-pag-button').off('click');

@@ -117,6 +117,7 @@ nav li {
 	padding: 10px;
 	color: #bbb;
 	transition: 0.1s;
+	cursor: pointer;
 }
 
 .top-menu li {
