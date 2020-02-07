@@ -9,7 +9,7 @@ function requestWidgets() {
         url: "/intler_iot_war_exploded/console/dashboard/get-widgets",
         contentType: 'application/json',
         success: function(data) {
-            $(".widgets-wrap").html(0);
+            $(".widgets-wrap").html("");
             console.log(data);
             for (var widget_num in data) {
                 let widget = data[widget_num]["widget"];
@@ -66,7 +66,7 @@ function getBorderColorString(colorNum, opacity) {
         case 1: colorString = "rgba(255, 0, 0," + opacity  + ")"; break;//red
         case 2: colorString = "rgba(0, 130, 0," + opacity  + ")"; break;//green
         case 3: colorString = "rgba(0, 0, 255, " + opacity  + ")"; break;//blue
-        case 4: colorString = "rgba(255, 255, 0, " + opacity  + ")"; break;//yellow
+        case 4: colorString = "rgba(220, 220, 0, " + opacity  + ")"; break;//yellow
         case 5: colorString = "rgba(0, 255, 255, " + opacity  + ")"; break;//aqumarine
         case 6: colorString = "rgba(255, 0, 255, " + opacity  + ")"; break;//magenta
     }
@@ -81,7 +81,7 @@ function getValueColorString(colorNum) {
         case 1: colorString = "#f00"; break;//red
         case 2: colorString = "#090"; break;//green
         case 3: colorString = "#00f"; break;//blue
-        case 4: colorString = "#ff0"; break;//yellow
+        case 4: colorString = "#ee0"; break;//yellow
         case 5: colorString = "#0ff"; break;//aqumarine
         case 6: colorString = "#f0f"; break;//magenta
     }

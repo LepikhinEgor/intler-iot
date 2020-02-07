@@ -2,7 +2,6 @@ body {
 	color: #444;
 	font: 12px Tahoma, sans-serif;
 	background: #f8f8f8 url(../images/bg.png);
-	border-top: 5px solid #7e7e7e;
 	margin: 0;
 }
 
@@ -365,7 +364,8 @@ footer p {
 .top-panel {
 	height: 52px;
 	background-color: #efefef;
-	border: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	border-left: 1px solid #aaa;
 }
 
 .user-bar {
