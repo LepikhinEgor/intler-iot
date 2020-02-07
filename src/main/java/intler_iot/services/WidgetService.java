@@ -1,5 +1,6 @@
 package intler_iot.services;
 
+import intler_iot.controllers.entities.WidgetData;
 import intler_iot.dao.WidgetDao;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
@@ -34,7 +35,7 @@ public class WidgetService {
         this.widgetDao = widgetDao;
     }
 
-    public List<Widget> getWidgetsList(String login, String password) throws NotAuthException {
+    public List<WidgetData> getWidgetsList(String login, String password) throws NotAuthException {
         User user = userService.authUser(login, password);
         List<Sensor> lastSensors = sensorService.getLastSensors(user);
         List<Widget> widgets = widgetDao.getWidgets(user);
@@ -45,7 +46,9 @@ public class WidgetService {
 
         widgets.addAll(createdWidgets);
 
-        return widgets;
+        List<WidgetData> widgetsData = transformToWidgetsData(widgets, lastSensors);
+
+        return widgetsData;
     }
 
     private List<Sensor> getSensorsWithoutWidget(List<Sensor> lastSensors,List<Widget> widgets) {
@@ -53,7 +56,7 @@ public class WidgetService {
         for (Sensor sensor : lastSensors) {
             boolean isExist = false;
             for (Widget widget: widgets) {
-                if (sensor.getName().equals(widget.getSensor().getName())) {
+                if (sensor.getName().equals(widget.getKeyWard())) {
                     isExist = true;
                 }
             }
@@ -72,5 +75,23 @@ public class WidgetService {
         }
 
         return widgets;
+    }
+
+    private List<WidgetData> transformToWidgetsData(List<Widget> widgets, List<Sensor> lastSensors) {
+        List<WidgetData> widgetsData = new ArrayList<>();
+        for (Widget widget: widgets) {
+            WidgetData widgetData = null;
+            for (Sensor sensor : lastSensors) {
+                if (widget.getKeyWard().equals(sensor.getName())) {
+                    widgetData = new WidgetData(widget, sensor);
+                    break;
+                }
+            }
+            if (widget != null)
+                widgetsData.add(widgetData);
+            else
+                throw new RuntimeException("Not match sensor and widget");
+        }
+        return widgetsData;
     }
 }

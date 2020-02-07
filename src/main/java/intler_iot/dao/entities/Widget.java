@@ -16,8 +16,8 @@ public class Widget {
 
     public Widget(Sensor sensor) {
         this.measure = "";
+        this.keyWard = sensor.getName();
         this.name = sensor.getName();
-        this.sensor = sensor;
         this.user = sensor.getDevice().getOwner();
     }
 
@@ -34,14 +34,13 @@ public class Widget {
     @Column(name = "measure")
     private String measure;
 
+    @Column(name = "keyward")
+    private String keyWard;
+
     @JsonIgnore
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-
-    @JoinColumn(name = "sensor_id")
-    @OneToOne
-    private Sensor sensor;
 
     public long getId() {
         return id;
@@ -67,13 +66,6 @@ public class Widget {
         this.color = color;
     }
 
-    public Sensor getSensor() {
-        return sensor;
-    }
-
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
-    }
 
     public User getUser() {
         return user;
@@ -91,6 +83,14 @@ public class Widget {
         this.measure = measure;
     }
 
+    public String getKeyWard() {
+        return keyWard;
+    }
+
+    public void setKeyWard(String keyWard) {
+        this.keyWard = keyWard;
+    }
+
     @Override
     public String toString() {
         return "Widget{" +
@@ -99,7 +99,6 @@ public class Widget {
                 ", color=" + color +
                 ", measure='" + measure + '\'' +
                 ", user=" + user +
-                ", sensor=" + sensor +
                 '}';
     }
 
@@ -110,14 +109,13 @@ public class Widget {
         Widget widget = (Widget) o;
         return id == widget.id &&
                 color == widget.color &&
-                measure == widget.measure &&
                 Objects.equals(name, widget.name) &&
-                Objects.equals(user, widget.user) &&
-                Objects.equals(sensor, widget.sensor);
+                Objects.equals(measure, widget.measure) &&
+                Objects.equals(user, widget.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, measure, user, sensor);
+        return Objects.hash(id, name, color, measure, user);
     }
 }

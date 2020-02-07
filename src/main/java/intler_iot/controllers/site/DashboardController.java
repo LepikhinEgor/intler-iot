@@ -1,5 +1,6 @@
 package intler_iot.controllers.site;
 
+import intler_iot.controllers.entities.WidgetData;
 import intler_iot.dao.entities.Widget;
 import intler_iot.services.WidgetService;
 import intler_iot.services.exceptions.NotAuthException;
@@ -31,19 +32,15 @@ public class DashboardController {
 
     @GetMapping("/console/dashboard/get-widgets")
     @ResponseBody
-    public List<Widget> getWidgetsList() throws NotAuthException {
+    public List<WidgetData> getWidgetsList() throws NotAuthException {
         logger.info("get Widgets List");
         String login = "admin";
         String password = "qwerty";
-        List<Widget> widgets = null;
+        List<WidgetData> widgets = null;
         try {
             widgets = widgetService.getWidgetsList(login, password);
         } catch (Throwable e) {
             logger.info(e.getMessage(), e);
-        }
-
-        for (Widget widget: widgets) {
-            logger.info(widget.toString());
         }
 
         return widgets;

@@ -1,5 +1,6 @@
 function dashboardPageStart() {
     requestWidgets();
+    setInterval(requestWidgets, 10000);
 }
 
 function requestWidgets() {
@@ -8,12 +9,14 @@ function requestWidgets() {
         url: "/intler_iot_war_exploded/console/dashboard/get-widgets",
         contentType: 'application/json',
         success: function(data) {
+            $(".widgets-wrap").html(0);
             console.log(data);
             for (var widget_num in data) {
-                let id = data[widget_num]["id"];
-                let name = data[widget_num]["name"];
-                let color = data[widget_num]["color"];
-                let measure = data[widget_num]["measure"];
+                let widget = data[widget_num]["widget"];
+                let id = widget["id"];
+                let name = widget["name"];
+                let color = widget["color"];
+                let measure = widget["measure"];
 
                 let sensor = data[widget_num]["sensor"];
                 let keyward = sensor["name"];
