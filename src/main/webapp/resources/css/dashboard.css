@@ -128,7 +128,7 @@
 #widget_modal_window:target
 {display: block;}
 
-.close_modal_widget{
+.close_modal_widget, .apply_modal_widget{
     width : 100px;
     height: 30px;
     border-radius: 3px;
@@ -136,18 +136,30 @@
     padding: 0 12px;
     margin: 10px;
     text-decoration: none;
-    background: #2e8b00;
     font-size: 10pt;
     cursor:pointer;
     vertical-align: bottom;
-    color: #eee;
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
     line-height: 30px;
 }
+
+.close_modal_widget {
+    background: #ccc;
+    color: #333;
+}
+
+.apply_modal_widget {
+    background: #2e8b00;
+    color: #eee;
+}
 .close_modal_widget:hover
-{background: #267200;}
+{background: #aaa;}
+
+.apply_modal_widget:hover {
+    background: #267200;
+}
 
 .modal-field-name {
     margin: 5px 0px 2px 0px;

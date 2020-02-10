@@ -5,7 +5,9 @@ function dashboardPageStart() {
 
 function refreshWidgetHandlers() {
     $(".widget-config-button").off("click");
+    $(".apply_modal_widget").off('click');
 
+    $(".apply_modal_widget").on('click', applyWidgetChanges);
     $(".widget-config-button").on("click", openModalWindow);
 }
 
@@ -29,6 +31,45 @@ function openModalWindow() {
     $(".input_widget_measure").val(measure);
     $(".choose-color-menu").val(optionColor);
     document.location.href = "#widget_modal_window";
+}
+
+function applyWidgetChanges(e) {
+    e.preventDefault();
+
+    var name = $(".input_widget_name").val();
+    var measure =  $(".input_widget_measure").val();
+    var optionColor = $(".choose-color-menu").val();
+    var colorNum = getColorNum(optionColor);
+
+    var id;
+    for (var widgetVal in widgets) {
+        if (widgets[widgetVal]["name"] == name) {
+            id = widgets[widgetVal]["id"];
+        }
+    }
+
+    var widgetData = {
+        id: id,
+        name: name,
+        color: colorNum,
+        measure: measure
+    };
+
+    updateWidgetData(widgetData);
+}
+
+function updateWidgetData(widgetData) {
+    var request = "console/dashboard/update-widget"
+
+    $.ajax({
+        type: "POST",
+        url: "console/dashboard/get-widgets",
+        contentType: 'application/json',
+        data: JSON.stringify(widgetData),
+        success: function(data) {
+            console.log(data);
+        }
+    });
 }
 
 var widgets = [];
@@ -151,4 +192,19 @@ function getOptionColor(colorNum) {
 
     return colorString;
 
+}
+
+function getColorNum(colorStr) {
+    let colorNum = 0;
+    switch (colorStr) {
+        case "Black": colorNum = 0; break; //black
+        case "Red": colorNum = 1; break;//red
+        case "Green": colorNum = 2; break;//green
+        case "Blue": colorNum = 3; break;//blue
+        case "Yellow": colorNum = 4; break;//yellow
+        case "Cian": colorNum = 5; break;//cian
+        case "Magenta": colorNum = 6; break;//magenta
+    }
+
+    return colorNum;
 }

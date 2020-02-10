@@ -25,7 +25,7 @@
         </div>
         <div class="modal_buttons">
             <a href="#" class="close_modal_widget">close</a>
-            <a href="#" class="close_modal_widget">apply</a>
+            <a href="#" class="apply_modal_widget">apply</a>
         </div>
     </div>
 </div>
