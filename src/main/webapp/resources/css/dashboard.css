@@ -92,12 +92,8 @@
     color: #666;
 }
 
-#contracts_table {
-    width: 100%;
-    text-align: center;
-}
 
-#contract_modal_window  {
+#widget_modal_window  {
     background: rgba(102, 102, 102, 0.5);
     width: 100%;
     height: 100%;
@@ -107,7 +103,7 @@
     display: none;
 }
 
-#contract_window
+#widget_window
 {
     background: #3b4148;
     text-align: left;
@@ -123,17 +119,16 @@
     margin: auto;
 }
 
-#contract_window {
+#widget_window {
     width: 350px;
     height: 250px;
 }
 
 
-#contract_modal_window:target
+#widget_modal_window:target
 {display: block;}
 
-.close_modal_contract,
-.close_modal_contract_team{
+.close_modal_widget{
     width : 100px;
     height: 30px;
     border-radius: 3px;
@@ -151,7 +146,7 @@
     text-align: center;
     line-height: 30px;
 }
-.close_modal_contract:hover
+.close_modal_widget:hover
 {background: #267200;}
 
 .modal-field-name {
@@ -159,7 +154,7 @@
 
 }
 
-#contract_window_content {
+#widget_window_content {
     margin: 0px auto;
     width: 65%;
 }
