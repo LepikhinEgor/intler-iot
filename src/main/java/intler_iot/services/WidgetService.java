@@ -35,6 +35,11 @@ public class WidgetService {
         this.widgetDao = widgetDao;
     }
 
+
+    public void updateWidget(Widget widget) {
+        widgetDao.update(widget);
+    }
+
     public List<WidgetData> getWidgetsList(String login, String password) throws NotAuthException {
         User user = userService.authUser(login, password);
         List<Sensor> lastSensors = sensorService.getLastSensors(user);

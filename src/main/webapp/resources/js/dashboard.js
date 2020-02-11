@@ -3,6 +3,8 @@ function dashboardPageStart() {
     setInterval(requestWidgets, 10000);
 }
 
+var selectedWidgetId;
+
 function refreshWidgetHandlers() {
     $(".widget-config-button").off("click");
     $(".apply_modal_widget").off('click');
@@ -17,6 +19,8 @@ function openModalWindow() {
     var name = widget.find(".widget-name").find("span").html();
     var keyward = widget.find(".widget-keyword").html();
     var measure = widget.find(".widget-measure").html();
+
+    selectedWidgetId = id;
 
     var widgetObj;
     for (var widgetVal in widgets) {
@@ -36,15 +40,16 @@ function openModalWindow() {
 function applyWidgetChanges(e) {
     e.preventDefault();
 
-    var name = $(".input_widget_name").val();
+    var id = selectedWidgetId;
+    var name =  $(".input_widget_name").val();
     var measure =  $(".input_widget_measure").val();
     var optionColor = $(".choose-color-menu").val();
     var colorNum = getColorNum(optionColor);
+    var keyWard;
 
-    var id;
     for (var widgetVal in widgets) {
-        if (widgets[widgetVal]["name"] == name) {
-            id = widgets[widgetVal]["id"];
+        if (widgets[widgetVal]["id"] == id) {
+            keyWard = widgets[widgetVal]["keyWard"];
         }
     }
 
@@ -52,7 +57,8 @@ function applyWidgetChanges(e) {
         id: id,
         name: name,
         color: colorNum,
-        measure: measure
+        measure: measure,
+        keyWard: keyWard
     };
 
     updateWidgetData(widgetData);
@@ -63,11 +69,11 @@ function updateWidgetData(widgetData) {
 
     $.ajax({
         type: "POST",
-        url: "console/dashboard/get-widgets",
+        url: "console/dashboard/update-widget",
         contentType: 'application/json',
         data: JSON.stringify(widgetData),
         success: function(data) {
-            console.log(data);
+            document.location.href = "#";
         }
     });
 }
@@ -81,7 +87,6 @@ function requestWidgets() {
         contentType: 'application/json',
         success: function(data) {
             $(".widgets-wrap").html("");
-            console.log(data);
             for (var widget_num in data) {
                 let widget = data[widget_num]["widget"];
                 let id = widget["id"];
@@ -99,7 +104,7 @@ function requestWidgets() {
     });
 }
 
-function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime) {
+function addWidget(name, color, sensor, id, keyWard, value, measure, arriveTime) {
     var borderColor = getBorderColorString(color, 0.3);
     var valueColor = getValueColorString(color);
     var configColor = getBorderColorString(color, 0.4);
@@ -119,7 +124,7 @@ function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime)
         "                        <tr>\n" +
         "                            <td class=\"widget-icon-wrap\">\n" +
         "                            </td>\n" +
-        "                            <td class=\"widget-keyword\">" + keyward + "</td>\n" +
+        "                            <td class=\"widget-keyword\">" + keyWard + "</td>\n" +
         "                            <td class=\"widget-config-wrap\">\n" +
         "                                <img class='widget-config-button' style='background: " + configColor + "' src=\"./resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
         "onmouseout=\"this.style.backgroundColor='" +  configColor+ "'\">\n" +
@@ -129,20 +134,26 @@ function addWidget(name, color, sensor, id, keyward, value, measure, arriveTime)
         "                </div>";
     $(".widgets-wrap").append(widgetHtml);
 
-    memWidget(name, color, sensor, id, keyward, value, measure, arriveTime);
+    memWidget(name, color, sensor, id, keyWard, value, measure, arriveTime);
     refreshWidgetHandlers();
 }
 
-function memWidget(name, color, sensor, id, keyward, value, measure, arriveTime) {
+function memWidget(name, color, sensor, id, keyWard, value, measure, arriveTime) {
     var widget = {
         id : id,
         name: name,
         color: color,
         sensor: sensor,
-        keyward: keyward,
+        keyWard: keyWard,
         value : value,
         measure : measure,
         arriveTime:arriveTime
+    }
+
+    for (var oldWidget in widgets) {
+        if (widgets[oldWidget]["id"] == id) {
+            widgets.splice(oldWidget, 1);
+        }
     }
 
     widgets.push(widget);
