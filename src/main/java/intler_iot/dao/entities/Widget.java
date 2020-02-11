@@ -1,7 +1,6 @@
 package intler_iot.dao.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -33,6 +32,7 @@ public class Widget {
 
     @Column(name = "measure")
     private String measure;
+
 
     @Column(name = "keyward")
     private String keyWard;

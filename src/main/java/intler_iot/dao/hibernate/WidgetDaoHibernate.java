@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Repository
 public class WidgetDaoHibernate extends WidgetDao {
+    private static final Logger logger = LoggerFactory.getLogger(WidgetDaoHibernate.class);
 
     private SessionFactory sessionFactory;
 
@@ -47,5 +50,25 @@ public class WidgetDaoHibernate extends WidgetDao {
         }
 
         transaction.commit();
+    }
+
+    @Override
+    public void update(Widget widget) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+        Widget oldWidget = session.get(Widget.class, widget.getId());
+        oldWidget.setName(widget.getName());
+        oldWidget.setColor(widget.getColor());
+        oldWidget.setMeasure(widget.getMeasure());
+        oldWidget.setKeyWard(widget.getKeyWard());
+
+        session.save(oldWidget);
+
+        tx.commit();
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            tx.rollback();
+        }
     }
 }

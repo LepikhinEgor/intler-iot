@@ -33,7 +33,7 @@ public class UserDaoHibernate extends UserDao{
 
     @Override
     public User getByLoginPassword(String login, String password) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         Query query = session.createQuery("from User where login = :loginParam and password = :password");
@@ -43,7 +43,6 @@ public class UserDaoHibernate extends UserDao{
         User foundUser = (User)query.getSingleResult();
 
         transaction.commit();
-        session.close();
 
         return foundUser;
     }

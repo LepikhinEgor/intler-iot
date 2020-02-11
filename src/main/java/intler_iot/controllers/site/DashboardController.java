@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -48,7 +49,9 @@ public class DashboardController {
     }
 
     @PostMapping("console/dashboard/update-widget")
-    public void updateWidget() {
-
+    @ResponseBody
+    public void updateWidget(@RequestBody Widget widget) {
+        logger.info(widget.toString());
+        widgetService.updateWidget(widget);
     }
 }
