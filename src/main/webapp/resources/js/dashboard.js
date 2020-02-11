@@ -74,6 +74,7 @@ function updateWidgetData(widgetData) {
         data: JSON.stringify(widgetData),
         success: function(data) {
             document.location.href = "#";
+            requestWidgets();
         }
     });
 }

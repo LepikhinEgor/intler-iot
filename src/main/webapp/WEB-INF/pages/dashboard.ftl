@@ -1,5 +1,6 @@
+<#ftl encoding="UTF-8"/>
 <div>
-    <h1>Dashboard</h1></div>
+    <h1>Панель приборов</h1></div>
 <div class="widgets-wrap">
 </div>
 

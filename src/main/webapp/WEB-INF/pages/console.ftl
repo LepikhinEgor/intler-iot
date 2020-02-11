@@ -1,3 +1,4 @@
+<#ftl encoding="UTF-8"/>
 <!doctype html>
 <html>
 <head>
@@ -23,10 +24,10 @@
         </p>
         <nav>
             <ul class="aside-menu">
-                <li id="stats-tab">Statistics</li>
-                <li id="dashboard-tab" class="active">Dashboard</li>
-                <li id="db-tab">Database</li>
-                <li>Code</li>
+                <li id="stats-tab">Статистика</li>
+                <li id="dashboard-tab" class="active">Панель приборов</li>
+                <li id="db-tab">База данных</li>
+                <li>Управление</li>
             </ul>
         </nav>
     </aside>
