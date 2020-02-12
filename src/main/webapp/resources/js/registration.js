@@ -75,9 +75,10 @@ function checkLoginValid() {
 }
 
 function checkPasswordValid() {
+    console.log("aaaa");
     var regex = /[0-9a-zA-Z!@#$%^&*]{6,}/;
     var password =  $(".input-password").val();
-    if(regex.test(password) == false) {
+    if(regex.test(password) == false || password.includes(" ")) {
         highlightPassword("red");
         if (password.length < 6)
             passwordAlertWrite("Не менее 6 символов");
