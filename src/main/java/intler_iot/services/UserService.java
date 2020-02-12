@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -33,5 +34,11 @@ public class UserService {
 
     public User registerUser(User user) {
         return user; //TODO
+    }
+
+    public boolean checkLoginIsFree(String login) {
+        User user = userDao.getByLogin(login);
+
+        return user == null;
     }
 }

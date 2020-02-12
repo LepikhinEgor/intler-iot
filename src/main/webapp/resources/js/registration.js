@@ -38,9 +38,12 @@ function highlightPassword(color) {
 var loginHighlightTimeout;
 function loginUpdate() {
     clearTimeout(loginHighlightTimeout);
+    clearTimeout(loginBusyTimeout);
+
     loginHighlightTimeout = setTimeout(checkLoginValid, 500);
 }
 
+var loginBusyTimeout;
 function checkLoginValid() {
     var regex = /^(?!.*\\.\\.)(?!\\.)(?!.*\\.$)(?!\\d+$)[a-zA-Z0-9_.]{5,50}$/;
     var login =  $(".input-login").val();
@@ -48,6 +51,7 @@ function checkLoginValid() {
         highlightLogin("red");
     } else {
         highlightLogin("green");
+        loginBusyTimeout = setTimeout(requestCheckLoginBusy, 500);
     }
 }
 
@@ -127,6 +131,18 @@ function checkPasswordConfirmFieldForEmpty() {
     }
 }
 
+function requestCheckLoginBusy(login) {
+    var login = $(".input-login").val();
+    $.ajax({
+        type: "GET",
+        url: "registration/check-login-is-free?login=" + login,
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+        }
+    });
+}
+
 function tryRegistration() {
     var login = $(".input-login").val();
     var email = $(".input-email").val();
@@ -150,11 +166,15 @@ function tryRegistration() {
 function requestRegistration(newUser) {
     $.ajax({
         type: "POST",
-        url: "register-user",
+        url: "registration/register-user",
         contentType: 'application/json',
         data: JSON.stringify(newUser),
         success: function(data) {
-            document.location.href = "#";
+            console.log(data);
+            if (data === "true")
+                highlightLogin("green");
+            else
+                highlightLogin("red");
         }
     });
 }
