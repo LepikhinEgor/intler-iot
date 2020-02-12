@@ -4,12 +4,61 @@ $(document).ready(function() {
 
 function addEventHanglers() {
     $(".submit-registration").on('click', tryRegistration);
-    $(".input-password").change(checkPasswordFieldForEmpty);
+
+    $(".input-login").on("input keyup",loginUpdate);
+    $(".input-password").change(passwordUpdate);
     $(".input-password").focus(hidePassword);
     $(".confirm-password").on("input keyup",passwordConfirmUpdated);
     $(".confirm-password").focus(hideConfirmPassword);
+    $(".input-email").change(checkEmailValid)
     checkPasswordFieldForEmpty();
     checkPasswordConfirmFieldForEmpty();
+}
+
+function checkEmailValid() {
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    var address =  $(".input-email").val();
+    if(reg.test(address) == false) {
+        highlightEmail("red");
+    } else {
+        highlightEmail("green");
+    }
+}
+
+function highlightLogin(color) {
+    $(".input-login").css("border", "1px solid " + color);
+}
+function highlightEmail(color) {
+    $(".input-email").css("border", "1px solid " + color);
+}
+function highlightPassword(color) {
+    $(".input-password").css("border", "1px solid " + color);
+}
+
+var loginHighlightTimeout;
+function loginUpdate() {
+    clearTimeout(loginHighlightTimeout);
+    loginHighlightTimeout = setTimeout(checkLoginValid, 500);
+}
+
+function checkLoginValid() {
+    var regex = /^(?!.*\\.\\.)(?!\\.)(?!.*\\.$)(?!\\d+$)[a-zA-Z0-9_.]{5,50}$/;
+    var login =  $(".input-login").val();
+    if(regex.test(login) == false) {
+        highlightLogin("red");
+    } else {
+        highlightLogin("green");
+    }
+}
+
+function checkPasswordValid() {
+    var regex = /[0-9a-zA-Z!@#$%^&*]{6,}/;
+    var password =  $(".input-password").val();
+    if(regex.test(password) == false) {
+        highlightPassword("red");
+    } else {
+        highlightPassword("green");
+    }
 }
 
 function hidePassword() {
@@ -29,9 +78,14 @@ function passwordConfirmUpdated() {
     checkPasswordEquals();
 }
 
+function passwordUpdate() {
+    checkPasswordValid();
+    checkPasswordFieldForEmpty();
+}
+
 function checkPasswordFieldForEmpty() {
     var inputPass = $(".input-password");
-    if (inputPass.val() == '') {
+    if (inputPass.val() == '' && !$(".confirm-password").is( ":focus" )) {
         inputPass.attr("type", "text");
         inputPass.val("Пароль");
     } else
@@ -64,7 +118,6 @@ function highlightRedConfirm() {
 
 function checkPasswordConfirmFieldForEmpty() {
     var inputPass = $(".confirm-password");
-    console.log($(".confirm-password").is( ":focus" ));
     if (inputPass.val() == '' && !$(".confirm-password").is( ":focus" )) {
         inputPass.attr("type", "text");
         inputPass.val("Подтвердите пароль");
