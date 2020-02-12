@@ -127,7 +127,7 @@ a {
 	color: #bebebe;
 }
 
-.login-alert {
+.login-alert, .email-alert, .password-alert, .confirm-password-alert{
 	color:#ff5f5f;
 	height: 100%;
 	padding-left: 5px;

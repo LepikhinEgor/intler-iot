@@ -20,8 +20,10 @@ function checkEmailValid() {
     var address =  $(".input-email").val();
     if(reg.test(address) == false) {
         highlightEmail("red");
+        emailAlertWrite("Некорректный E-mail")
     } else {
         highlightEmail("green");
+        emailAlertWrite("")
     }
 }
 
@@ -46,6 +48,15 @@ function loginUpdate() {
 function loginAlertWrite(message) {
     $(".login-alert").html(message);
 }
+function emailAlertWrite(message) {
+    $(".email-alert").html(message);
+}
+function passwordAlertWrite(message) {
+    $(".password-alert").html(message);
+}
+function passwordConfirmAlertWrite(message) {
+    $(".confirm-password-alert").html(message);
+}
 
 var loginBusyTimeout;
 function checkLoginValid() {
@@ -68,8 +79,13 @@ function checkPasswordValid() {
     var password =  $(".input-password").val();
     if(regex.test(password) == false) {
         highlightPassword("red");
+        if (password.length < 6)
+            passwordAlertWrite("Не менее 6 символов");
+        else
+            passwordAlertWrite("Недопустимые символы");
     } else {
         highlightPassword("green");
+        passwordAlertWrite("");
     }
 }
 
@@ -117,6 +133,7 @@ function checkPasswordEquals() {
     if (inputPass.val() === inputConfirmPass.val()) {
         inputPass.css("border", "1px solid green");
         inputConfirmPass.css("border", "1px solid green");
+        passwordConfirmAlertWrite("");
     } else {
         highlightTimeout = setTimeout(highlightRedConfirm, 500);
     }
@@ -126,6 +143,7 @@ function checkPasswordEquals() {
 
 function highlightRedConfirm() {
     $(".confirm-password").css("border", "1px solid red");
+    passwordConfirmAlertWrite("Пароли не совпадают");
 }
 
 function checkPasswordConfirmFieldForEmpty() {
