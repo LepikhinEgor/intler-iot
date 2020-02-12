@@ -30,4 +30,8 @@ public class UserService {
         }
         return user;
     }
+
+    public User registerUser(User user) {
+        return user; //TODO
+    }
 }

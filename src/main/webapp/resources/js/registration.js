@@ -150,12 +150,11 @@ function tryRegistration() {
 function requestRegistration(newUser) {
     $.ajax({
         type: "POST",
-        url: "console/dashboard/update-widget",
+        url: "register-user",
         contentType: 'application/json',
         data: JSON.stringify(newUser),
         success: function(data) {
             document.location.href = "#";
-            requestWidgets();
         }
     });
 }
