@@ -33,10 +33,10 @@ public class RegistrationController {
 
     @GetMapping("registration/check-login-is-free")
     @ResponseBody
-    public ResponseEntity<Boolean> checkLoginIsBusy(@RequestParam("login") String login) {
+    public String checkLoginIsBusy(@RequestParam("login") String login) {
         System.out.println(login);
         boolean isFree = userService.checkLoginIsFree(login);
 
-        return new ResponseEntity<>(isFree, HttpStatus.OK);
+        return Boolean.toString(isFree);
     }
 }

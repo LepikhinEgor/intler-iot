@@ -56,6 +56,7 @@ p {
 .clearfix:before, .clearfix:after {
 	display: table;
 	content: "";
+	width: 550px;
 }
 .clearfix:after { clear: both; }
 
@@ -75,20 +76,6 @@ p {
 
 fieldset {
 	border: none;
-}
-
-#login form span {
-	background-color: #363b41;
-	border-radius: 0px 0px 0px 0px;
-	-moz-border-radius: 3px 0px 0px 3px;
-	-webkit-border-radius: 3px 0px 0px 3px;
-	color: #606468;
-	display: block;
-	float: left;
-	height: 50px;
-	line-height: 50px;
-	text-align: center;
-	width: 50px;
 }
 
 #login form input {
@@ -121,10 +108,11 @@ fieldset {
 	font-weight: bold;
 	text-transform: uppercase;
 	cursor:pointer;
-	width: 100%;
+	width: 312px;
 	margin: 0px auto;
 	text-align: center;
 	letter-spacing: 0.03em;
+
 }
 
 #login form input[type="submit"]:hover {
@@ -137,4 +125,10 @@ fieldset {
 
 a {
 	color: #bebebe;
+}
+
+.login-alert {
+	color:#ff5f5f;
+	height: 100%;
+	padding-left: 5px;
 }

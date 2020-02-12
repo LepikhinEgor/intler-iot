@@ -43,15 +43,23 @@ function loginUpdate() {
     loginHighlightTimeout = setTimeout(checkLoginValid, 500);
 }
 
+function loginAlertWrite(message) {
+    $(".login-alert").html(message);
+}
+
 var loginBusyTimeout;
 function checkLoginValid() {
     var regex = /^(?!.*\\.\\.)(?!\\.)(?!.*\\.$)(?!\\d+$)[a-zA-Z0-9_.]{5,50}$/;
     var login =  $(".input-login").val();
     if(regex.test(login) == false) {
         highlightLogin("red");
+        if (login.length < 5)
+            loginAlertWrite("Минимум 5 символов");
+        else
+            loginAlertWrite("Недопустимые символы");
     } else {
-        highlightLogin("green");
-        loginBusyTimeout = setTimeout(requestCheckLoginBusy, 500);
+        $(".login-alert").html("");
+        loginBusyTimeout = setTimeout(requestCheckLoginBusy, 200);
     }
 }
 
@@ -139,6 +147,13 @@ function requestCheckLoginBusy(login) {
         contentType: 'application/json',
         success: function(data) {
             console.log(data);
+            if (data == "true") {
+                highlightLogin("green");
+            }
+            else {
+                highlightLogin("red");
+                loginAlertWrite("Логин занят");
+            }
         }
     });
 }
@@ -171,10 +186,6 @@ function requestRegistration(newUser) {
         data: JSON.stringify(newUser),
         success: function(data) {
             console.log(data);
-            if (data === "true")
-                highlightLogin("green");
-            else
-                highlightLogin("red");
         }
     });
 }
