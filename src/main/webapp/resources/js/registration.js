@@ -2,6 +2,11 @@ $(document).ready(function() {
     addEventHanglers();
 });
 
+var loginIsOk = false;
+var emailIsOk = false;
+var passwordIsOk = false;
+var confirmIsOk = false;
+
 function addEventHanglers() {
     $(".submit-registration").on('click', tryRegistration);
 
@@ -23,7 +28,8 @@ function checkEmailValid() {
     var address =  $(".input-email").val();
     if(reg.test(address) == false) {
         highlightEmail("red");
-        emailAlertWrite("Некорректный E-mail")
+        emailAlertWrite("Некорректный E-mail");
+        emailIsOk = false;
     } else {
         // highlightEmail("green");
         emailAlertWrite("");
@@ -40,10 +46,12 @@ function requestCheckEmailBusy() {
         success: function(data) {
             if (data == "true") {
                 highlightEmail("green");
+                emailIsOk = true;
             }
             else {
                 highlightEmail("red");
                 emailAlertWrite("Email занят");
+                emailIsOk = false;
             }
         }
     });
@@ -86,6 +94,7 @@ function checkLoginValid() {
     var login =  $(".input-login").val();
     if(regex.test(login) == false) {
         highlightLogin("red");
+        loginIsOk = false;
         if (login.length < 5)
             loginAlertWrite("Минимум 5 символов");
         else
@@ -101,6 +110,7 @@ function checkPasswordValid() {
     var password =  $(".input-password").val();
     if(regex.test(password) == false || password.includes(" ")) {
         highlightPassword("red");
+        passwordIsOk = false;
         if (password.length < 6)
             passwordAlertWrite("Не менее 6 символов");
         else
@@ -108,6 +118,7 @@ function checkPasswordValid() {
     } else {
         highlightPassword("green");
         passwordAlertWrite("");
+        passwordIsOk = true;
     }
 }
 
@@ -155,8 +166,10 @@ function checkPasswordEquals() {
         inputPass.css("border", "1px solid green");
         inputConfirmPass.css("border", "1px solid green");
         passwordConfirmAlertWrite("");
+        confirmIsOk = true;
     } else {
         highlightTimeout = setTimeout(highlightRedConfirm, 500);
+        confirmIsOk = false;
     }
 }
 
@@ -186,16 +199,21 @@ function requestCheckLoginBusy(login) {
             console.log(data);
             if (data == "true") {
                 highlightLogin("green");
+                loginIsOk = true;
             }
             else {
                 highlightLogin("red");
                 loginAlertWrite("Логин занят");
+                loginIsOk = false;
             }
         }
     });
 }
 
 function tryRegistration() {
+    if (!(loginIsOk && emailIsOk && passwordIsOk && confirmIsOk))
+        return;
+
     var login = $(".input-login").val();
     var email = $(".input-email").val();
     var password = $(".input-password").val();
@@ -211,6 +229,7 @@ function tryRegistration() {
         requestRegistration(newUser);
     } else {
         $(".confirm-password").css("border", "1px solid red");
+        passwordConfirmAlertWrite("Пароли не совпадают")
     }
     $(".submit-registration").focus();
 }
