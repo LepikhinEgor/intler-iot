@@ -15,16 +15,38 @@ function addEventHanglers() {
     checkPasswordConfirmFieldForEmpty();
 }
 
+var emailBusyTimeout;
+
 function checkEmailValid() {
+    clearTimeout(emailBusyTimeout);
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var address =  $(".input-email").val();
     if(reg.test(address) == false) {
         highlightEmail("red");
         emailAlertWrite("Некорректный E-mail")
     } else {
-        highlightEmail("green");
-        emailAlertWrite("")
+        // highlightEmail("green");
+        emailAlertWrite("");
+        emailBusyTimeout = setTimeout(requestCheckEmailBusy, 200);
     }
+}
+
+function requestCheckEmailBusy() {
+    var login = $(".input-email").val();
+    $.ajax({
+        type: "GET",
+        url: "registration/check-email-is-free?email=" + login,
+        contentType: 'application/json',
+        success: function(data) {
+            if (data == "true") {
+                highlightEmail("green");
+            }
+            else {
+                highlightEmail("red");
+                emailAlertWrite("Email занят");
+            }
+        }
+    });
 }
 
 function highlightLogin(color) {
@@ -75,7 +97,6 @@ function checkLoginValid() {
 }
 
 function checkPasswordValid() {
-    console.log("aaaa");
     var regex = /[0-9a-zA-Z!@#$%^&*]{6,}/;
     var password =  $(".input-password").val();
     if(regex.test(password) == false || password.includes(" ")) {

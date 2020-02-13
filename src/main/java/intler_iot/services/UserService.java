@@ -62,7 +62,7 @@ public class UserService {
         return user == null;
     }
 
-    private boolean checkEmailIsFree(String email) {
+    public boolean checkEmailIsFree(String email) {
         User user = userDao.getByEmail(email);
 
         return user == null;

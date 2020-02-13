@@ -35,8 +35,15 @@ public class RegistrationController {
     @GetMapping("registration/check-login-is-free")
     @ResponseBody
     public String checkLoginIsBusy(@RequestParam("login") String login) {
-        System.out.println(login);
         boolean isFree = userService.checkLoginIsFree(login);
+
+        return Boolean.toString(isFree);
+    }
+
+    @GetMapping("registration/check-email-is-free")
+    @ResponseBody
+    public String checkEmailIsBusy(@RequestParam("email") String email) {
+        boolean isFree = userService.checkEmailIsFree(email);
 
         return Boolean.toString(isFree);
     }
