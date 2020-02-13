@@ -28,13 +28,12 @@ public class UserDaoHibernate extends UserDao{
 
     @Override
     public void create(User user) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         session.save(user);
 
         transaction.commit();
-        session.close();
     }
 
     @Override
@@ -61,6 +60,27 @@ public class UserDaoHibernate extends UserDao{
         try {
             Query query = session.createQuery("from User where login = :login");
             query.setParameter("login", login);
+
+            User user = (User)query.uniqueResult();
+
+            tx.commit();
+
+            return user;
+        } catch (RuntimeException e) {
+            tx.rollback();
+            logger.error(e.getMessage(),e);
+            throw e;
+        }
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+
+        try {
+            Query query = session.createQuery("from User where email = :email");
+            query.setParameter("email", email);
 
             User user = (User)query.uniqueResult();
 

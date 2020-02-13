@@ -130,7 +130,6 @@ function checkPasswordEquals() {
     var inputPass = $(".input-password");
     var inputConfirmPass = $(".confirm-password");
 
-    console.log(inputPass.val() + " " + inputConfirmPass.val());
     if (inputPass.val() === inputConfirmPass.val()) {
         inputPass.css("border", "1px solid green");
         inputConfirmPass.css("border", "1px solid green");
@@ -138,8 +137,6 @@ function checkPasswordEquals() {
     } else {
         highlightTimeout = setTimeout(highlightRedConfirm, 500);
     }
-
-
 }
 
 function highlightRedConfirm() {

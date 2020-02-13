@@ -1,5 +1,6 @@
 package intler_iot.controllers.site;
 
+import intler_iot.controllers.entities.RegistrationMessage;
 import intler_iot.dao.entities.User;
 import intler_iot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,11 @@ public class RegistrationController {
     }
 
     @PostMapping("registration/register-user")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        System.out.println(user);
-        userService.registerUser(user);
+    @ResponseBody
+    public RegistrationMessage registerUser(@RequestBody User user) {
+        RegistrationMessage message = userService.registerUser(user);
 
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return message;
     }
 
     @GetMapping("registration/check-login-is-free")

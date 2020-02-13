@@ -10,4 +10,5 @@ public abstract class UserDao {
    public abstract void create(User user);
    public abstract User getByLoginPassword(String login, String password);
    public abstract User getByLogin(String login);
+   public abstract User getByEmail(String login);
 }
