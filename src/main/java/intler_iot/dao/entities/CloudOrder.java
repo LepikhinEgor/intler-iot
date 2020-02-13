@@ -1,7 +1,9 @@
 package intler_iot.dao.entities;
 
 import intler_iot.controllers.entities.OrderData;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.criterion.Order;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,7 +14,16 @@ import java.util.Objects;
 public class CloudOrder {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(
+            name = "cloud_order_sequence",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "CLOUD_ORDER_SEQUENCE"),
+                    @Parameter(name = "initial_value", value = "1"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cloud_order_sequence")
     private long id;
 
     @Column(name = "name")

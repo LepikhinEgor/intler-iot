@@ -1,6 +1,8 @@
 package intler_iot.dao.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -21,7 +23,16 @@ public class Widget {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GenericGenerator(
+            name = "widget_sequence",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "WIDGET_SEQUENCE"),
+                    @Parameter(name = "initial_value", value = "4"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "widget_sequence")
     private long id;
 
     @Column(name = "name")

@@ -1,5 +1,8 @@
 package intler_iot.dao.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +12,16 @@ import java.util.Objects;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(
+            name = "user_sequence",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "USER_SEQUENCE"),
+                    @Parameter(name = "initial_value", value = "1"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
+    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private long id;
     @Column(name = "login")
     private String login;
