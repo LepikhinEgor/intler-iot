@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/console/**").access("hasRole('ROLE_ADMIN')")
-                .and().csrf().disable().formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/console");
+                .and().csrf().disable().formLogin().loginPage("/login").failureUrl("/login?error").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/console");
 
     }
 
