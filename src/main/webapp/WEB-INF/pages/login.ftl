@@ -14,6 +14,7 @@
 <div id="login">
     <form class=".login-form" action="login" method='POST'>
         <fieldset class="clearfix">
+            <#if RequestParameters.error??><h4 class="err_message">Неправильный логин или пароль</h4> </#if>
             <p><span class="fontawesome-user"></span><input name = "username"class="login-field" type="text" value="Логин" onBlur="if(this.value == '') this.value = 'Логин'" onFocus="if(this.value == 'Логин') this.value = ''" required></p> <!-- JS because of IE support; better: placeholder="Username" -->
             <p><span class="fontawesome-lock"></span><input name = "password" class="pass-field" type="password"  value="Пароль" onBlur="if(this.value == '') this.value = 'Пароль'" onFocus="if(this.value == 'Пароль') this.value = ''" required></p> <!-- JS because of IE support; better: placeholder="Password" -->
             <p><input class="login-submit" type="submit" value="ВОЙТИ"></p>

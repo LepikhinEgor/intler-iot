@@ -134,3 +134,9 @@ fieldset {
 a {
     color: #bebebe;
 }
+
+.err_message {
+    color:red;
+    text-align: center;
+    width: 100%;
+}
