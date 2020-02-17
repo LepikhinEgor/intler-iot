@@ -7,6 +7,8 @@ import intler_iot.dao.entities.User;
 import intler_iot.dao.entities.Widget;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,8 +42,9 @@ public class WidgetService {
         widgetDao.update(widget);
     }
 
-    public List<WidgetData> getWidgetsList(String login, String password) throws NotAuthException {
-        User user = userService.authUser(login, password);
+    public List<WidgetData> getWidgetsList() throws NotAuthException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         List<Sensor> lastSensors = sensorService.getLastSensors(user);
         List<Widget> widgets = widgetDao.getWidgets(user);
 

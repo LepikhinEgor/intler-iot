@@ -28,7 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        System.out.println("getByUsername");
         final User foundUser;
         try {
             foundUser = userService.getByLogin(login);
@@ -39,43 +38,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(e.getMessage(), e);
         }
 
-        return new UserDetails() {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                List<SimpleGrantedAuthority> roles = new java.util.ArrayList<SimpleGrantedAuthority>();
-                roles.add(new SimpleGrantedAuthority("ROLE_USER"));
-                return roles;
-            }
-
-            @Override
-            public String getPassword() {
-                return foundUser.getPassword();
-            }
-
-            @Override
-            public String getUsername() {
-                return foundUser.getLogin();
-            }
-
-            @Override
-            public boolean isAccountNonExpired() {
-                return true;
-            }
-
-            @Override
-            public boolean isAccountNonLocked() {
-                return true;
-            }
-
-            @Override
-            public boolean isCredentialsNonExpired() {
-                return true;
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return true;
-            }
-        };
+        return foundUser;
     }
 }

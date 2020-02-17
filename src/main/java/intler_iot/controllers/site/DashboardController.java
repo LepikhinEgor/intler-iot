@@ -37,13 +37,9 @@ public class DashboardController {
     @GetMapping("/console/dashboard/get-widgets")
     @ResponseBody
     public List<WidgetData> getWidgetsList() throws NotAuthException {
-        logger.info("get Widgets List");
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String login = "admin";
-        String password = "qwerty";
         List<WidgetData> widgets = null;
         try {
-            widgets = widgetService.getWidgetsList(user.getUsername(), user.getPassword());
+            widgets = widgetService.getWidgetsList();
         } catch (Throwable e) {
             logger.info(e.getMessage(), e);
         }

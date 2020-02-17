@@ -30,12 +30,10 @@ public class SensorsLogsController {
     @GetMapping("console/get-sensors-logs")
     @ResponseBody
     public List<SensorLog> getSensorLogs() {
-        String login = "admin";
-        String password = "qwerty";
 
         List<SensorLog> sensorLogs;
         try {
-            sensorLogs = sensorService.getUserSensors(login, password);
+            sensorLogs = sensorService.getUserSensors();
         } catch (NotAuthException e) {
             logger.error(e.getMessage(),e);
             return  new ArrayList<SensorLog>();
@@ -54,12 +52,10 @@ public class SensorsLogsController {
     @GetMapping("console/get-sensor-logs-page")
     @ResponseBody
     public SensorLog getSensorLogsPage(@RequestParam("name") String sensorName, @RequestParam("pageNum") int pageNum) {
-        String login = "admin";
-        String password = "qwerty";
 
         SensorLog sensorLog = null;
         try {
-            sensorLog = sensorService.getSensorLogPage(login, password, sensorName, pageNum);
+            sensorLog = sensorService.getSensorLogPage(sensorName, pageNum);
         } catch (Exception e) {
             logger.info(e.getMessage(),e);
         }

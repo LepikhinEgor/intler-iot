@@ -11,6 +11,7 @@ import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -79,8 +80,8 @@ public class SensorService {
         return lastSensors;
     }
 
-    public List<SensorLog> getUserSensors(String login, String password) throws NotAuthException {
-        User user = userService.authUser(login, password);
+    public List<SensorLog> getUserSensors() throws NotAuthException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Device> userDevices = deviceService.getUserDevices(user);
 
         List<Sensor> sensors = sensorDao.getAll(userDevices);
@@ -89,8 +90,8 @@ public class SensorService {
         return lastUnicSensors;
     }
 
-    public SensorLog getSensorLogPage(String login, String password, String sensorName, int pageNum) throws NotAuthException {
-        User user = userService.authUser(login, password);
+    public SensorLog getSensorLogPage(String sensorName, int pageNum) throws NotAuthException {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Sensor> sensors = sensorDao.getSensorValues(sensorName, user);
         if (pageNum == -1)
             pageNum = sensors.size() / SENSORS_ON_PAGE;
@@ -101,7 +102,7 @@ public class SensorService {
 
         SensorLog sensorLog = new SensorLog(sensorName, pageNum, pagesCount, sensorsToPairs(sensorsPage));
 
-        return sensorLog;//TODO
+        return sensorLog;
     }
 
     public List<Sensor> pullSensorPage(List<Sensor> sensors, int pageNum) {
