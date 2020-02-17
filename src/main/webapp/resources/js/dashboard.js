@@ -33,10 +33,12 @@ function openModalWindow() {
     }
 
     var optionColor = getOptionColor(widgetObj["color"]);
+    var icon = getIconOption(widgetObj["icon"]);
 
     $(".input_widget_name").val(name);
     $(".input_widget_measure").val(measure);
     $(".choose-color-menu").val(optionColor);
+    $(".choose-icon-menu").val(icon);
     document.location.href = "#widget_modal_window";
 }
 
@@ -167,6 +169,27 @@ function memWidget(name, color, icon, sensor, id, keyWard, value, measure, arriv
     }
 
     widgets.push(widget);
+}
+
+function getIconOption(iconNum) {
+    let iconStr = "";
+    switch (iconNum) {
+        case 0: iconStr = "Нет"; break;
+        case 1: iconStr = "Внимание"; break;
+        case 2: iconStr = "Угол"; break;
+        case 3: iconStr = "Огонь"; break;
+        case 4: iconStr = "Цветок"; break;
+        case 5: iconStr = "Длина"; break;
+        case 6: iconStr = "Молния"; break;
+        case 7: iconStr = "Дождь"; break;
+        case 8: iconStr = "Скорость"; break;
+        case 9: iconStr = "Солнце"; break;
+        case 10: iconStr ="Температура"; break;
+        case 11: iconStr ="Вода"; break;
+        default: iconStr = "Нет"; break;
+    }
+
+    return iconStr;
 }
 
 function getIconStr(icon) {

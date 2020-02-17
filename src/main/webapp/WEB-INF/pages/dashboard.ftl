@@ -8,14 +8,14 @@
     <div id="widget_window">
         <div id="widget_window_content">
             <form>
-                <p class="modal-field-name">Name:</p>
+                <p class="modal-field-name">Имя:</p>
                 <input type="text" class="input_widget_name">
-                <p class="modal-field-name">Measure:</p>
+                <p class="modal-field-name">Мера:</p>
                 <input type="text" class="input_widget_measure">
                 <table class="widget-custom-ui">
                     <tr>
-                        <td><span class="modal-field-name">Color:</span></td>
-                        <td><span class="modal-field-name">Icon:</span></td>
+                        <td><span class="modal-field-name">Цвет:</span></td>
+                        <td><span class="modal-field-name">Иконка:</span></td>
                     </tr>
                     <tr>
                         <td><select class="choose-color-menu">
@@ -43,7 +43,6 @@
                             </select></td>
                     </tr>
                 </table>
-                <span class="modal-field-name">Color:</span>
             </form>
         </div>
         <div class="modal_buttons">
