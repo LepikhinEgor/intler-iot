@@ -7,6 +7,7 @@ import intler_iot.services.exceptions.NotAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
@@ -52,6 +53,8 @@ public class UserService {
         if (!checkEmailIsFree(user.getEmail()))
             return new RegistrationMessage(RegistrationMessage.EMAIL_BUSY);
 
+        user.setPassword(encodePassword(user.getPassword()));
+
         try {
             userDao.create(user);
         } catch (Throwable th) {
@@ -72,6 +75,12 @@ public class UserService {
         User user = userDao.getByEmail(email);
 
         return user == null;
+    }
+
+    private String encodePassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        return encoder.encode(password);
     }
 
     private int checkUserDataIsValid(User user) {
