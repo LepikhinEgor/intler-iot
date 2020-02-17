@@ -176,24 +176,40 @@
     text-align: center;
 }
 
-.choose-color-menu {
+.choose-color-menu, .choose-icon-menu {
     margin: 1px 0px;
-    width: 97%;
+    width: 100%;
     background-color: #575b67;
     border: 1px solid #383838;
     height: 30px;
     color: #ccc;
-    padding: 0px 3px;
+    padding: 0px 0px;
     vertical-align: top;
 }
 
-.choose-color-menu:focus {
+.choose-color-menu:focus, .choose-icon-menu:focus {
     outline-color: #fff;
 }
 
-.choose-color-menu > option:hover {
+.choose-color-menu > option:hover, .choose-icon-menu > option:hover {
     background-color: #2e8b00;
     color:white;
+}
+
+.widget-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.widget-custom-ui {
+    margin-top: 5px;
+    width: 98%;
+    padding: 0px;
+}
+
+.widget-custom-ui  td {
+    padding: 0px;
+    border: 0px solid black;
 }
 
 

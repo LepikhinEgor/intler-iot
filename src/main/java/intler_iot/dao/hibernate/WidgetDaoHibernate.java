@@ -75,6 +75,7 @@ public class WidgetDaoHibernate extends WidgetDao {
         oldWidget.setColor(widget.getColor());
         oldWidget.setMeasure(widget.getMeasure());
         oldWidget.setKeyWard(widget.getKeyWard());
+        oldWidget.setIcon(widget.getIcon());
 
         session.save(oldWidget);
 

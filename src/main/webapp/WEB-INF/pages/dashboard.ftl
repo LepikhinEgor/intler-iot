@@ -12,16 +12,38 @@
                 <input type="text" class="input_widget_name">
                 <p class="modal-field-name">Measure:</p>
                 <input type="text" class="input_widget_measure">
-                <p class="modal-field-name">Color:</p>
-                <select class="choose-color-menu">
-                    <option>Black</option>
-                    <option>Red</option>
-                    <option>Blue</option>
-                    <option>Green</option>
-                    <option>Yellow</option>
-                    <option>Cian</option>
-                    <option>Magenta</option>
-                </select>
+                <table class="widget-custom-ui">
+                    <tr>
+                        <td><span class="modal-field-name">Color:</span></td>
+                        <td><span class="modal-field-name">Icon:</span></td>
+                    </tr>
+                    <tr>
+                        <td><select class="choose-color-menu">
+                                <option>Черный</option>
+                                <option>Красный</option>
+                                <option>Синий</option>
+                                <option>Зеленый</option>
+                                <option>Желтый</option>
+                                <option>Бирюзовый</option>
+                                <option>Фиолетовый</option>
+                            </select></td>
+                        <td><select class="choose-icon-menu">
+                                <option>Нет</option>
+                                <option>Внимание</option>
+                                <option>Угол</option>
+                                <option>Огонь</option>
+                                <option>Цветок</option>
+                                <option>Длина</option>
+                                <option>Молния</option>
+                                <option>Дождь</option>
+                                <option>Скорость</option>
+                                <option>Солнце</option>
+                                <option>Температура</option>
+                                <option>Вода</option>
+                            </select></td>
+                    </tr>
+                </table>
+                <span class="modal-field-name">Color:</span>
             </form>
         </div>
         <div class="modal_buttons">

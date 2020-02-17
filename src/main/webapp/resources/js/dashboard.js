@@ -47,7 +47,9 @@ function applyWidgetChanges(e) {
     var name =  $(".input_widget_name").val();
     var measure =  $(".input_widget_measure").val();
     var optionColor = $(".choose-color-menu").val();
+    var optionIcon = $(".choose-icon-menu").val();
     var colorNum = getColorNum(optionColor);
+    var iconNum = getIconNum(optionIcon);
     var keyWard;
 
     for (var widgetVal in widgets) {
@@ -61,7 +63,8 @@ function applyWidgetChanges(e) {
         name: name,
         color: colorNum,
         measure: measure,
-        keyWard: keyWard
+        keyWard: keyWard,
+        icon:iconNum
     };
 
     updateWidgetData(widgetData);
@@ -96,29 +99,31 @@ function requestWidgets() {
                 let id = widget["id"];
                 let name = widget["name"];
                 let color = widget["color"];
+                let icon = widget["icon"];
                 let measure = widget["measure"];
 
                 let sensor = data[widget_num]["sensor"];
                 let keyward = sensor["name"];
                 let value = sensor["value"];
                 let arriveTime = sensor["arriveTime"];
-                addWidget(name, color, sensor, id, keyward, value, measure, arriveTime);
+                addWidget(name, color,icon, sensor, id, keyward, value, measure, arriveTime);
             }
         }
     });
 }
 
-function addWidget(name, color, sensor, id, keyWard, value, measure, arriveTime) {
+function addWidget(name, color, icon, sensor, id, keyWard, value, measure, arriveTime) {
     var borderColor = getBorderColorString(color, 0.3);
     var valueColor = getValueColorString(color);
     var configColor = getBorderColorString(color, 0.4);
     var configActiveColor = getBorderColorString(color, 1);
+    var iconStr = getIconStr(icon);
 
     var widgetHtml = " <div id='" + id + "' class=\"widget\" style=\"border: 1px solid " + borderColor + "; border-radius: 2px\">\n" +
         "                    <table class=\"widget-table\">\n" +
-        "                        <tr>\n" +
-        "                            <td class=\"widget-name\" colspan=\"3\"><span>" + name + "</span></td>\n" +
-        "                        </tr>\n" +
+        "                        <tr><td><img class='widget-icon' src=\"" + iconStr + "\"></td>\n" +
+        "                            <td class=\"widget-name\"><span>" + name + "</span></td>\n" +
+        "                        <td></td></tr>\n" +
         "                        <tr>\n" +
         "                            <td class=\"widget-content\" colspan=\"3\">\n" +
         "                                <h1 style=\"color: " + valueColor + "\"> " + value + "</h1>\n" +
@@ -138,15 +143,16 @@ function addWidget(name, color, sensor, id, keyWard, value, measure, arriveTime)
         "                </div>";
     $(".widgets-wrap").append(widgetHtml);
 
-    memWidget(name, color, sensor, id, keyWard, value, measure, arriveTime);
+    memWidget(name, color, icon, sensor, id, keyWard, value, measure, arriveTime);
     refreshWidgetHandlers();
 }
 
-function memWidget(name, color, sensor, id, keyWard, value, measure, arriveTime) {
+function memWidget(name, color, icon, sensor, id, keyWard, value, measure, arriveTime) {
     var widget = {
         id : id,
         name: name,
         color: color,
+        icon:icon,
         sensor: sensor,
         keyWard: keyWard,
         value : value,
@@ -161,6 +167,50 @@ function memWidget(name, color, sensor, id, keyWard, value, measure, arriveTime)
     }
 
     widgets.push(widget);
+}
+
+function getIconStr(icon) {
+    let iconPath = "./resources/images/widget_icons/";
+    let iconStr = "";
+    switch (icon) {
+        case 0: iconStr = "none.png";break;
+        case 1: iconStr = "alert.png";break;
+        case 2: iconStr = "angle.png";break;
+        case 3: iconStr = "fire.png";break;
+        case 4: iconStr = "flower.png";break;
+        case 5: iconStr = "length.png";break;
+        case 6: iconStr = "lightning.png";break;
+        case 7: iconStr = "rain.png";break;
+        case 8: iconStr = "speedmeter.png";break;
+        case 9: iconStr = "sun.png";break;
+        case 10: iconStr = "temp.png";break;
+        case 11: iconStr = "waterCoef.png";break;
+        default: iconStr = "none.png";break;
+    }
+
+    return iconPath + iconStr;
+}
+
+function getIconNum(iconStr) {
+    let iconNum = 0;
+    console.log(iconStr);
+    switch (iconStr) {
+        case "Нет": iconNum = 0;break;
+        case "Внимание": iconNum = 1;break;
+        case "Угол": iconNum = 2;break;
+        case "Огонь": iconNum = 3;break;
+        case "Цветок": iconNum = 4;break;
+        case "Длина": iconNum = 5;break;
+        case "Молния": iconNum = 6;break;
+        case "Дождь": iconNum = 7;break;
+        case "Скорость": iconNum = 8;break;
+        case "Солнце": iconNum = 9;break;
+        case "Температура": iconNum = 10;break;
+        case "Вода": iconNum = 11;break;
+        default: iconNum = 0;break;
+    }
+    console.log(iconNum);
+    return iconNum;
 }
 
 function getBorderColorString(colorNum, opacity) {
@@ -196,13 +246,13 @@ function getValueColorString(colorNum) {
 function getOptionColor(colorNum) {
     let colorString = "rgba(100, 100, 100, 0.3)";
     switch (colorNum) {
-        case 0: colorString = "Black"; break; //black
-        case 1: colorString = "Red"; break;//red
-        case 2: colorString = "Green"; break;//green
-        case 3: colorString = "Blue"; break;//blue
-        case 4: colorString = "Yellow"; break;//yellow
-        case 5: colorString = "Cian"; break;//cian
-        case 6: colorString = "Magenta"; break;//magenta
+        case 0: colorString = "Черный"; break; //black
+        case 1: colorString = "Красный"; break;//red
+        case 2: colorString = "Зеленый"; break;//green
+        case 3: colorString = "Синий"; break;//blue
+        case 4: colorString = "Желтый"; break;//yellow
+        case 5: colorString = "Бирюзовый"; break;//cian
+        case 6: colorString = "Фиолетовый"; break;//magenta
     }
 
     return colorString;
@@ -212,13 +262,13 @@ function getOptionColor(colorNum) {
 function getColorNum(colorStr) {
     let colorNum = 0;
     switch (colorStr) {
-        case "Black": colorNum = 0; break; //black
-        case "Red": colorNum = 1; break;//red
-        case "Green": colorNum = 2; break;//green
-        case "Blue": colorNum = 3; break;//blue
-        case "Yellow": colorNum = 4; break;//yellow
-        case "Cian": colorNum = 5; break;//cian
-        case "Magenta": colorNum = 6; break;//magenta
+        case "Черный": colorNum = 0; break; //black
+        case "Красный": colorNum = 1; break;//red
+        case "Зеленый": colorNum = 2; break;//green
+        case "Синий": colorNum = 3; break;//blue
+        case "Желтый": colorNum = 4; break;//yellow
+        case "Бирюзовый": colorNum = 5; break;//cian
+        case "Фиолетовый": colorNum = 6; break;//magenta
     }
 
     return colorNum;

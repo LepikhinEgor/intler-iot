@@ -48,6 +48,9 @@ public class Widget {
     @Column(name = "keyward")
     private String keyWard;
 
+    @Column(name = "icon")
+    private int icon;
+
     @JsonIgnore
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -102,6 +105,14 @@ public class Widget {
         this.keyWard = keyWard;
     }
 
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
+
     @Override
     public String toString() {
         return "Widget{" +
@@ -109,6 +120,8 @@ public class Widget {
                 ", name='" + name + '\'' +
                 ", color=" + color +
                 ", measure='" + measure + '\'' +
+                ", keyWard='" + keyWard + '\'' +
+                ", icon=" + icon +
                 ", user=" + user +
                 '}';
     }
@@ -120,13 +133,15 @@ public class Widget {
         Widget widget = (Widget) o;
         return id == widget.id &&
                 color == widget.color &&
+                icon == widget.icon &&
                 Objects.equals(name, widget.name) &&
                 Objects.equals(measure, widget.measure) &&
+                Objects.equals(keyWard, widget.keyWard) &&
                 Objects.equals(user, widget.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, measure, user);
+        return Objects.hash(id, name, color, measure, keyWard, icon, user);
     }
 }
