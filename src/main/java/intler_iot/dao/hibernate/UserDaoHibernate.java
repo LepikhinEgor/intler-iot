@@ -31,9 +31,14 @@ public class UserDaoHibernate extends UserDao{
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        session.save(user);
+        try {
+            session.save(user);
 
-        transaction.commit();
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw e;
+        }
     }
 
     @Override
@@ -41,15 +46,20 @@ public class UserDaoHibernate extends UserDao{
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("from User where login = :loginParam and password = :password");
-        query.setParameter("loginParam", login);
-        query.setParameter("password", password);
+        try {
+            Query query = session.createQuery("from User where login = :loginParam and password = :password");
+            query.setParameter("loginParam", login);
+            query.setParameter("password", password);
 
-        User foundUser = (User)query.getSingleResult();
+            User foundUser = (User)query.getSingleResult();
 
-        transaction.commit();
+            transaction.commit();
 
-        return foundUser;
+            return foundUser;
+        } catch (Exception e) {
+            transaction.rollback();
+            throw e;
+        }
     }
 
     @Override

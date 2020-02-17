@@ -30,14 +30,21 @@ public class WidgetDaoHibernate extends WidgetDao {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        Query query = session.createQuery("from Widget w where w.user = :user");
-        query.setParameter("user", user);
+        try {
+            Query query = session.createQuery("from Widget w where w.user = :user");
+            query.setParameter("user", user);
 
-        List<Widget> widgets = query.list();
+            List<Widget> widgets = query.list();
 
-        transaction.commit();
+            transaction.commit();
 
-        return widgets;
+            return widgets;
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            transaction.rollback();
+            throw e;
+        }
+
     }
 
     @Override
@@ -54,6 +61,7 @@ public class WidgetDaoHibernate extends WidgetDao {
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             transaction.rollback();
+            throw e;
         }
     }
 
@@ -74,6 +82,7 @@ public class WidgetDaoHibernate extends WidgetDao {
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             tx.rollback();
+            throw e;
         }
     }
 }
