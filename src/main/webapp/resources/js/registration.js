@@ -242,6 +242,22 @@ function requestRegistration(newUser) {
         data: JSON.stringify(newUser),
         success: function(data) {
             console.log(data);
+            if (data["status"] == 0)
+                loginAfterRegistration();
+        }
+    });
+}
+
+function loginAfterRegistration() {
+    var login = $(".input-login").val();
+    var password = $(".input-password").val();
+
+    $.ajax({
+        type: "POST",
+        url: "login-url?username=" + login + "&password="+ password,
+        contentType: 'application/json',
+        success: function(data) {
+            document.location.href = "console";
         }
     });
 }

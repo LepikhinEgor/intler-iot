@@ -45,11 +45,16 @@ public class WidgetDaoHibernate extends WidgetDao {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
-        for (Widget widget : widgets) {
-            session.save(widget);
-        }
+        try {
+            for (Widget widget : widgets) {
+                session.save(widget);
+            }
 
-        transaction.commit();
+            transaction.commit();
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            transaction.rollback();
+        }
     }
 
     @Override
