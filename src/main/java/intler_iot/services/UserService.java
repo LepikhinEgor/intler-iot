@@ -24,6 +24,12 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    public User getByLogin(String login) {
+        User user = userDao.getByLogin(login);
+
+        return user;
+    }
+
     public User authUser(String login, String password) throws NotAuthException{
         User user;
         try {
