@@ -3,7 +3,7 @@ var widgetsUpdateInterval;
 function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
-    widgetsUpdateInterval = setInterval(requestWidgets, 1000000);
+    widgetsUpdateInterval = setInterval(requestWidgets, 10000);
 }
 
 var selectedWidgetId;
@@ -15,7 +15,7 @@ function refreshWidgetHandlers() {
     $(".apply_modal_widget").on('click', applyWidgetChanges);
     $(".widget-config-button").on("click", openModalWindow);
 
-    $(".widget").resizable({containment:'.widgets-wrap'});
+    $(".widget").resizable({containment:'.widgets-wrap', handles:'e,s'});
     $(".widget").resizable( "option", "minHeight", 200 );
     $(".widget").resizable( "option", "minWidth", 200 );
     // $(".widget").draggable();
@@ -101,7 +101,7 @@ function requestWidgets() {
         contentType: 'application/json',
         success: function(data) {
             console.log(data);
-            $(".widgets-wrap").html("");
+            $(".widget").remove();
             for (var widget_num in data) {
                 let widget = data[widget_num]["widget"];
                 let id = widget["id"];
@@ -149,7 +149,8 @@ function addWidget(name, color, icon, sensor, id, keyWard, value, measure, arriv
         "                        </tr>\n" +
         "                    </table>\n" +
         "                </div>";
-    $(".widgets-wrap").append(widgetHtml);
+
+    $("#add_new_widget").before(widgetHtml);
 
     memWidget(name, color, icon, sensor, id, keyWard, value, measure, arriveTime);
     refreshWidgetHandlers();

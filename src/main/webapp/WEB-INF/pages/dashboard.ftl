@@ -2,6 +2,9 @@
 <div>
     <h1>Панель приборов</h1></div>
 <div class="widgets-wrap">
+    <div id="add_new_widget">
+        <img class="add_widget_img" src="./resources/images/add-widget.png">
+    </div>
 </div>
 
 <div id="widget_modal_window">
