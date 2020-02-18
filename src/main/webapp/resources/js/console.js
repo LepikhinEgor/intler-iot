@@ -11,6 +11,18 @@ $(document).ready(function() {
 
 function addEventHandlers() {
     $(".aside-menu").find("li").on("click", pressMenuTab);
+    $(".logout-button").on("click", requestLogout);
+}
+
+function requestLogout() {
+    $.ajax({
+        type: "GET",
+        url: "logout",
+        contentType: 'application/json',
+        success: function(data) {
+            document.location.href = "login";
+        }
+    });
 }
 
 function pressMenuTab() {

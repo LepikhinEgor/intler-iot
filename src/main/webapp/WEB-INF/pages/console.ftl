@@ -37,11 +37,8 @@
         <div class="top-panel">
             <div class="user-bar">
                 <span id="user-login">${username}</span>
-                <img src="./resources/images/user_icon.png">
-                <ul>
-                    <li><a href="#">ссылка1</a></li>
-
-                </ul>
+                <img class="user-icon-img" src="./resources/images/user_icon.png">
+                <img class ="logout-button" src="./resources/images/logout.png">
             </div>
         </div>
         <div class="content-panel">

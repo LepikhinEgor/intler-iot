@@ -50,7 +50,6 @@ public class DashboardController {
     @PostMapping("console/dashboard/update-widget")
     @ResponseBody
     public void updateWidget(@RequestBody Widget widget) {
-        logger.info(widget.toString());
         widgetService.updateWidget(widget);
     }
 }
