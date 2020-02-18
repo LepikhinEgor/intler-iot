@@ -3,7 +3,7 @@ var widgetsUpdateInterval;
 function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
-    widgetsUpdateInterval = setInterval(requestWidgets, 10000);
+    widgetsUpdateInterval = setInterval(requestWidgets, 1000000);
 }
 
 var selectedWidgetId;
@@ -14,6 +14,11 @@ function refreshWidgetHandlers() {
 
     $(".apply_modal_widget").on('click', applyWidgetChanges);
     $(".widget-config-button").on("click", openModalWindow);
+
+    $(".widget").resizable({containment:'.widgets-wrap'});
+    $(".widget").resizable( "option", "minHeight", 200 );
+    $(".widget").resizable( "option", "minWidth", 200 );
+    // $(".widget").draggable();
 }
 
 function openModalWindow() {
@@ -95,6 +100,7 @@ function requestWidgets() {
         url: "/intler_iot_war_exploded/console/dashboard/get-widgets",
         contentType: 'application/json',
         success: function(data) {
+            console.log(data);
             $(".widgets-wrap").html("");
             for (var widget_num in data) {
                 let widget = data[widget_num]["widget"];

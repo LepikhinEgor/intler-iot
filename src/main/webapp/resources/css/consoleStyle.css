@@ -3,6 +3,11 @@ body {
 	font: 12px Tahoma, sans-serif;
 	background: #f8f8f8 url(../images/bg.png);
 	margin: 0;
+	height: 100%;
+}
+
+html {
+	height: 100%;
 }
 
 img {
@@ -63,7 +68,7 @@ aside {
 	height:100%;
 	position: absolute;
 	background-color: #2c3338;
-	border: 1px solid #222;
+	border-right: 1px solid #222;
 }
 
 aside > h2 {
@@ -85,6 +90,7 @@ section {
 	margin-left: 200px;
 	padding-bottom: 50px;
 	background: #f8f8f8 url(../images/bg.png);
+	height: 90%;
 }
 
 form[name="search"] {
@@ -401,6 +407,8 @@ footer p {
 	padding-left: 10px;
 	/* background-color: red; */
 	overflow: auto;
+	height: 90%;
+	position: relative;
 }
 
 
