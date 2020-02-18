@@ -11,6 +11,9 @@ import java.util.Objects;
 @Table(name = "widgets")
 public class Widget {
 
+    private static final int DEFAULT_WIDTH = 200;
+    private static final int DEFAULT_HEIGHT = 200;
+
     public Widget() {
         super();
     }
@@ -20,6 +23,8 @@ public class Widget {
         this.keyWard = sensor.getName();
         this.name = sensor.getName();
         this.user = sensor.getDevice().getOwner();
+        this.width = 200;
+        this.height = 200;
     }
 
     @Id
@@ -50,6 +55,12 @@ public class Widget {
 
     @Column(name = "icon")
     private int icon;
+
+    @Column(name = "width")
+    private int width;
+
+    @Column(name = "height")
+    private int height;
 
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -113,17 +124,20 @@ public class Widget {
         this.icon = icon;
     }
 
-    @Override
-    public String toString() {
-        return "Widget{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", color=" + color +
-                ", measure='" + measure + '\'' +
-                ", keyWard='" + keyWard + '\'' +
-                ", icon=" + icon +
-                ", user=" + user +
-                '}';
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     @Override
@@ -134,6 +148,8 @@ public class Widget {
         return id == widget.id &&
                 color == widget.color &&
                 icon == widget.icon &&
+                width == widget.width &&
+                height == widget.height &&
                 Objects.equals(name, widget.name) &&
                 Objects.equals(measure, widget.measure) &&
                 Objects.equals(keyWard, widget.keyWard) &&
@@ -142,6 +158,22 @@ public class Widget {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, measure, keyWard, icon, user);
+        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, user);
     }
+
+    @Override
+    public String toString() {
+        return "Widget{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", color=" + color +
+                ", measure='" + measure + '\'' +
+                ", keyWard='" + keyWard + '\'' +
+                ", icon=" + icon +
+                ", width=" + width +
+                ", height=" + height +
+                ", user=" + user +
+                '}';
+    }
+
 }

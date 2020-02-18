@@ -45,7 +45,7 @@ function sendNewWidgetSize(event,ui) {
         widgetsSize[foundNum]["height"] = height;
     } else {
         var widgetSize = {
-            id:id,
+            id:+id,
             width:width,
             height:height
         }

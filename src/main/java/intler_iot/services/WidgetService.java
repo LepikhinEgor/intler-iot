@@ -1,6 +1,7 @@
 package intler_iot.services;
 
 import intler_iot.controllers.entities.WidgetData;
+import intler_iot.controllers.entities.WidgetSize;
 import intler_iot.dao.WidgetDao;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
@@ -73,6 +74,17 @@ public class WidgetService {
         }
 
         return newSensors;
+    }
+
+    public void updateWidgetsSize(List<WidgetSize> widgetsSize) {
+        for (WidgetSize widgetSize : widgetsSize) {
+            Widget widget = new Widget();
+            widget.setId(widgetSize.getId());
+            widget.setWidth(widgetSize.getWidth());
+            widget.setHeight(widgetSize.getHeight());
+
+            widgetDao.updateSize(widget);
+        }
     }
 
     private List<Widget> createWidgets(List<Sensor> newSensors) {

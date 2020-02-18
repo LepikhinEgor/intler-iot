@@ -86,4 +86,22 @@ public class WidgetDaoHibernate extends WidgetDao {
             throw e;
         }
     }
+
+    @Override
+    public void updateSize(Widget widget) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            Widget oldWidget = session.get(Widget.class, widget.getId());
+            oldWidget.setWidth(widget.getWidth());
+            oldWidget.setHeight(widget.getHeight());
+
+            session.save(oldWidget);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw e;
+        }
+    }
 }
