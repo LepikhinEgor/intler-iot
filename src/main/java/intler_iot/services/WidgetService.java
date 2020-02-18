@@ -95,10 +95,8 @@ public class WidgetService {
                     break;
                 }
             }
-            if (widget != null)
+            if (widgetData != null)
                 widgetsData.add(widgetData);
-            else
-                throw new RuntimeException("Not match sensor and widget");
         }
         return widgetsData;
     }
