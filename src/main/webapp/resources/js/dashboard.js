@@ -3,7 +3,7 @@ var widgetsUpdateInterval;
 function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
-    widgetsUpdateInterval = setInterval(requestWidgets, 10000);
+    widgetsUpdateInterval = setInterval(requestWidgets, 1000000);
 }
 
 var selectedWidgetId;
@@ -18,7 +18,53 @@ function refreshWidgetHandlers() {
     $(".widget").resizable({containment:'.widgets-wrap', handles:'e,s'});
     $(".widget").resizable( "option", "minHeight", 200 );
     $(".widget").resizable( "option", "minWidth", 200 );
+
+    $(".widget").resizable({stop:sendNewWidgetSize});
     // $(".widget").draggable();
+}
+
+var widgetsSize = [];
+var widgetSizeTimeout;
+function sendNewWidgetSize(event,ui) {
+    clearTimeout(widgetSizeTimeout);
+
+    let id = $(this).attr("id");
+    let width = ui.size.width;
+    let height = ui.size.height;
+
+    var foundNum;
+    let alreadyExist = false;
+    for (var widgetSizeEl in widgetsSize) {
+        if (widgetsSize[widgetSizeEl]["id"] == id) {
+            alreadyExist = true;
+            foundNum = widgetSizeEl;
+        }
+    }
+    if (alreadyExist) {
+        widgetsSize[foundNum]["width"] = width;
+        widgetsSize[foundNum]["height"] = height;
+    } else {
+        var widgetSize = {
+            id:id,
+            width:width,
+            height:height
+        }
+        widgetsSize.push(widgetSize);
+    }
+    widgetSizeTimeout = setTimeout(requestChangeWidgetSize, 10000);
+}
+
+function requestChangeWidgetSize() {
+    console.log(widgetsSize);
+    $.ajax({
+        type: "POST",
+        url: "console/dashboard/update-widgets-size",
+        contentType: 'application/json',
+        data: JSON.stringify(widgetsSize),
+        success: function(data) {
+            widgetsSize = [];
+        }
+    });
 }
 
 function openModalWindow() {
