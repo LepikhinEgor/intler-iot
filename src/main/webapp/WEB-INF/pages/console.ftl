@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="./resources/css/consoleStyle.css"/>
     <link rel="stylesheet" href="./resources/css/dashboard.css"/>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+    <link rel="stylesheet" href="./resources/JQueryUI/jquery-ui.css" />
     <script src="./resources/js/jquery-3.4.1.js" type="text/javascript"></script>
+    <script src="./resources/JQueryUI/jquery-ui.js" type="text/javascript"></script>
     <script src="./resources/js/console.js" type="text/javascript"></script>
     <script src="./resources/js/dashboard.js" type="text/javascript"></script>
     <script src="./resources/js/sensorsLogs.js" type="text/javascript"></script>
@@ -34,8 +36,12 @@
     <section>
         <div class="top-panel">
             <div class="user-bar">
-                <span id="user-login">LepikhinEgor</span>
+                <span id="user-login">${username}</span>
                 <img src="./resources/images/user_icon.png">
+                <ul>
+                    <li><a href="#">ссылка1</a></li>
+
+                </ul>
             </div>
         </div>
         <div class="content-panel">

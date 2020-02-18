@@ -32,7 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/console/**").access("hasRole('ROLE_USER')")
-                .and().csrf().disable().formLogin().loginPage("/login").failureUrl("/login?error").usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/console").loginProcessingUrl("/login-url");
+                .and().csrf().disable()
+                .formLogin().loginPage("/login").failureUrl("/login?error")
+                .usernameParameter("username").passwordParameter("password")
+                .defaultSuccessUrl("/console").loginProcessingUrl("/login-url");
 
     }
 
