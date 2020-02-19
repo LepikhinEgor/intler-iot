@@ -129,7 +129,7 @@
 
 #widget_window {
     width: 350px;
-    height: 270px;
+    height: 320px;
 }
 
 
@@ -184,7 +184,7 @@
     text-align: center;
 }
 
-.choose-color-menu, .choose-icon-menu {
+.choose-color-menu, .choose-icon-menu, .choose-type-menu {
     margin: 1px 0px;
     width: 100%;
     background-color: #575b67;
@@ -193,6 +193,9 @@
     color: #ccc;
     padding: 0px 0px;
     vertical-align: top;
+}
+.choose-type-menu {
+    width: 97%;
 }
 
 .choose-color-menu:focus, .choose-icon-menu:focus {

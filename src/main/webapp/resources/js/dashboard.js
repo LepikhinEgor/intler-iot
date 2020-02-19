@@ -116,9 +116,12 @@ function applyWidgetChanges(e) {
     var measure =  $(".input_widget_measure").val();
     var optionColor = $(".choose-color-menu").val();
     var optionIcon = $(".choose-icon-menu").val();
+    var optionType = $(".choose-type-menu option:selected").attr("value");
     var colorNum = getColorNum(optionColor);
     var iconNum = getIconNum(optionIcon);
     var keyWard = $(".input_widget_keyward").val();
+
+    console.log(optionType + " type fgfg");
 
     var widgetData = {
         id: id,
@@ -126,7 +129,8 @@ function applyWidgetChanges(e) {
         color: colorNum,
         measure: measure,
         keyWard: keyWard,
-        icon:iconNum
+        icon:iconNum,
+        type:optionType
     };
 
     updateWidgetData(widgetData);

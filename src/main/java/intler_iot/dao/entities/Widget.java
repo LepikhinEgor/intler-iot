@@ -28,6 +28,7 @@ public class Widget {
         this.user = sensor.getDevice().getOwner();
         this.width = 200;
         this.height = 200;
+        this.type = 0;
     }
 
     @Id
@@ -164,6 +165,7 @@ public class Widget {
                 icon == widget.icon &&
                 width == widget.width &&
                 height == widget.height &&
+                type == widget.type &&
                 Objects.equals(name, widget.name) &&
                 Objects.equals(measure, widget.measure) &&
                 Objects.equals(keyWard, widget.keyWard) &&
@@ -172,7 +174,7 @@ public class Widget {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, user);
+        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, type, user);
     }
 
     @Override
@@ -186,6 +188,7 @@ public class Widget {
                 ", icon=" + icon +
                 ", width=" + width +
                 ", height=" + height +
+                ", type=" + type +
                 ", user=" + user +
                 '}';
     }

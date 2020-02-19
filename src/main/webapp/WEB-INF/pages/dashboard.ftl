@@ -17,6 +17,11 @@
                 <input type="text" class="input_widget_measure">
                 <p class="modal-field-name">Ключевое слово:</p>
                 <input type="text" class="input_widget_keyward">
+                <p class="modal-field-name">Тип:</p>
+                <select class="choose-type-menu">
+                    <option value="0">Цифра</option>
+                    <option value="1">Переключатель</option>
+                </select>
                 <table class="widget-custom-ui">
                     <tr>
                         <td><span class="modal-field-name">Цвет:</span></td>
