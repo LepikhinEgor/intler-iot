@@ -1,5 +1,7 @@
 package intler_iot.controllers.entities;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Objects;
 
 public class DeviceConnectionData {
@@ -7,6 +9,7 @@ public class DeviceConnectionData {
     private String password;
     private String deviceName;
     private String deviceType;
+    UserDetails grtgt;
 
     public String getLogin() {
         return login;

@@ -8,8 +8,8 @@
 .widget {
     min-width: 200px;
     min-height: 200px;
-    width: 200px;
-    height: 200px;
+    /*width: 200px;*/
+    /*height: 200px;*/
     background: #fff;
     float:left;
     margin: 3px;
@@ -53,7 +53,7 @@
 
 .widget-content {
     text-align: center;
-    padding: 15px;
+    padding: 10px;
 }
 .widget-content > h1 {
     font: 50px 'Palatino', sans-serif;
@@ -238,7 +238,7 @@
     background: #53a937;
     display:block;
     vertical-align: center;
-    border-radius: 20px;
+    /*border-radius: 20px;*/
     cursor: pointer;
 }
 

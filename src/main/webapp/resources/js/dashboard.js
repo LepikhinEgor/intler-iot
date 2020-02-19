@@ -20,7 +20,19 @@ function refreshWidgetHandlers() {
     $(".widget").resizable( "option", "minWidth", 200 );
 
     $(".widget").resizable({stop:sendNewWidgetSize});
+    // $(".widget").resizable({create:setWidgetsDefaultSize});
     // $(".widget").draggable();
+}
+
+function setWidgetsDefaultSize(event,ui) {
+    console.log("created");
+    let id = $(this).attr("id");
+    for (var widgetSizeEl in widgetsSize) {
+        if (widgetsSize[widgetSizeEl]["id"] == id) {
+            ui.size.width = widgetsSize[widgetSizeEl]["width"];
+            ui.size.height = widgetsSize[widgetSizeEl]["height"];
+        }
+    }
 }
 
 var widgetsSize = [];
@@ -150,6 +162,8 @@ function requestWidgets() {
             $(".widget").remove();
             for (var widget_num in data) {
                 let widget = data[widget_num]["widget"];
+
+                // var widgetObj = JSON.parse(widget);
                 let id = widget["id"];
                 let name = widget["name"];
                 let color = widget["color"];
@@ -160,34 +174,34 @@ function requestWidgets() {
                 let keyward = sensor["name"];
                 let value = sensor["value"];
                 let arriveTime = sensor["arriveTime"];
-                addWidget(name, color,icon, sensor, id, keyward, value, measure, arriveTime);
+                addWidget(widget, sensor);
             }
         }
     });
 }
 
-function addWidget(name, color, icon, sensor, id, keyWard, value, measure, arriveTime) {
-    var borderColor = getBorderColorString(color, 0.3);
-    var valueColor = getValueColorString(color);
-    var configColor = getBorderColorString(color, 0.4);
-    var configActiveColor = getBorderColorString(color, 1);
-    var iconStr = getIconStr(icon);
+function addWidget(widget, sensor) {
+    var borderColor = getBorderColorString(widget["color"], 0.3);
+    var valueColor = getValueColorString(widget["color"]);
+    var configColor = getBorderColorString(widget["color"], 0.4);
+    var configActiveColor = getBorderColorString(widget["color"], 1);
+    var iconStr = getIconStr(widget["icon"]);
 
-    var widgetHtml = " <div id='" + id + "' class=\"widget\" style=\"border: 1px solid " + borderColor + "; border-radius: 2px\">\n" +
+    var widgetHtml = " <div id='" + widget["id"] + "' class=\"widget\" style=\"border: 1px solid " + borderColor + "; border-radius: 2px; width: " + widget["width"] + "px; height: " +widget["height"] + "px;\">\n" +
         "                    <table class=\"widget-table\">\n" +
         "                        <tr><td><img class='widget-icon' src=\"" + iconStr + "\"></td>\n" +
-        "                            <td class=\"widget-name\"><span>" + name + "</span></td>\n" +
+        "                            <td class=\"widget-name\"><span>" + widget["name"] + "</span></td>\n" +
         "                        <td></td></tr>\n" +
         "                        <tr>\n" +
         "                            <td class=\"widget-content\" colspan=\"3\">\n" +
-        "                                <h1 style=\"color: " + valueColor + "\"> " + value + "</h1>\n" +
-        "                                <p class='widget-measure'>" + measure + "</p>\n" +
+        "                                <h1 style=\"color: " + valueColor + "\"> " + sensor["value"] + "</h1>\n" +
+        "                                <p class='widget-measure'>" + widget["measure"] + "</p>\n" +
         "                            </td>\n" +
         "                        </tr>\n" +
         "                        <tr>\n" +
         "                            <td class=\"widget-icon-wrap\">\n" +
         "                            </td>\n" +
-        "                            <td class=\"widget-keyword\">" + keyWard + "</td>\n" +
+        "                            <td class=\"widget-keyword\">" + sensor["name"] + "</td>\n" +
         "                            <td class=\"widget-config-wrap\">\n" +
         "                                <img class='widget-config-button' style='background: " + configColor + "' src=\"./resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
         "onmouseout=\"this.style.backgroundColor='" +  configColor+ "'\">\n" +
@@ -197,26 +211,16 @@ function addWidget(name, color, icon, sensor, id, keyWard, value, measure, arriv
         "                </div>";
 
     $("#add_new_widget").before(widgetHtml);
+    // $(".widget[id = " + widget["id"] + "]").css("width:228");
 
-    memWidget(name, color, icon, sensor, id, keyWard, value, measure, arriveTime);
+    memWidget(widget);
     refreshWidgetHandlers();
 }
 
-function memWidget(name, color, icon, sensor, id, keyWard, value, measure, arriveTime) {
-    var widget = {
-        id : id,
-        name: name,
-        color: color,
-        icon:icon,
-        sensor: sensor,
-        keyWard: keyWard,
-        value : value,
-        measure : measure,
-        arriveTime:arriveTime
-    }
+function memWidget(widget) {
 
     for (var oldWidget in widgets) {
-        if (widgets[oldWidget]["id"] == id) {
+        if (widgets[oldWidget]["id"] == widget["id"]) {
             widgets.splice(oldWidget, 1);
         }
     }
