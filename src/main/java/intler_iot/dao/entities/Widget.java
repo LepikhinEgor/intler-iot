@@ -14,6 +14,9 @@ public class Widget {
     private static final int DEFAULT_WIDTH = 200;
     private static final int DEFAULT_HEIGHT = 200;
 
+    private static final int TYPE_TEXT = 0;
+    private static final int TYPE_BUTTON = 1;
+
     public Widget() {
         super();
     }
@@ -61,6 +64,9 @@ public class Widget {
 
     @Column(name = "height")
     private int height;
+
+    @Column(name = "type")
+    private int type;
 
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -138,6 +144,14 @@ public class Widget {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override

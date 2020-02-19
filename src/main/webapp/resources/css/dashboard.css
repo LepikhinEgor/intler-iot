@@ -245,3 +245,18 @@
 .add_widget_img:hover {
     background: #87d66d;
 }
+
+.toggle_button {
+    margin:0px auto;
+    width: 100px;
+    height: 100px;
+    background: #76ef4e;
+    display:block;
+    vertical-align: center;
+    /*border-radius: 20px;*/
+    cursor: pointer;
+}
+
+.toggle_button:hover {
+    background: #87d66d;;
+}

@@ -63,7 +63,7 @@ function sendNewWidgetSize(event,ui) {
         }
         widgetsSize.push(widgetSize);
     }
-    widgetSizeTimeout = setTimeout(requestChangeWidgetSize, 10000);
+    widgetSizeTimeout = setTimeout(requestChangeWidgetSize, 5000);
 }
 
 function requestChangeWidgetSize() {
@@ -163,17 +163,7 @@ function requestWidgets() {
             for (var widget_num in data) {
                 let widget = data[widget_num]["widget"];
 
-                // var widgetObj = JSON.parse(widget);
-                let id = widget["id"];
-                let name = widget["name"];
-                let color = widget["color"];
-                let icon = widget["icon"];
-                let measure = widget["measure"];
-
                 let sensor = data[widget_num]["sensor"];
-                let keyward = sensor["name"];
-                let value = sensor["value"];
-                let arriveTime = sensor["arriveTime"];
                 addWidget(widget, sensor);
             }
         }
@@ -194,14 +184,13 @@ function addWidget(widget, sensor) {
         "                        <td></td></tr>\n" +
         "                        <tr>\n" +
         "                            <td class=\"widget-content\" colspan=\"3\">\n" +
-        "                                <h1 style=\"color: " + valueColor + "\"> " + sensor["value"] + "</h1>\n" +
-        "                                <p class='widget-measure'>" + widget["measure"] + "</p>\n" +
+        "                               "  + getWidgetBodyHtml(widget, sensor) +
         "                            </td>\n" +
         "                        </tr>\n" +
         "                        <tr>\n" +
         "                            <td class=\"widget-icon-wrap\">\n" +
         "                            </td>\n" +
-        "                            <td class=\"widget-keyword\">" + sensor["name"] + "</td>\n" +
+        "                            <td class=\"widget-keyword\">" + widget["keyWard"] + "</td>\n" +
         "                            <td class=\"widget-config-wrap\">\n" +
         "                                <img class='widget-config-button' style='background: " + configColor + "' src=\"./resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
         "onmouseout=\"this.style.backgroundColor='" +  configColor+ "'\">\n" +
@@ -215,6 +204,23 @@ function addWidget(widget, sensor) {
 
     memWidget(widget);
     refreshWidgetHandlers();
+}
+
+function getWidgetBodyHtml(widget, sensor) {
+    var valueColor = getValueColorString(widget["color"]);
+    var widgetBodyHtml;
+    switch (widget["type"]) {
+        case 0 :
+            widgetBodyHtml = "<h1 style=\"color: " + valueColor + "\"> " + sensor["value"] + "</h1>\n" +
+                "                                <p class='widget-measure'>" + widget["measure"] + "</p>";
+            break;
+        case 1 :
+            widgetBodyHtml = "<img class='toggle_button' src='./resources/images/toggleButton.png'>";
+            break;
+
+    }
+
+    return widgetBodyHtml;
 }
 
 function memWidget(widget) {

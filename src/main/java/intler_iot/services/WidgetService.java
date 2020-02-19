@@ -107,6 +107,7 @@ public class WidgetService {
                     widgetData = new WidgetData(widget, sensor);
                     break;
                 }
+                widgetData = new WidgetData(widget, null);
             }
             if (widgetData != null)
                 widgetsData.add(widgetData);
