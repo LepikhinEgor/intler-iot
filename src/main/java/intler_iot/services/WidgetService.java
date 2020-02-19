@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -110,6 +111,8 @@ public class WidgetService {
             if (widgetData != null)
                 widgetsData.add(widgetData);
         }
+
+        widgetsData.sort(Comparator.comparingLong((WidgetData wd) -> wd.getWidget().getId()));
         return widgetsData;
     }
 }
