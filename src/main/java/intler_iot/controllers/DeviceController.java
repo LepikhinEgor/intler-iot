@@ -49,7 +49,7 @@ public class DeviceController {
                     sensorsData.getPassword());
             cloudOrderService.markOldOrdersAsRemoved(sensorsData);
         } catch (Exception e) {
-            System.err.println(e);
+            logger.error(e.getMessage(), e);
         }
 
         return orders;

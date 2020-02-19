@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
@@ -19,6 +20,13 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private UserDao userDao;
+
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setUserDao(UserDao userDao) {
@@ -32,16 +40,21 @@ public class UserService {
     }
 
     public User authUser(String login, String password) throws NotAuthException{
-        User user;
         try {
-            user = userDao.getByLoginPassword(login, password);
+            User user = userDao.getByLogin(login);
+
+            boolean passwordsMatches = passwordEncoder.matches(password, user.getPassword());
+
+            if (passwordsMatches)
+                return user;
+            else
+                throw new NotAuthException("Login and passwords not matches");
         } catch (NoResultException e) {
-            throw new NotAuthException("Login and email not match");
+            throw new NotAuthException("Login not found");
         }
         catch (Exception e) {
             throw new NotAuthException(e);
         }
-        return user;
     }
 
     public RegistrationMessage registerUser(User user) {
