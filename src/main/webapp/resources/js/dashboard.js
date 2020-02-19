@@ -97,11 +97,14 @@ function openModalWindow() {
 
     var optionColor = getOptionColor(widgetObj["color"]);
     var icon = getIconOption(widgetObj["icon"]);
+    var keyWard = widgetObj["keyWard"];
 
     $(".input_widget_name").val(name);
     $(".input_widget_measure").val(measure);
     $(".choose-color-menu").val(optionColor);
     $(".choose-icon-menu").val(icon);
+    $(".input_widget_keyward").val(keyWard);
+
     document.location.href = "#widget_modal_window";
 }
 
@@ -115,13 +118,7 @@ function applyWidgetChanges(e) {
     var optionIcon = $(".choose-icon-menu").val();
     var colorNum = getColorNum(optionColor);
     var iconNum = getIconNum(optionIcon);
-    var keyWard;
-
-    for (var widgetVal in widgets) {
-        if (widgets[widgetVal]["id"] == id) {
-            keyWard = widgets[widgetVal]["keyWard"];
-        }
-    }
+    var keyWard = $(".input_widget_keyward").val();
 
     var widgetData = {
         id: id,
@@ -211,7 +208,12 @@ function getWidgetBodyHtml(widget, sensor) {
     var widgetBodyHtml;
     switch (widget["type"]) {
         case 0 :
-            widgetBodyHtml = "<h1 style=\"color: " + valueColor + "\"> " + sensor["value"] + "</h1>\n" +
+            let val;
+            if (sensor == null)
+                val = "?";
+            else
+                val = sensor["value"];
+            widgetBodyHtml = "<h1 style=\"color: " + valueColor + "\"> " + val + "</h1>\n" +
                 "                                <p class='widget-measure'>" + widget["measure"] + "</p>";
             break;
         case 1 :

@@ -15,6 +15,8 @@
                 <input type="text" class="input_widget_name">
                 <p class="modal-field-name">Мера:</p>
                 <input type="text" class="input_widget_measure">
+                <p class="modal-field-name">Ключевое слово:</p>
+                <input type="text" class="input_widget_keyward">
                 <table class="widget-custom-ui">
                     <tr>
                         <td><span class="modal-field-name">Цвет:</span></td>
