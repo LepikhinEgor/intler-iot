@@ -82,9 +82,10 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
     public void markRemoved(List<String> ordersName, Device device) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
+        ordersName.forEach(s -> System.out.println(s));
 
         try {
-            Query query = session.createQuery("update CloudOrder set removed = true where device = :device and name in (:names)");
+            Query query = session.createQuery("update CloudOrder set removed = true where device = :device and keyWard in (:names)");
             query.setParameter("device", device);
             query.setParameter("names", ordersName);
             query.executeUpdate();

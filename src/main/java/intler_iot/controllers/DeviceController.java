@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 public class DeviceController {
 
-    private static final Logger logger = LoggerFactory.getLogger(DeviceService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DeviceController.class);
 
     private DeviceService deviceService;
     private SensorService sensorService;
