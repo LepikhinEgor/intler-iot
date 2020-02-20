@@ -3,7 +3,7 @@ var widgetsUpdateInterval;
 function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
-    widgetsUpdateInterval = setInterval(requestWidgets, 10000);
+    widgetsUpdateInterval = setInterval(requestWidgets, 1000000);
 }
 
 var selectedWidgetId;
@@ -266,6 +266,8 @@ function addWidget(widget, sensor) {
 
 function getWidgetBodyHtml(widget, sensor) {
     var valueColor = getValueColorString(widget["color"]);
+    var configColor = getBorderColorString(widget["color"], 0.4);
+    var configActiveColor = getBorderColorString(widget["color"], 1);
     var widgetBodyHtml;
     switch (widget["type"]) {
         case 0 :
@@ -278,7 +280,11 @@ function getWidgetBodyHtml(widget, sensor) {
                 "                                <p class='widget-measure'>" + widget["measure"] + "</p>";
             break;
         case 1 :
-            widgetBodyHtml = "<img class='toggle_button' src='./resources/images/toggleButton.png'>";
+            widgetBodyHtml = "<img style='background:" + configActiveColor + "' onmouseover=\"this.style.backgroundColor = '" +  configColor+ "'\" " +
+                " onmouseout=\"this.style.backgroundColor = '" +  configActiveColor+ "'\"" +
+                " onmousedown=\"this.style.backgroundColor = '" +  configActiveColor+ "'\"" +
+                " onmouseup=\"this.style.backgroundColor = '" +  configColor+ "'\"" +
+                " class='toggle_button' src='./resources/images/toggleButton.png'>";
             break;
 
     }

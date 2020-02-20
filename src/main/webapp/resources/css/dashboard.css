@@ -253,13 +253,18 @@
     margin:0px auto;
     width: 100px;
     height: 100px;
-    background: #76ef4e;
+    /*background: #76ef4e;*/
     display:block;
     vertical-align: center;
     /*border-radius: 20px;*/
     cursor: pointer;
+    transition: 0.5s;
 }
 
 .toggle_button:hover {
-    background: #87d66d;;
+    transition: 0.2s;
+}
+
+.toggle_button:hover {
+    transition: 0.1s;
 }
