@@ -29,6 +29,7 @@ public class Widget {
         this.width = 200;
         this.height = 200;
         this.type = 0;
+        this.deviceName = sensor.getDevice().getName();
     }
 
     @Id
@@ -68,6 +69,9 @@ public class Widget {
 
     @Column(name = "type")
     private int type;
+
+    @Column(name = "deviceName")
+    private String deviceName;
 
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -155,6 +159,14 @@ public class Widget {
         this.type = type;
     }
 
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -169,12 +181,13 @@ public class Widget {
                 Objects.equals(name, widget.name) &&
                 Objects.equals(measure, widget.measure) &&
                 Objects.equals(keyWard, widget.keyWard) &&
+                Objects.equals(deviceName, widget.deviceName) &&
                 Objects.equals(user, widget.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, type, user);
+        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, type, deviceName, user);
     }
 
     @Override
@@ -189,6 +202,7 @@ public class Widget {
                 ", width=" + width +
                 ", height=" + height +
                 ", type=" + type +
+                ", deviceName='" + deviceName + '\'' +
                 ", user=" + user +
                 '}';
     }

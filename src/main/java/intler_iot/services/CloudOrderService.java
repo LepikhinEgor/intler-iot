@@ -8,6 +8,7 @@ import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.User;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -38,11 +39,11 @@ public class CloudOrderService {
     }
 
     public void recordNewOrder(OrderData orderData) throws NotAuthException {
-        User user = userService.authUser(orderData.getLogin(), orderData.getPassword());
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Device device = deviceService.getDeviceById(user, orderData.getDeviceName());
 
         CloudOrder order = new CloudOrder();
-        order.setName(orderData.getName());
+        order.setKeyWard(orderData.getKeyWard());
         order.setValue(orderData.getValue());
         order.setDevice(device);
         order.setTiming(new Timestamp(System.currentTimeMillis()));
@@ -78,7 +79,7 @@ public class CloudOrderService {
     private HashMap<String, Double> ordersToMap(List<CloudOrder> ordersList) {
         HashMap<String, Double> ordersMap = new HashMap<>();
         for (CloudOrder order: ordersList) {
-            ordersMap.put(order.getName(), order.getValue());
+            ordersMap.put(order.getKeyWard(), order.getValue());
         }
 
         return ordersMap;

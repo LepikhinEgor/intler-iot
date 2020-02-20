@@ -26,8 +26,8 @@ public class CloudOrder {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cloud_order_sequence")
     private long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "keyWard")
+    private String keyWard;
 
     @Column(name = "value")
     private double value;
@@ -53,12 +53,12 @@ public class CloudOrder {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getKeyWard() {
+        return keyWard;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setKeyWard(String keyWard) {
+        this.keyWard = keyWard;
     }
 
     public double getValue() {
@@ -110,21 +110,21 @@ public class CloudOrder {
                 Double.compare(that.value, value) == 0 &&
                 used == that.used &&
                 removed == that.removed &&
-                Objects.equals(name, that.name) &&
+                Objects.equals(keyWard, that.keyWard) &&
                 Objects.equals(timing, that.timing) &&
                 Objects.equals(device, that.device);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, value, timing, used, removed, device);
+        return Objects.hash(id, keyWard, value, timing, used, removed, device);
     }
 
     @Override
     public String toString() {
         return "CloudOrder{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", keyWard='" + keyWard + '\'' +
                 ", value=" + value +
                 ", timing=" + timing +
                 ", used=" + used +
