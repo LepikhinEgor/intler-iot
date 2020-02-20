@@ -39,6 +39,14 @@ public class WidgetService {
         this.widgetDao = widgetDao;
     }
 
+    public void createWidget(Widget widget) {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        widget.setUser(user);
+        widget.setWidth(Widget.DEFAULT_WIDTH);
+        widget.setHeight(Widget.DEFAULT_HEIGHT);
+
+        widgetDao.create(widget);
+    }
 
     public void updateWidget(Widget widget) {
         widgetDao.update(widget);

@@ -3,7 +3,7 @@ var widgetsUpdateInterval;
 function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
-    widgetsUpdateInterval = setInterval(requestWidgets, 1000000);
+    widgetsUpdateInterval = setInterval(requestWidgets, 10000);
 }
 
 var selectedWidgetId;
@@ -11,9 +11,11 @@ var selectedWidgetId;
 function refreshWidgetHandlers() {
     $(".widget-config-button").off("click");
     $(".apply_modal_widget").off('click');
+    $("#add_new_widget").off('click');
 
     $(".apply_modal_widget").on('click', applyWidgetChanges);
-    $(".widget-config-button").on("click", openModalWindow);
+    $(".widget-config-button").on("click", updateWidgetAction);
+    $("#add_new_widget").on('click', createWidgetAction);
 
     $(".widget").resizable({containment:'.widgets-wrap', handles:'e,s'});
     $(".widget").resizable( "option", "minHeight", 200 );
@@ -79,8 +81,27 @@ function requestChangeWidgetSize() {
     });
 }
 
-function openModalWindow() {
-    var widget =$(this).closest(".widget");
+var createWidget;
+
+function updateWidgetAction() {
+    createWidget = false;
+    openModalWindow($(this));
+}
+
+function createWidgetAction() {
+    createWidget = true;
+    openModalWindow($(this));
+}
+
+function openModalWindow(widgetThis) {
+    if (createWidget)
+        openModalWindowCreate(widgetThis);
+    else
+        openModalWindowUpdate(widgetThis);
+}
+
+function openModalWindowUpdate(widgetThis) {
+    var widget =widgetThis.closest(".widget");
     var id = widget.attr("id")
     var name = widget.find(".widget-name").find("span").html();
     var keyward = widget.find(".widget-keyword").html();
@@ -95,15 +116,34 @@ function openModalWindow() {
         }
     }
 
+    console.log(selectedWidgetId);
     var optionColor = getOptionColor(widgetObj["color"]);
     var icon = getIconOption(widgetObj["icon"]);
     var keyWard = widgetObj["keyWard"];
+    var type = widgetObj["type"];
+    console.log(type);
 
     $(".input_widget_name").val(name);
     $(".input_widget_measure").val(measure);
     $(".choose-color-menu").val(optionColor);
     $(".choose-icon-menu").val(icon);
     $(".input_widget_keyward").val(keyWard);
+    $(".choose-type-menu option[value = " + type + "]").attr("selected",true);
+    $(".choose-type-menu option[value != " + type + "]").attr("selected",false);
+
+    document.location.href = "#widget_modal_window";
+}
+
+function openModalWindowCreate() {
+
+    var optionColor = getOptionColor(0);
+    var icon = getIconOption(0);
+
+    $(".input_widget_name").val("");
+    $(".input_widget_measure").val("");
+    $(".choose-color-menu").val(optionColor);
+    $(".choose-icon-menu").val(icon);
+    $(".input_widget_keyward").val("");
 
     document.location.href = "#widget_modal_window";
 }
@@ -121,8 +161,6 @@ function applyWidgetChanges(e) {
     var iconNum = getIconNum(optionIcon);
     var keyWard = $(".input_widget_keyward").val();
 
-    console.log(optionType + " type fgfg");
-
     var widgetData = {
         id: id,
         name: name,
@@ -133,7 +171,26 @@ function applyWidgetChanges(e) {
         type:optionType
     };
 
-    updateWidgetData(widgetData);
+    if (createWidget)
+        createWidgetData(widgetData)
+    else
+        updateWidgetData(widgetData);
+}
+
+function createWidgetData(widgetData) {
+    delete widgetData["id"];
+    console.log(widgetData);
+
+    $.ajax({
+        type: "POST",
+        url: "console/dashboard/create-widget",
+        contentType: 'application/json',
+        data: JSON.stringify(widgetData),
+        success: function(data) {
+            document.location.href = "#";
+            requestWidgets();
+        }
+    });
 }
 
 function updateWidgetData(widgetData) {

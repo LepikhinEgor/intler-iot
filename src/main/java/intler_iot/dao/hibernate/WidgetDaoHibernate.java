@@ -65,22 +65,35 @@ public class WidgetDaoHibernate extends WidgetDao {
         }
     }
 
+    public void create(Widget widget) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.save(widget);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw e;
+        }
+    }
+
     @Override
     public void update(Widget widget) {
         Session session = sessionFactory.getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-        Widget oldWidget = session.get(Widget.class, widget.getId());
-        oldWidget.setName(widget.getName());
-        oldWidget.setColor(widget.getColor());
-        oldWidget.setMeasure(widget.getMeasure());
-        oldWidget.setKeyWard(widget.getKeyWard());
-        oldWidget.setIcon(widget.getIcon());
-        oldWidget.setType(widget.getType());
+            Widget oldWidget = session.get(Widget.class, widget.getId());
+            oldWidget.setName(widget.getName());
+            oldWidget.setColor(widget.getColor());
+            oldWidget.setMeasure(widget.getMeasure());
+            oldWidget.setKeyWard(widget.getKeyWard());
+            oldWidget.setIcon(widget.getIcon());
+            oldWidget.setType(widget.getType());
 
-        session.save(oldWidget);
+            session.save(oldWidget);
 
-        tx.commit();
+            tx.commit();
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             tx.rollback();

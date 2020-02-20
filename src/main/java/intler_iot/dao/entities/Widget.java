@@ -11,8 +11,8 @@ import java.util.Objects;
 @Table(name = "widgets")
 public class Widget {
 
-    private static final int DEFAULT_WIDTH = 200;
-    private static final int DEFAULT_HEIGHT = 200;
+    public static final int DEFAULT_WIDTH = 200;
+    public static final int DEFAULT_HEIGHT = 200;
 
     private static final int TYPE_TEXT = 0;
     private static final int TYPE_BUTTON = 1;

@@ -55,6 +55,12 @@ public class DashboardController {
         widgetService.updateWidget(widget);
     }
 
+    @PostMapping("console/dashboard/create-widget")
+    @ResponseBody
+    public void createWidget(@RequestBody Widget widget) {
+        widgetService.createWidget(widget);
+    }
+
     @PostMapping("console/dashboard/update-widgets-size")
     @ResponseBody
     public void updateWidgetsSize(@RequestBody List<WidgetSize> widgetsSize) {
