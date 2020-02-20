@@ -41,6 +41,7 @@ function toggleButtonAction() {
     }
 
     var keyWard = widgetObj["keyWard"];
+    var deviceName = widgetObj["deviceName"];
     var value;
 
     if ($(this).attr("src") === "./resources/images/toggleButtonOff.png") {
@@ -52,14 +53,15 @@ function toggleButtonAction() {
         value = 0;
     }
 
-    sendCloudOrder(keyWard, value);
+    sendCloudOrder(keyWard, value, deviceName);
 
 }
 
-function sendCloudOrder(keyWard, value) {
+function sendCloudOrder(keyWard, value, deviceName) {
     var cloudOrder = {
         keyWard:keyWard,
-        value: value
+        value: value,
+        deviceName: deviceName
     }
 
     $.ajax({
@@ -68,7 +70,7 @@ function sendCloudOrder(keyWard, value) {
         contentType: 'application/json',
         data: JSON.stringify(cloudOrder),
         success: function(data) {
-            widgetsSize = [];
+            console.log("success");
         }
     });
 }
@@ -152,18 +154,18 @@ function openModalWindowUpdate(widgetThis) {
         }
     }
 
-    console.log(selectedWidgetId);
     var optionColor = getOptionColor(widgetObj["color"]);
     var icon = getIconOption(widgetObj["icon"]);
     var keyWard = widgetObj["keyWard"];
     var type = widgetObj["type"];
-    console.log(type);
+    var deviceName = widgetObj["deviceName"];
 
     $(".input_widget_name").val(name);
     $(".input_widget_measure").val(measure);
     $(".choose-color-menu").val(optionColor);
     $(".choose-icon-menu").val(icon);
     $(".input_widget_keyward").val(keyWard);
+    $(".input_widget_deviceName").val(deviceName);
     $(".choose-type-menu option[value = " + type + "]").attr("selected",true);
     $(".choose-type-menu option[value != " + type + "]").attr("selected",false);
 
@@ -180,6 +182,7 @@ function openModalWindowCreate() {
     $(".choose-color-menu").val(optionColor);
     $(".choose-icon-menu").val(icon);
     $(".input_widget_keyward").val("");
+    $(".input_widget_deviceName").val("");
 
     document.location.href = "#widget_modal_window";
 }
@@ -196,6 +199,7 @@ function applyWidgetChanges(e) {
     var colorNum = getColorNum(optionColor);
     var iconNum = getIconNum(optionIcon);
     var keyWard = $(".input_widget_keyward").val();
+    var deviceName = $(".input_widget_deviceName").val();
 
     var widgetData = {
         id: id,
@@ -204,7 +208,8 @@ function applyWidgetChanges(e) {
         measure: measure,
         keyWard: keyWard,
         icon:iconNum,
-        type:optionType
+        type:optionType,
+        deviceName: deviceName
     };
 
     if (createWidget)

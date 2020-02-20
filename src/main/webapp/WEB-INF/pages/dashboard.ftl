@@ -17,6 +17,8 @@
                 <input type="text" class="input_widget_measure">
                 <p class="modal-field-name">Ключевое слово:</p>
                 <input type="text" class="input_widget_keyward">
+                <p class="modal-field-name">Устройство:</p>
+                <input type="text" class="input_widget_deviceName">
                 <p class="modal-field-name">Тип:</p>
                 <select class="choose-type-menu">
                     <option value="0">Цифра</option>
