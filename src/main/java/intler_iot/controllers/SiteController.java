@@ -18,7 +18,7 @@ public class SiteController {
         this.cloudOrderService = cloudOrderService;
     }
 
-    @PostMapping("record-cloud-order")
+    @PostMapping("console/dashboard/record-cloud-order")
     public RestResponce getCloudOrder(@RequestBody OrderData orderData) {
         try {
             cloudOrderService.recordNewOrder(orderData);

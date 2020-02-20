@@ -12,10 +12,12 @@ function refreshWidgetHandlers() {
     $(".widget-config-button").off("click");
     $(".apply_modal_widget").off('click');
     $("#add_new_widget").off('click');
+    $(".toggle_button").off('click',);
 
     $(".apply_modal_widget").on('click', applyWidgetChanges);
     $(".widget-config-button").on("click", updateWidgetAction);
     $("#add_new_widget").on('click', createWidgetAction);
+    $(".toggle_button").on('click', toggleButtonAction);
 
     $(".widget").resizable({containment:'.widgets-wrap', handles:'e,s'});
     $(".widget").resizable( "option", "minHeight", 200 );
@@ -26,15 +28,49 @@ function refreshWidgetHandlers() {
     // $(".widget").draggable();
 }
 
-function setWidgetsDefaultSize(event,ui) {
-    console.log("created");
-    let id = $(this).attr("id");
-    for (var widgetSizeEl in widgetsSize) {
-        if (widgetsSize[widgetSizeEl]["id"] == id) {
-            ui.size.width = widgetsSize[widgetSizeEl]["width"];
-            ui.size.height = widgetsSize[widgetSizeEl]["height"];
+
+function toggleButtonAction() {
+    var widget = $(this).closest(".widget");
+    var id = widget.attr("id");
+
+    var widgetObj;
+    for (var widgetVal in widgets) {
+        if (widgets[widgetVal]["id"] == id) {
+            widgetObj = widgets[widgetVal];
         }
     }
+
+    var keyWard = widgetObj["keyWard"];
+    var value;
+
+    if ($(this).attr("src") === "./resources/images/toggleButtonOff.png") {
+        $(this).attr("src","./resources/images/toggleButtonOn.png");
+        value = 1;
+    }
+    else {
+        $(this).attr("src","./resources/images/toggleButtonOff.png");
+        value = 0;
+    }
+
+    sendCloudOrder(keyWard, value);
+
+}
+
+function sendCloudOrder(keyWard, value) {
+    var cloudOrder = {
+        keyWard:keyWard,
+        value: value
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "console/dashboard/record-cloud-order",
+        contentType: 'application/json',
+        data: JSON.stringify(cloudOrder),
+        success: function(data) {
+            widgetsSize = [];
+        }
+    });
 }
 
 var widgetsSize = [];
@@ -267,7 +303,12 @@ function addWidget(widget, sensor) {
 function getWidgetBodyHtml(widget, sensor) {
     var valueColor = getValueColorString(widget["color"]);
     var configColor = getBorderColorString(widget["color"], 0.4);
-    var configActiveColor = getBorderColorString(widget["color"], 1);
+    var configActiveColor = getBorderColorString(widget["color"], 0.8);
+    var imagePath;
+    if (sensor != null && sensor["value"] != 0)
+        imagePath = "./resources/images/toggleButtonOn.png";
+    else
+        imagePath = "./resources/images/toggleButtonOff.png";
     var widgetBodyHtml;
     switch (widget["type"]) {
         case 0 :
@@ -284,7 +325,7 @@ function getWidgetBodyHtml(widget, sensor) {
                 " onmouseout=\"this.style.backgroundColor = '" +  configActiveColor+ "'\"" +
                 " onmousedown=\"this.style.backgroundColor = '" +  configActiveColor+ "'\"" +
                 " onmouseup=\"this.style.backgroundColor = '" +  configColor+ "'\"" +
-                " class='toggle_button' src='./resources/images/toggleButton.png'>";
+                " class='toggle_button' src='./resources/images/toggleButtonOff.png'>";
             break;
 
     }
