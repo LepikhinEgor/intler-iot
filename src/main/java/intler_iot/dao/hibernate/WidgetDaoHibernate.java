@@ -91,6 +91,8 @@ public class WidgetDaoHibernate extends WidgetDao {
             oldWidget.setIcon(widget.getIcon());
             oldWidget.setType(widget.getType());
             oldWidget.setDeviceName(widget.getDeviceName());
+            oldWidget.setMaxValue(widget.getMaxValue());
+            oldWidget.setMinValue(widget.getMinValue());
 
             session.save(oldWidget);
 

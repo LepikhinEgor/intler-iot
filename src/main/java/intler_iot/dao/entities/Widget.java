@@ -30,6 +30,8 @@ public class Widget {
         this.height = 200;
         this.type = 0;
         this.deviceName = sensor.getDevice().getName();
+        this.minValue = 0;
+        this.maxValue = 100;
     }
 
     @Id
@@ -73,6 +75,12 @@ public class Widget {
     @Column(name = "deviceName")
     private String deviceName;
 
+    @Column(name = "maxValue")
+    private int maxValue;
+
+    @Column(name = "minValue")
+    private int minValue;
+
     @JsonIgnore
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -101,7 +109,6 @@ public class Widget {
     public void setColor(int color) {
         this.color = color;
     }
-
 
     public User getUser() {
         return user;
@@ -167,6 +174,22 @@ public class Widget {
         this.deviceName = deviceName;
     }
 
+    public int getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
+    }
+
+    public int getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -178,6 +201,8 @@ public class Widget {
                 width == widget.width &&
                 height == widget.height &&
                 type == widget.type &&
+                maxValue == widget.maxValue &&
+                minValue == widget.minValue &&
                 Objects.equals(name, widget.name) &&
                 Objects.equals(measure, widget.measure) &&
                 Objects.equals(keyWard, widget.keyWard) &&
@@ -187,7 +212,7 @@ public class Widget {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, type, deviceName, user);
+        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, type, deviceName, maxValue, minValue, user);
     }
 
     @Override
@@ -203,6 +228,8 @@ public class Widget {
                 ", height=" + height +
                 ", type=" + type +
                 ", deviceName='" + deviceName + '\'' +
+                ", maxValue=" + maxValue +
+                ", minValue=" + minValue +
                 ", user=" + user +
                 '}';
     }
