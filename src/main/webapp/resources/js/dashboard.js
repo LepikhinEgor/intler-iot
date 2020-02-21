@@ -347,7 +347,12 @@ function getWidgetBodyHtml(widget, sensor) {
                 " class='toggle_button' src='./resources/images/toggleButtonOff.png'>";
             break;
         case 2 :
-            widgetBodyHtml = "<p class='slider_value_text' style=\"color: " + valueColor + "\">228</p>" +
+            var sliderVal;
+            if (sensor == null)
+                sliderVal = widget["minValue"]/2 + widget["maxValue"]/2;
+            else
+                sliderVal = sensor["value"];
+            widgetBodyHtml = "<p class='slider_value_text' style=\"color: " + valueColor + "\">" + sliderVal + "</p>" +
                 "<div class='slider'></div>" +
                 "<p class='widget-measure'>" + widget["measure"] + "</p>";
             break;
