@@ -28,8 +28,13 @@ function refreshWidgetHandlers() {
     // $(".widget").draggable();
 }
 
-
+var toggleButtonLock = false;
 function toggleButtonAction() {
+    if (toggleButtonLock)
+        return;
+    else
+        toggleButtonLock = true;
+
     var widget = $(this).closest(".widget");
     var id = widget.attr("id");
 
@@ -43,21 +48,19 @@ function toggleButtonAction() {
     var keyWard = widgetObj["keyWard"];
     var deviceName = widgetObj["deviceName"];
     var value;
-
     if ($(this).attr("src") === "./resources/images/toggleButtonOff.png") {
-        $(this).attr("src","./resources/images/toggleButtonOn.png");
         value = 1;
     }
     else {
-        $(this).attr("src","./resources/images/toggleButtonOff.png");
         value = 0;
     }
 
-    sendCloudOrder(keyWard, value, deviceName);
+
+    sendCloudOrder(keyWard, value, deviceName, $(this));
 
 }
 
-function sendCloudOrder(keyWard, value, deviceName) {
+function sendCloudOrder(keyWard, value, deviceName, button) {
     var cloudOrder = {
         keyWard:keyWard,
         value: value,
@@ -70,7 +73,15 @@ function sendCloudOrder(keyWard, value, deviceName) {
         contentType: 'application/json',
         data: JSON.stringify(cloudOrder),
         success: function(data) {
-            console.log("success");
+            if (button.attr("src") === "./resources/images/toggleButtonOff.png") {
+                button.attr("src","./resources/images/toggleButtonOn.png");
+            }
+            else {
+                button.attr("src","./resources/images/toggleButtonOff.png");
+            }
+        },
+        complete: function () {
+            toggleButtonLock = false;
         }
     });
 }
@@ -107,7 +118,6 @@ function sendNewWidgetSize(event,ui) {
 }
 
 function requestChangeWidgetSize() {
-    console.log(widgetsSize);
     $.ajax({
         type: "POST",
         url: "console/dashboard/update-widgets-size",

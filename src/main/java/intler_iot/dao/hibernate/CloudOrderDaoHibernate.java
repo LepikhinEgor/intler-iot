@@ -34,14 +34,11 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
 
             CloudOrder oldOrder = (CloudOrder)getOldOrder.uniqueResult();
             if (oldOrder != null) {
-                System.out.println("old order " + oldOrder.toString());
                 oldOrder.setValue(order.getValue());
                 session.update(oldOrder);
             } else {
                 session.save(order);
             }
-
-            session.save(order);
 
             transaction.commit();
         } catch (Exception e) {
