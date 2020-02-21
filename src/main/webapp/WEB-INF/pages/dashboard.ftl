@@ -23,6 +23,7 @@
                 <select class="choose-type-menu">
                     <option value="0">Цифра</option>
                     <option value="1">Переключатель</option>
+                    <option value="2">Слайдер</option>
                 </select>
                 <table class="widget-custom-ui">
                     <tr>

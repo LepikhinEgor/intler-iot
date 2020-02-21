@@ -5,7 +5,7 @@
     /*overflow: auto;*/
 }
 
-.widget {
+.widget, .widgetf {
     min-width: 200px;
     min-height: 200px;
     /*width: 200px;*/
@@ -267,4 +267,9 @@
 
 .toggle_button:hover {
     transition: 0.1s;
+}
+
+.slider {
+    margin: 5px 20px;
+    /*width: 80%;*/
 }

@@ -24,6 +24,8 @@ function refreshWidgetHandlers() {
     $(".widget").resizable( "option", "minWidth", 200 );
 
     $(".widget").resizable({stop:sendNewWidgetSize});
+
+    $( ".slider" ).slider();
     // $(".widget").resizable({create:setWidgetsDefaultSize});
     // $(".widget").draggable();
 }
@@ -341,6 +343,11 @@ function getWidgetBodyHtml(widget, sensor) {
                 " onmousedown=\"this.style.backgroundColor = '" +  configActiveColor+ "'\"" +
                 " onmouseup=\"this.style.backgroundColor = '" +  configColor+ "'\"" +
                 " class='toggle_button' src='./resources/images/toggleButtonOff.png'>";
+            break;
+        case 2 :
+            widgetBodyHtml = "<p class='slider_value_text' style=\"color: " + valueColor + "\">228</p>" +
+                "<div class='slider'></div>" +
+                "<p class='widget-measure'>" + widget["measure"] + "</p>";
             break;
 
     }
