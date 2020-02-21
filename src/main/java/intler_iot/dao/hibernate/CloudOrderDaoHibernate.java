@@ -28,6 +28,19 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
         Transaction transaction = session.beginTransaction();
 
         try {
+            Query getOldOrder = session.createQuery("from CloudOrder where keyWard = :keyWord and used != true and device = :device order by id").setMaxResults(1);
+            getOldOrder.setParameter("keyWord", order.getKeyWard());
+            getOldOrder.setParameter("device", order.getDevice());
+
+            CloudOrder oldOrder = (CloudOrder)getOldOrder.uniqueResult();
+            if (oldOrder != null) {
+                System.out.println("old order " + oldOrder.toString());
+                oldOrder.setValue(order.getValue());
+                session.update(oldOrder);
+            } else {
+                session.save(order);
+            }
+
             session.save(order);
 
             transaction.commit();
