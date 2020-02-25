@@ -13,9 +13,12 @@ public class Widget {
 
     public static final int DEFAULT_WIDTH = 200;
     public static final int DEFAULT_HEIGHT = 200;
+    public static final int DEFAULT_MAX_VALUE = 100;
+    public static final int DEFAULT_MIN_VALUE = 0;
 
     private static final int TYPE_TEXT = 0;
     private static final int TYPE_BUTTON = 1;
+    private static final int TYPE_SLIDER = 2;
 
     public Widget() {
         super();
@@ -26,12 +29,12 @@ public class Widget {
         this.keyWard = sensor.getName();
         this.name = sensor.getName();
         this.user = sensor.getDevice().getOwner();
-        this.width = 200;
-        this.height = 200;
-        this.type = 0;
+        this.width = DEFAULT_WIDTH;
+        this.height = DEFAULT_HEIGHT;
+        this.type = TYPE_TEXT;
         this.deviceName = sensor.getDevice().getName();
-        this.minValue = 0;
-        this.maxValue = 100;
+        this.minValue = DEFAULT_MIN_VALUE;
+        this.maxValue = DEFAULT_MAX_VALUE;
     }
 
     @Id
