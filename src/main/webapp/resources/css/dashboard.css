@@ -128,7 +128,7 @@
 }
 
 #widget_window {
-    width: 350px;
+    width: 460px;
     height: 370px;
 }
 
@@ -171,17 +171,22 @@
 
 .modal-field-name {
     margin: 5px 0px 2px 0px;
-
 }
 
 #widget_window_content {
     margin: 0px auto;
-    width: 65%;
+    width: 90%;
 }
 
 .modal_buttons {
     margin: 12px auto;
     text-align: center;
+    width: 100%;
+    position: absolute;
+    top:80%;
+    left: 0;
+    right: 0;
+    bottom: 100%;
 }
 
 .choose-color-menu, .choose-icon-menu, .choose-type-menu {
@@ -191,11 +196,16 @@
     border: 1px solid #383838;
     height: 30px;
     color: #ccc;
-    padding: 0px 0px;
+    /*padding: 0px 15px;*/
+    padding-left: 5px;
     vertical-align: top;
 }
+
+#input-widget-minValue-wrap, #input-widget-maxValue-wrap {
+    display: none;
+}
 .choose-type-menu {
-    width: 97%;
+    width: 100%;
 }
 
 .choose-color-menu:focus, .choose-icon-menu:focus {
@@ -272,4 +282,11 @@
 .slider {
     margin: 5px 20px;
     /*width: 80%;*/
+}
+
+.input-field-wrap {
+    float: left;
+    width:200px;
+    height: 55px;
+    margin: 2px 3px;
 }

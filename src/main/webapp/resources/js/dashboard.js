@@ -4,6 +4,7 @@ function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
     widgetsUpdateInterval = setInterval(requestWidgets, 1000000);
+    refreshWidgetHandlers();
 }
 
 var selectedWidgetId;
