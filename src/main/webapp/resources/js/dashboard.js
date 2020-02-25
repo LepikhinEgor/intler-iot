@@ -3,11 +3,12 @@ var widgetsUpdateInterval;
 function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
-    widgetsUpdateInterval = setInterval(requestWidgets, 10000);
     refreshWidgetHandlers();
 }
 
 var selectedWidgetId;
+
+var WIDGET_UPDATE_TIMEOUT = 10000;
 
 function refreshWidgetHandlers() {
     $(".widget-config-button").off("click");
@@ -313,8 +314,55 @@ function requestWidgets() {
                 let sensor = data[widget_num]["sensor"];
                 addWidget(widget, sensor);
             }
+            clearInterval(widgetsUpdateInterval);
+            widgetsUpdateInterval = setInterval(requestUpdateWidgets, WIDGET_UPDATE_TIMEOUT);
         }
     });
+}
+
+function requestUpdateWidgets() {
+    $.ajax({
+        type: "GET",
+        url: "/intler_iot_war_exploded/console/dashboard/get-widgets",
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+            for (var widget_num in data) {
+                let widget = data[widget_num]["widget"];
+
+                let sensor = data[widget_num]["sensor"];
+                updateWidget(widget, sensor);
+            }
+        }
+    });
+}
+
+function updateWidget(widget, sensor)  {
+    var borderColor = getBorderColorString(widget["color"], 0.3);
+    var valueColor = getValueColorString(widget["color"]);
+    var configColor = getBorderColorString(widget["color"], 0.4);
+    var configActiveColor = getBorderColorString(widget["color"], 1);
+    var iconStr = getIconStr(widget["icon"]);
+
+    var widgetObj = $("#" + widget["id"]);
+    widgetObj.css("border: 1px solid " + borderColor + "; border-radius: 2px;");
+    if (!sizeUpdating) {
+        widgetObj.css("width: " + widget["width"] + "px; height: " +widget["height"] + "px;");
+    }
+    widgetObj.find(".widget-icon").attr("src", iconStr);
+    widgetObj.find(".widget-name span").html(widget["name"]);
+    // widgetObj.find(".widget-content").html(getWidgetBodyHtml(widget, sensor));
+    updateWidgetBody(widget, sensor);
+    widgetObj.find(".widget-keyword").html(widget["keyWard"]);
+    widgetObj.find(".widget-config-button").css("background: " + configColor + ";");
+    widgetObj.find(".widget-config-button").attr("onmouseover", "this.style.backgroundColor='" +  configActiveColor+ "'");
+    widgetObj.find(".widget-config-button").attr("onmouseout", "this.style.backgroundColor='" +  configColor+ "'");
+
+    if (widget["type"] == 2)
+        sliderInit(widget, sensor);
+
+    memWidget(widget);
+    refreshWidgetHandlers();
 }
 
 function addWidget(widget, sensor) {
@@ -355,6 +403,57 @@ function addWidget(widget, sensor) {
     refreshWidgetHandlers();
 }
 
+function updateWidgetBody(widget, sensor) {
+    var valueColor = getValueColorString(widget["color"]);
+    var configColor = getBorderColorString(widget["color"], 0.4);
+    var configActiveColor = getBorderColorString(widget["color"], 0.8);
+    var imagePath;
+    if (sensor != null && sensor["value"] != 0)
+        imagePath = "./resources/images/toggleButtonOn.png";
+    else
+        imagePath = "./resources/images/toggleButtonOff.png";
+
+    var widgetObj = $(".widget[id = " + widget["id"] +"]");
+    switch (widget["type"]) {
+    case 0 :
+        let val;
+        val = sensor ==null? "?": sensor["value"];
+
+        widgetObj.find(".widget-content h1").css("color: " + valueColor);
+        widgetObj.find(".widget-content h1").html(val);
+        widgetObj.find(".widget-content").find(".widget-measure").html(widget["measure"]);
+        break;
+    case 1 :
+        let buttonImg = widgetObj.find(".toggle_button_img");
+        let oldImg = buttonImg.attr("src");
+        if (oldImg != imagePath)
+            widgetObj.find(".toggle_button").attr("src",imagePath);
+        buttonImg.css("background:" + configActiveColor);
+        buttonImg.attr("onmouseover", "this.style.backgroundColor = '" +  configColor+ "'");
+        buttonImg.attr("onmousedown", "this.style.backgroundColor = '" +  configActiveColor+ "'");
+        buttonImg.attr("onmouseup", "this.style.backgroundColor = '" +  configColor+ "'");
+        break;
+    case 2 :
+        var minVal = +widget["minValue"];
+        var maxVal = +widget["maxValue"];
+        var value;
+
+        if (sensor == null)
+            value = (minVal + maxVal) /2;
+        else {
+            value = sensor["value"];
+            if (value < minVal)
+                value = minVal;
+            if (value > maxVal)
+                value = maxVal;
+        }
+        var slider = widgetObj.find( ".slider" );
+        slider.slider({min:minVal, max:maxVal, value:value, step:0.1, animate: "fast"});
+        break;
+    }
+
+}
+
 function getWidgetBodyHtml(widget, sensor) {
     var valueColor = getValueColorString(widget["color"]);
     var configColor = getBorderColorString(widget["color"], 0.4);
@@ -380,7 +479,7 @@ function getWidgetBodyHtml(widget, sensor) {
                 " onmouseout=\"this.style.backgroundColor = '" +  configActiveColor+ "'\"" +
                 " onmousedown=\"this.style.backgroundColor = '" +  configActiveColor+ "'\"" +
                 " onmouseup=\"this.style.backgroundColor = '" +  configColor+ "'\"" +
-                " class='toggle_button' src='./resources/images/toggleButtonOff.png'>";
+                " class='toggle_button' src='" + imagePath +"'>";
             break;
         case 2 :
             var sliderVal;
@@ -415,7 +514,7 @@ function sliderInit(widget, sensor) {
     var slider = $('.widget[id = ' + widget["id"] + ']').find( ".slider" );
     slider.slider({min:minVal, max:maxVal, value:value, step:0.1, animate: "fast"});
     slider.slider({slide:sliderMovedAction});
-    slider.slider({change:sliderValChangeAction});
+    slider.slider({stop:sliderValChangeAction});
 }
 
 function sliderMovedAction(event, ui) {
