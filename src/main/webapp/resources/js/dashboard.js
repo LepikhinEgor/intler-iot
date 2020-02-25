@@ -3,7 +3,7 @@ var widgetsUpdateInterval;
 function dashboardPageStart() {
     clearInterval(widgetsUpdateInterval);
     requestWidgets();
-    widgetsUpdateInterval = setInterval(requestWidgets, 1000000);
+    widgetsUpdateInterval = setInterval(requestWidgets, 10000);
     refreshWidgetHandlers();
 }
 
@@ -91,9 +91,14 @@ function sendCloudOrderButton(keyWard, value, deviceName, button) {
 
 var widgetsSize = [];
 var widgetSizeTimeout;
-function sendNewWidgetSize(event,ui) {
+var sizeUpdating = false;
+function widgetSizeChanged() {
+    sizeUpdating = true;
     clearTimeout(widgetSizeTimeout);
+    widgetSizeTimeout = setTimeout(new function() {sizeUpdating = false}, 500);
+}
 
+function sendNewWidgetSize(event,ui) {
     let id = $(this).attr("id");
     let width = ui.size.width;
     let height = ui.size.height;
@@ -117,7 +122,7 @@ function sendNewWidgetSize(event,ui) {
         }
         widgetsSize.push(widgetSize);
     }
-    widgetSizeTimeout = setTimeout(requestChangeWidgetSize, 5000);
+    requestChangeWidgetSize();
 }
 
 function requestChangeWidgetSize() {
@@ -400,10 +405,14 @@ function sliderInit(widget, sensor) {
 
     if (sensor == null)
         value = (minVal + maxVal) /2;
-    else
+    else {
         value = sensor["value"];
+        if (value < minVal)
+            value = minVal;
+        if (value > maxVal)
+            value = maxVal;
+    }
     var slider = $('.widget[id = ' + widget["id"] + ']').find( ".slider" );
-    console.log(minVal + " " + maxVal + " " + value);
     slider.slider({min:minVal, max:maxVal, value:value, step:0.1, animate: "fast"});
     slider.slider({slide:sliderMovedAction});
     slider.slider({change:sliderValChangeAction});
