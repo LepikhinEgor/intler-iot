@@ -110,15 +110,16 @@ public class WidgetService {
         List<WidgetData> widgetsData = new ArrayList<>();
         for (Widget widget: widgets) {
             WidgetData widgetData = null;
+            Sensor matchedSensor = null;
             for (Sensor sensor : lastSensors) {
                 if (widget.getKeyWard().equals(sensor.getName())) {
-                    widgetData = new WidgetData(widget, sensor);
+                    matchedSensor = sensor;
                     break;
                 }
-                widgetData = new WidgetData(widget, null);
             }
-            if (widgetData != null)
-                widgetsData.add(widgetData);
+            widgetData = new WidgetData(widget, matchedSensor);
+
+            widgetsData.add(widgetData);
         }
 
         widgetsData.sort(Comparator.comparingLong((WidgetData wd) -> wd.getWidget().getId()));

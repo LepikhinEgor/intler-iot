@@ -19,12 +19,13 @@ h2 {
 }
 
 input[type="text"] {
-	width: 100%;
+	width: 193px;
 	background-color: #575b67;
 	border: 1px solid #383838;
 	height: 30px;
 	color: #ccc;
-	padding: 0px;
+	/*padding: 0px;*/
+	padding-left: 5px;
 	vertical-align: top;
 }
 

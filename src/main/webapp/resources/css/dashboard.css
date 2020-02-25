@@ -202,7 +202,7 @@
 }
 
 #input-widget-minValue-wrap, #input-widget-maxValue-wrap {
-    display: none;
+    /*display: none;*/
 }
 .choose-type-menu {
     width: 100%;

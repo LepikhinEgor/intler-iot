@@ -14,6 +14,7 @@ function refreshWidgetHandlers() {
     $(".apply_modal_widget").off('click');
     $("#add_new_widget").off('click');
     $(".toggle_button").off('click',);
+    $(".choose-type-menu").off("change");
 
     $(".apply_modal_widget").on('click', applyWidgetChanges);
     $(".widget-config-button").on("click", updateWidgetAction);
@@ -25,10 +26,9 @@ function refreshWidgetHandlers() {
     $(".widget").resizable( "option", "minWidth", 200 );
 
     $(".widget").resizable({stop:sendNewWidgetSize});
+    $(".choose-type-menu").on("change", displayWidgetBoundsFields);
 
     $( ".slider" ).slider();
-    // $(".widget").resizable({create:setWidgetsDefaultSize});
-    // $(".widget").draggable();
 }
 
 var toggleButtonLock = false;
@@ -145,6 +145,7 @@ function createWidgetAction() {
 }
 
 function openModalWindow(widgetThis) {
+    displayWidgetBoundsFields();
     if (createWidget)
         openModalWindowCreate(widgetThis);
     else
@@ -172,6 +173,9 @@ function openModalWindowUpdate(widgetThis) {
     var keyWard = widgetObj["keyWard"];
     var type = widgetObj["type"];
     var deviceName = widgetObj["deviceName"];
+    var minValue = widgetObj["minValue"];
+    var maxValue = widgetObj["maxValue"];
+
 
     $(".input_widget_name").val(name);
     $(".input_widget_measure").val(measure);
@@ -181,9 +185,22 @@ function openModalWindowUpdate(widgetThis) {
     $(".input_widget_deviceName").val(deviceName);
     $(".choose-type-menu option[value = " + type + "]").attr("selected",true);
     $(".choose-type-menu option[value != " + type + "]").attr("selected",false);
+    $(".input-widget-minValue").val(minValue);
+    $(".input-widget-maxValue").val(maxValue);
 
     document.location.href = "#widget_modal_window";
 }
+
+function displayWidgetBoundsFields() {
+    var type = $(".choose-type-menu option:selected").attr("value");
+
+    if (type == 2) {
+        $("#input-widget-minValue-wrap").show();
+        $("#input-widget-maxValue-wrap").show();
+    } else {
+        $("#input-widget-minValue-wrap").hide();
+        $("#input-widget-maxValue-wrap").hide();
+    }}
 
 function openModalWindowCreate() {
 
@@ -196,6 +213,8 @@ function openModalWindowCreate() {
     $(".choose-icon-menu").val(icon);
     $(".input_widget_keyward").val("");
     $(".input_widget_deviceName").val("");
+    $(".input-widget-minValue").val(0);
+    $(".input-widget-maxValue").val(100);
 
     document.location.href = "#widget_modal_window";
 }
@@ -213,6 +232,15 @@ function applyWidgetChanges(e) {
     var iconNum = getIconNum(optionIcon);
     var keyWard = $(".input_widget_keyward").val();
     var deviceName = $(".input_widget_deviceName").val();
+    var minValue = $(".input-widget-minValue").val();
+    var maxValue = $(".input-widget-maxValue").val();
+
+    if (minValue == "") {
+        minValue = 0;
+    }
+    if (maxValue == "") {
+        maxValue = 100;
+    }
 
     var widgetData = {
         id: id,
@@ -222,7 +250,9 @@ function applyWidgetChanges(e) {
         keyWard: keyWard,
         icon:iconNum,
         type:optionType,
-        deviceName: deviceName
+        deviceName: deviceName,
+        minValue: minValue,
+        maxValue:maxValue
     };
 
     if (createWidget)
