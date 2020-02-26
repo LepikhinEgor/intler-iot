@@ -33,6 +33,7 @@ function pressMenuTab() {
     switch (tabId) {
         case "dashboard-tab": currentPage = 2; break;
         case "db-tab": currentPage = 1; break;
+        case "logic-tab": currentPage = 3; break;
     }
     switchContentPage();
 }
@@ -41,6 +42,7 @@ function switchContentPage() {
     switch(currentPage) {
         case 1 : requestLogsPage(); break;
         case 2 : requestDashboardPage(); break;
+        case 3 : requestLogicPage();break;
     }
 }
 
@@ -52,6 +54,18 @@ function requestLogsPage() {
         success: function(data) {
             fillContentPage(data);
             sensorsLogPageStart();
+        }
+    });
+}
+
+function requestLogicPage() {
+    $.ajax({
+        type: "GET",
+        url: "console/logic",
+        contentType: 'application/json',
+        success: function(data) {
+            fillContentPage(data);
+            logicPageInit();
         }
     });
 }
