@@ -6,3 +6,44 @@
     width: 100%;
     margin: auto;
 }
+
+#logic-content .choose-order-name:active {
+    padding: .22em 1em;
+    display: inline-block;
+    position: relative;
+    line-height: normal;
+    cursor: pointer;
+    vertical-align: middle;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow: visible;
+    border: 1px solid #c5c5c5;;
+    background: #f6f6f6;;
+    font-weight: normal;
+    color:#444;
+}
+
+#logic-content .choose-order-name, #logic-content .select-order-value {
+    padding: .21em 1em;
+    height: 25px;
+}
+
+#logic-content input[type="search"] {
+    width: 150px;
+    margin: 0px 2px;
+    padding-left:2px;
+}
+
+.select-order-action-button{
+    width: 120px;
+    height: 25px;
+}
+
+#logic-content input[type="number"]::-webkit-outer-spin-button,
+#logic-content input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
