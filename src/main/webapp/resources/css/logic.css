@@ -2,48 +2,93 @@
     font: 16px Tahoma, sans-serif;
 }
 
-.logic-command {
+.control_command_block {
+    height: 50px;
+    /*width: 250px;*/
+    background: #f6f6f6;
+    float: left;
+    margin: 5px 0px;
+    border: 1px solid #c5c5c5;
+    padding: 0px 4px;
+}
+
+/*.select_command_name {*/
+/*    width: 220px;*/
+/*}*/
+/*.select_command_action {*/
+/*    width: 120px;*/
+/*}*/
+
+/*.if-block {*/
+/*    width: 50px;*/
+/*}*/
+
+/*.if-object {*/
+/*    width: 100px;*/
+/*}*/
+
+/*.condition-block {*/
+/*    width: 50px;*/
+/*}*/
+
+.control_command .control_command_block:not(:first-child) {
+    border-left: 0px;
+}
+
+.control_command_body {
+    padding: 0px;
+    height: 80%;
+    background: #f6f6f6;
+}
+.control_command_margin {
+    height: 10%;
+}
+
+.control_command_table {
     width: 100%;
-    margin: auto;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
 }
 
-#logic-content .choose-order-name:active {
-    padding: .22em 1em;
-    display: inline-block;
-    position: relative;
-    line-height: normal;
-    cursor: pointer;
-    vertical-align: middle;
-    text-align: center;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    overflow: visible;
-    border: 1px solid #c5c5c5;;
-    background: #f6f6f6;;
-    font-weight: normal;
-    color:#444;
-}
-
-#logic-content .choose-order-name, #logic-content .select-order-value {
-    padding: .21em 1em;
-    height: 25px;
-}
-
-#logic-content input[type="search"] {
-    width: 150px;
+#logic-content input[type="number"] {
+    width: 40px;
     margin: 0px 2px;
-    padding-left:2px;
 }
 
-.select-order-action-button{
-    width: 120px;
-    height: 25px;
+.add_new_command {
+    width: 99%;
+    height: 60px;
+    float: left;
+    border: 1px solid green;
+    cursor: pointer;
+    position: relative;
+    background: #fff;
 }
 
-#logic-content input[type="number"]::-webkit-outer-spin-button,
-#logic-content input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.add_new_command:hover {
+    width: 99%;
+    height: 60px;
+    float: left;
+    border: 1px solid  #5aaf5a;;
+    cursor: pointer;
+    position: relative;
+    background: #fff;
+}
+
+.confirm-command-button {
+    cursor: pointer;
+}
+
+.add_command_img {
+    position: relative;
+    margin: 4px auto 5px auto;
+    width: 50px;
+    height: 50px;
+    background: green;
+    display: table-cell;
+    vertical-align: middle;
+}
+.add_command_img:hover {
+    background: #5aaf5a;
 }
