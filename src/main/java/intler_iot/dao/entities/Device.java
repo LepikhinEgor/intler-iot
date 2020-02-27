@@ -42,10 +42,10 @@ public class Device {
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
 
-    @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sensor> sensors;
 
-    @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CloudOrder> orders;
 
     public String getName() {

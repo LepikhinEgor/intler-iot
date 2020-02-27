@@ -36,7 +36,7 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Device> deviceList;
 
     public long getId() {
