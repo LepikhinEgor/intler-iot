@@ -23,6 +23,8 @@ public class SpringConfig {
         configuration.addAnnotatedClass(Sensor.class);
         configuration.addAnnotatedClass(CloudOrder.class);
         configuration.addAnnotatedClass(Widget.class);
+        configuration.addAnnotatedClass(ControlCommand.class);
+        configuration.addAnnotatedClass(CommandCondition.class);
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
         SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
 

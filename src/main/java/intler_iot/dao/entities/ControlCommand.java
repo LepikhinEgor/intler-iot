@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "control_commands")
 public class ControlCommand {
 
     @Id
@@ -31,7 +33,7 @@ public class ControlCommand {
     @Column(name = "value")
     private int value;
 
-    @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "command", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CommandCondition> conditions;
 
     public long getId() {

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "command_condition")
+@Table(name = "command_conditions")
 public class CommandCondition {
 
     @Id
@@ -34,7 +34,7 @@ public class CommandCondition {
 
     @JoinColumn(name = "command_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private ControlCommand owner;
+    private ControlCommand command;
 
     public long getId() {
         return id;
@@ -68,12 +68,12 @@ public class CommandCondition {
         this.value = value;
     }
 
-    public ControlCommand getOwner() {
-        return owner;
+    public ControlCommand getCommand() {
+        return command;
     }
 
-    public void setOwner(ControlCommand owner) {
-        this.owner = owner;
+    public void setCommand(ControlCommand command) {
+        this.command = command;
     }
 
     @Override
@@ -85,12 +85,12 @@ public class CommandCondition {
                 conditionType == that.conditionType &&
                 value == that.value &&
                 Objects.equals(sensorName, that.sensorName) &&
-                Objects.equals(owner, that.owner);
+                Objects.equals(command, that.command);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sensorName, conditionType, value, owner);
+        return Objects.hash(id, sensorName, conditionType, value, command);
     }
 
     @Override
