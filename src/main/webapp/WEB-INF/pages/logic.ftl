@@ -96,9 +96,9 @@
                     <tr><td class="control_command_margin"></td></tr>
                 </table>
             </div>
-            <div class="add_new_command" onmouseover="$('.add_command_img').css('background',' #5aaf5a'); console.log('gtrgt')" onmouseout="$('.add_command_img').css('background','green')">
-                <img class="add_command_img" src="./resources/images/add-widget.png">
-            </div>
+        </div>
+        <div class="add_new_command" onmouseover="$('.add_command_img').css('background',' #5aaf5a'); console.log('gtrgt')" onmouseout="$('.add_command_img').css('background','green')">
+            <img class="add_command_img" src="./resources/images/add-widget.png">
         </div>
     </div>
 </div>
