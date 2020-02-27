@@ -64,6 +64,7 @@ function requestLogicPage() {
         url: "console/logic",
         contentType: 'application/json',
         success: function(data) {
+            dashboardPageStop();
             fillContentPage(data);
             logicPageInit();
         }

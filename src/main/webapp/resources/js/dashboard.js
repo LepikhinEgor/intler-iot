@@ -6,6 +6,10 @@ function dashboardPageStart() {
     refreshWidgetHandlers();
 }
 
+function dashboardPageStop() {
+    clearInterval(widgetsUpdateInterval);
+}
+
 var selectedWidgetId;
 
 var WIDGET_UPDATE_TIMEOUT = 10000;
