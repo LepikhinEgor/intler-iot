@@ -16,6 +16,8 @@ public class ControlCommandService {
     }
 
     public void saveControlCommand(ControlCommand command) {
+        command.getConditions().forEach(condition -> condition.setCommand(command));
+
         controlCommandDao.save(command);
     }
 }

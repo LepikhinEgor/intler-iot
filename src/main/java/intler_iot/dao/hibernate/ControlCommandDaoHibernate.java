@@ -1,6 +1,7 @@
 package intler_iot.dao.hibernate;
 
 import intler_iot.dao.ControlCommandDao;
+import intler_iot.dao.entities.CommandCondition;
 import intler_iot.dao.entities.ControlCommand;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
