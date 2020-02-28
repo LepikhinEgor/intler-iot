@@ -1,5 +1,7 @@
 package intler_iot.controllers.entities;
 
+import org.postgresql.Driver;
+
 import java.util.Objects;
 
 public class DeviceConnectionData {
@@ -42,6 +44,7 @@ public class DeviceConnectionData {
 
     @Override
     public boolean equals(Object o) {
+        Driver fr;
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeviceConnectionData that = (DeviceConnectionData) o;

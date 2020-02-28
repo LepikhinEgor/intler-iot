@@ -1,6 +1,6 @@
 <hibernate-configuration>
     <session-factory>
-<!--        <property name="connection.url">jdbc:postgresql://localhost/intler_iot</property> &lt;!&ndash; BD Mane &ndash;&gt;-->
+        <property name="connection.url">jdbc:postgresql://ec2-54-247-169-129.eu-west-1.compute.amazonaws.com:5432/d515td35vm1ikv?sslmode=require</property> <!-- BD Mane -->
 <!--        <property name="connection.driver_class">org.postgresql.Driver</property> &lt;!&ndash; DB Driver &ndash;&gt;-->
 <!--        <property name="connection.username">egor</property> &lt;!&ndash; DB User &ndash;&gt;-->
 <!--        <property name="connection.password">1111</property> &lt;!&ndash; DB Password &ndash;&gt;-->
@@ -15,7 +15,7 @@
         <property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
         <property name="hibernate.c3p0.min_size">5</property>
         <property name="hibernate.c3p0.max_size">19</property>
-        <property name="hibernate.c3p0.timeout">100</property>
+        <property name="hibernate.c3p0.timeout">1000</property>
         <property name="hibernate.c3p0.max_statements">50</property>
         <property name="hibernate.c3p0.idle_test_period">1000</property>
         <property name="hibernate.c3p0.validate">true</property>
