@@ -201,6 +201,7 @@
                             <phase>package</phase>
                             <goals><goal>copy</goal></goals>
                             <configuration>
+                                <outputDirectory>${endorsed.dir}</outputDirectory>
                                 <artifactItems>
                                     <artifactItem>
                                         <groupId>com.heroku</groupId>
