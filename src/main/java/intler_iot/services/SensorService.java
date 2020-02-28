@@ -69,6 +69,20 @@ public class SensorService {
         sensorDao.recordAll(sensors);
     }
 
+    public HashMap<String, Collection<String>> getSensorsName() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Device> userDevices = deviceService.getUserDevices(user);
+
+        HashMap<String, Collection<String>> devicesSensors = new HashMap<>();
+
+        for (Device device : userDevices) {
+            Collection<String> unicSensorsName = getUnicSensorNames(device.getSensors());
+            devicesSensors.put(device.getName(), unicSensorsName);
+        }
+
+        return devicesSensors;
+    }
+
     public void removeOldSensorsValue() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() - DAY_IN_MILLIS);
         sensorDao.removeOldValues(timestamp);
@@ -159,6 +173,15 @@ public class SensorService {
         }
 
         return sensorPairs;
+    }
+
+    private Collection<String> getUnicSensorNames(List<Sensor> sensors) {
+        HashSet<String> unicNames = new HashSet<>();
+
+        for (Sensor sensor: sensors)
+            unicNames.add(sensor.getName());
+
+        return unicNames;
     }
 
     private int calulatePagesCount(int sensorsCount) {

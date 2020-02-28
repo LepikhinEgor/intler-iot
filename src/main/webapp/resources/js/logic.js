@@ -41,9 +41,18 @@ function confirmUpdateLogicCommand() {
         requestCreateControlCommand(controlCommand);
 }
 
+function requestUserSensorsName() {
+    $.ajax({
+        type: "GET",
+        url: "console/logic/get-sensors-name",
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+        }
+    });
+}
+
 function requestCreateControlCommand(controlCommand) {
-    console.log(controlCommand);
-    console.log(JSON.stringify(controlCommand));
     $.ajax({
         type: "POST",
         url: "console/logic/create-control-command",
@@ -79,6 +88,7 @@ function getConditionNumber(conditionStr) {
 }
 
 function addNewLocicCommand() {
+    requestUserSensorsName();
     var logicCommand = "<div class=\"control_command\">";
 
     logicCommand += getLogicCommandHtml("for");
