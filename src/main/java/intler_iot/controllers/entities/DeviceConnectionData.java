@@ -1,7 +1,5 @@
 package intler_iot.controllers.entities;
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Objects;
 
 public class DeviceConnectionData {

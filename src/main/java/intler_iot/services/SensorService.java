@@ -7,14 +7,10 @@ import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
 import intler_iot.services.exceptions.NotAuthException;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 

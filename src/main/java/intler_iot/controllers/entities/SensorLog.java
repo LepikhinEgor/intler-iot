@@ -1,7 +1,5 @@
 package intler_iot.controllers.entities;
 
-import javafx.util.Pair;
-
 import java.sql.Timestamp;
 import java.util.*;
 
