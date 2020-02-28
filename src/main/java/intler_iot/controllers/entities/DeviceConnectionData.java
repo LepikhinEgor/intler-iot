@@ -9,7 +9,6 @@ public class DeviceConnectionData {
     private String password;
     private String deviceName;
     private String deviceType;
-    UserDetails grtgt;
 
     public String getLogin() {
         return login;

@@ -3,22 +3,19 @@ package intler_iot.controllers.entities;
 import javafx.util.Pair;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class SensorLog {
     private String sensorName;
     private int currentPage;
     private int pagesCount;
-    private List<Pair<Timestamp, Double>> sensorsLogs;
+    private List<Map.Entry<Timestamp, Double>> sensorsLogs;
 
     public SensorLog() {
         sensorsLogs = new ArrayList<>();
     }
 
-    public SensorLog(String sensorName, int currentPage, int pagesCount, List<Pair<Timestamp, Double>> sensorsLogs) {
+    public SensorLog(String sensorName, int currentPage, int pagesCount, List<Map.Entry<Timestamp, Double>> sensorsLogs) {
         this.sensorName = sensorName;
         this.currentPage = currentPage;
         this.pagesCount = pagesCount;
@@ -41,11 +38,11 @@ public class SensorLog {
         this.sensorName = sensorName;
     }
 
-    public List<Pair<Timestamp, Double>> getSensorsLogs() {
+    public List<Map.Entry<Timestamp, Double>> getSensorsLogs() {
         return sensorsLogs;
     }
 
-    public void setSensorsLogs(List<Pair<Timestamp, Double>> sensorsLogs) {
+    public void setSensorsLogs(List<Map.Entry<Timestamp, Double>> sensorsLogs) {
         this.sensorsLogs = sensorsLogs;
     }
 

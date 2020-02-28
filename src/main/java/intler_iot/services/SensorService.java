@@ -151,7 +151,7 @@ public class SensorService {
             for (Sensor sensor : sensors) {
                 if (sensor.getName().equals(name)) {
                     if (sensorsFounded < 10) {
-                        Pair<Timestamp, Double> sensorVal = new Pair<>(sensor.getArriveTime(), sensor.getValue());
+                        Map.Entry<Timestamp, Double> sensorVal = new AbstractMap.SimpleEntry<Timestamp, Double>(sensor.getArriveTime(), sensor.getValue());
                         sensorLog.getSensorsLogs().add(sensorVal);
                     }
                     sensorsFounded++;
@@ -165,11 +165,11 @@ public class SensorService {
         return sensorLogs;
     }
 
-    private List<Pair<Timestamp, Double>> sensorsToPairs(List<Sensor> sensors) {
-        List<Pair<Timestamp, Double>> sensorPairs = new LinkedList<Pair<Timestamp, Double>>();
+    private List<Map.Entry<Timestamp, Double>> sensorsToPairs(List<Sensor> sensors) {
+        List<Map.Entry<Timestamp, Double>> sensorPairs = new LinkedList<Map.Entry<Timestamp, Double>>();
 
         for (Sensor sensor : sensors) {
-            sensorPairs.add(new Pair<>(sensor.getArriveTime(), sensor.getValue()));
+            sensorPairs.add(new AbstractMap.SimpleEntry<Timestamp, Double>(sensor.getArriveTime(), sensor.getValue()));
         }
 
         return sensorPairs;
