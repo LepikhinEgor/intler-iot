@@ -1,5 +1,6 @@
 package intler_iot.dao.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -32,6 +33,7 @@ public class CommandCondition {
     @Column(name = "value")
     private long value;
 
+    @JsonIgnore
     @JoinColumn(name = "command_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private ControlCommand command;

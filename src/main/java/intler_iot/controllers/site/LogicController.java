@@ -49,4 +49,12 @@ public class LogicController {
 
         return userSensors;
     }
+
+    @GetMapping("console/logic/get-control-commands")
+    @ResponseBody
+    public List<ControlCommand> getUserControlCommands() {
+        List<ControlCommand> commands = controlCommandService.getControlCommands();
+
+        return commands;
+    }
 }

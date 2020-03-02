@@ -1,5 +1,17 @@
 function logicPageInit() {
     refreshLogicPageEventHandlers();
+    requestLogicCommands();
+}
+
+function requestLogicCommands() {
+    $.ajax({
+        type: "GET",
+        url: "console/logic/get-control-commands",
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+        }
+    });
 }
 
 function refreshLogicPageEventHandlers() {

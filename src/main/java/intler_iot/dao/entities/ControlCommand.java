@@ -1,5 +1,6 @@
 package intler_iot.dao.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -33,8 +34,13 @@ public class ControlCommand {
     @Column(name = "value")
     private int value;
 
-    @OneToMany(mappedBy = "command", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "command", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<CommandCondition> conditions;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public long getId() {
         return id;
@@ -76,6 +82,14 @@ public class ControlCommand {
         this.conditions = conditions;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,12 +99,13 @@ public class ControlCommand {
                 action == that.action &&
                 value == that.value &&
                 Objects.equals(targetName, that.targetName) &&
-                Objects.equals(conditions, that.conditions);
+                Objects.equals(conditions, that.conditions) &&
+                Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, targetName, action, value, conditions);
+        return Objects.hash(id, targetName, action, value, conditions, user);
     }
 
     @Override
@@ -101,6 +116,7 @@ public class ControlCommand {
                 ", action=" + action +
                 ", value=" + value +
                 ", conditions=" + conditions +
+                ", user=" + user +
                 '}';
     }
 }
