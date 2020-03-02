@@ -20,7 +20,10 @@ public class ControlCommandService {
     }
 
     public void saveControlCommand(ControlCommand command) {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         command.getConditions().forEach(condition -> condition.setCommand(command));
+        command.setUser(user);
 
         controlCommandDao.save(command);
     }

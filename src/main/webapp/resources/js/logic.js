@@ -10,8 +10,23 @@ function requestLogicCommands() {
         contentType: 'application/json',
         success: function(data) {
             console.log(data);
+            for(var command in data) {
+                addNewLocicCommand(data[command]["id"]);
+                fillLogicCommand(data[command]);
+            }
         }
     });
+}
+
+function fillLogicCommand(commandData) {
+    var commandObj = $("#command_" + commandData["id"]);
+
+    commandObj.find(".logic-block-for").find("input").val(commandData["targetName"]);
+    commandObj.find(".logic-block-action").find("select").val(commandData["action"]);
+    commandObj.find(".logic-block-value").find("input").val(commandData["value"]);
+    commandObj.find(".logic-block-if-object").find("input").val(commandData["conditions"]["0"]["sensorName"]);
+    commandObj.find(".logic-block-condition").find("select").val(commandData["conditions"]["0"]["conditionType"]);
+    commandObj.find(".logic-block-if-object-val").find("input").val(commandData["conditions"]["0"]["value"]);
 }
 
 function refreshLogicPageEventHandlers() {
@@ -28,7 +43,7 @@ function confirmUpdateLogicCommand() {
     var commandName = parent.find(".logic-block-for").find("input").val();
     var commandAction = parent.find(".logic-block-action").find("select").val();
     var commandValue = parent.find(".logic-block-value").find("input").val();
-    var ifSensorName = parent.find(".logic-block-if-object").find("select").val();
+    var ifSensorName = parent.find(".logic-block-if-object").find("input").val();
     var condition = parent.find(".logic-block-condition").find("select").val();
     var conditionValue = parent.find(".logic-block-if-object-val").find("input").val();
 
@@ -78,9 +93,9 @@ function requestCreateControlCommand(controlCommand) {
 function getActionNumber(actionStr) {
     var actionNum;
     switch(actionStr) {
-        case "Включить": actionNum = 0;break;
-        case "Выключить": actionNum = 1;break;
-        case "Значение": actionNum = 2;break;
+        case "Включить": actionNum = 1;break;
+        case "Выключить": actionNum = 2;break;
+        case "Значение": actionNum = 3;break;
     }
 
     return actionNum;
@@ -99,9 +114,14 @@ function getConditionNumber(conditionStr) {
     return conditionNum;
 }
 
-function addNewLocicCommand() {
+function addNewLocicCommand(id) {
     requestUserSensorsName();
-    var logicCommand = "<div class=\"control_command\">";
+
+    var logicCommand;
+    if (id == null) {
+        logicCommand = "<div class=\"control_command\">";
+    } else
+        logicCommand = "<div id='command_" + id +"' class=\"control_command\">";
 
     logicCommand += getLogicCommandHtml("for");
     logicCommand += getLogicCommandHtml("action");
@@ -122,12 +142,12 @@ function getLogicCommandHtml(type) {
     var logicBlock = " <div class=\"control_command_block " + getLogicBlockClass(type) + "\">\n" +
         "                <table class=\"control_command_table\">\n" +
         "                    <tr><td class=\"control_command_margin\"></td></tr>\n" +
-        "                    <tr><td align=\"center\" class=\"control_command_body\">\n" +
+        "                    <tr><td valign='middle' align=\"center\" class=\"control_command_body\">\n" +
                           getLogicCommandBodyHtml(type) +
         "                        </td></tr>\n" +
         "                    <tr><td class=\"control_command_margin\"></td></tr>\n" +
         "                </table>\n" +
-        "            </div>"
+        "            </div>";
 
     return logicBlock;
 }
@@ -179,31 +199,34 @@ function getLogicCommandBodyHtml(type) {
             break;
         case "action":
             blockBody = "<select class=\"select-order-action\">\n" +
-                "            <option>Включить</option>\n" +
-                "            <option>Выключить</option>\n" +
-                "            <option>Значение</option>\n" +
+                "            <option value='1'>Включить</option>\n" +
+                "            <option value='2'>Выключить</option>\n" +
+                "            <option value='3'>Значение</option>\n" +
                 "        </select>"
             break;
         case "value":
             blockBody = "<input class=\"control_command_value\" type=\"number\" name=\"type\"/>";
             break;
         case "if":
-            blockBody = "<span>Если</span>";
+            blockBody = "<div style='padding-bottom: 4px'>Если</div>";
             break;
         case "if-block" :
-            blockBody = " <select class=\"select-order-action\">\n" +
-                "             <option>Включить</option>\n" +
-                "             <option>Выключить</option>\n" +
-                "             <option>Значение</option>\n" +
-                "         </select>";
+            blockBody = "<div>Значение \n" +
+                "             <input type=\"search\" list=\"character\">\n" +
+                // "             <datalist id=\"character\">\n" +
+                // "                 <option value=\"Чебурашка\"></option>\n" +
+                // "                 <option value=\"Крокодил Гена\"></option>\n" +
+                // "                 <option value=\"Шапокляк\"></option>\n" +
+                // "             </datalist>\n" +
+                "        </div>";
             break;
         case "condition":
-            blockBody = " <select class=\"select-order-action\">\n" +
-                "             <option>&#62;</option>\n" +
-                "             <option>&#60;</option>\n" +
-                "             <option>&#62;=</option>\n" +
-                "             <option>&#60;=</option>\n" +
-                "             <option>=</option>\n" +
+            blockBody = " <select>\n" +
+                "             <option value='1'>&#62;</option>\n" +
+                "             <option value='2'>&#60;</option>\n" +
+                "             <option value='3'>&#62;=</option>\n" +
+                "             <option value='4'>&#60;=</option>\n" +
+                "             <option value='5'>=</option>\n" +
                 "         </select>";
             break;
         case "if-object-val":

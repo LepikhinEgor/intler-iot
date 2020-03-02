@@ -6,10 +6,17 @@
     height: 50px;
     /*width: 250px;*/
     background: #f6f6f6;
-    float: left;
+    /*float: left;*/
     margin: 5px 0px;
     border: 1px solid #c5c5c5;
     padding: 0px 4px;
+    display: inline-block;
+    font-size: 15px;
+}
+
+.control_command {
+    width:100%;
+    height: max-content;
 }
 
 /*.select_command_name {*/
