@@ -7,6 +7,11 @@ import intler_iot.services.exceptions.NotAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +28,8 @@ public class UserService {
 
     private PasswordEncoder passwordEncoder;
 
+    private WebSecurityConfigurerAdapter webSecurityConfigurerAdapter;
+
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -33,6 +40,11 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    @Autowired
+    public void setWebSecurityConfigurerAdapter(WebSecurityConfigurerAdapter webSecurityConfigurerAdapter) {
+        this.webSecurityConfigurerAdapter = webSecurityConfigurerAdapter;
+    }
+
     public User getByLogin(String login) {
         User user = userDao.getByLogin(login);
 
@@ -41,20 +53,34 @@ public class UserService {
 
     public User authUser(String login, String password) throws NotAuthException{
         try {
-            User user = userDao.getByLogin(login);
+            User user;
 
-            boolean passwordsMatches = passwordEncoder.matches(password, user.getPassword());
+            if (isAuthenticated()) {
+                user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            }
+            else {
+                Authentication auth = new UsernamePasswordAuthenticationToken(login,password);
+                Authentication authUser = webSecurityConfigurerAdapter.authenticationManagerBean().authenticate(auth);
+                SecurityContextHolder.getContext().setAuthentication(authUser);
 
-            if (passwordsMatches)
-                return user;
-            else
-                throw new NotAuthException("Login and passwords not matches");
+                user = (User)authUser.getPrincipal();
+            }
+
+            return user;
         } catch (NoResultException e) {
             throw new NotAuthException("Login not found");
         }
         catch (Exception e) {
             throw new NotAuthException(e);
         }
+    }
+
+    private boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return authentication != null
+                && !(authentication instanceof AnonymousAuthenticationToken)
+                && authentication.isAuthenticated();
     }
 
     public RegistrationMessage registerUser(User user) {
