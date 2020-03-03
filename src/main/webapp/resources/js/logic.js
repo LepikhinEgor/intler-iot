@@ -39,6 +39,7 @@ function refreshLogicPageEventHandlers() {
 
 function confirmUpdateLogicCommand() {
     var parent = $(this).closest(".control_command");
+    var id = parent.attr("id");
 
     var commandName = parent.find(".logic-block-for").find("input").val();
     var commandAction = parent.find(".logic-block-action").find("select").val();
@@ -63,6 +64,12 @@ function confirmUpdateLogicCommand() {
             }
         ]
     };
+
+    if (id != null && id != "") {
+        controlCommand["id"] = id.substring(8);
+    }
+
+    console.log(controlCommand);
 
     if (validCommandName && validCommandValue && validConditionValue)
         requestCreateControlCommand(controlCommand);

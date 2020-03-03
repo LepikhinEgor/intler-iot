@@ -49,7 +49,7 @@ public class ControlCommandDaoHibernate extends ControlCommandDao {
         Transaction tx = session.beginTransaction();
 
         try {
-            session.save(command);
+            session.saveOrUpdate(command);
 
             tx.commit();
         } catch (Exception e) {
