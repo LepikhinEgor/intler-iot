@@ -59,13 +59,14 @@ function confirmUpdateLogicCommand() {
         conditions: [
             {
                 sensorName: ifSensorName,
-                conditionType:getConditionNumber(condition),
+                conditionType:condition,
                 value:+conditionValue
             }
         ]
     };
 
     if (id != null && id != "") {
+        console.log(id);
         controlCommand["id"] = id.substring(8);
     }
 
@@ -125,10 +126,10 @@ function addNewLocicCommand(id) {
     requestUserSensorsName();
 
     var logicCommand;
-    if (id == null) {
-        logicCommand = "<div class=\"control_command\">";
-    } else
+    if (typeof(id) == "number") {
         logicCommand = "<div id='command_" + id +"' class=\"control_command\">";
+    } else
+        logicCommand = "<div class=\"control_command\">";
 
     logicCommand += getLogicCommandHtml("for");
     logicCommand += getLogicCommandHtml("action");
