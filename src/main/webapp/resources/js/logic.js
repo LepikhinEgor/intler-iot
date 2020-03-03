@@ -54,7 +54,7 @@ function confirmUpdateLogicCommand() {
 
     var controlCommand = {
         targetName: commandName,
-        action: getActionNumber(commandAction),
+        action: commandAction,
         value: +commandValue,
         conditions: [
             {
