@@ -3,6 +3,7 @@ package intler_iot.controllers;
 import intler_iot.controllers.entities.SensorsData;
 import intler_iot.dao.entities.CloudOrder;
 import intler_iot.services.CloudOrderService;
+import intler_iot.services.ControlCommandService;
 import intler_iot.services.DeviceService;
 import intler_iot.services.SensorService;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ public class DeviceController {
     private DeviceService deviceService;
     private SensorService sensorService;
     private CloudOrderService cloudOrderService;
+    private ControlCommandService controlCommandService;
 
     @Autowired
     public void setSensorService(SensorService sensorService) {
@@ -37,6 +39,11 @@ public class DeviceController {
         this.cloudOrderService = cloudOrderService;
     }
 
+    @Autowired
+    public void setControlCommandService(ControlCommandService controlCommandService) {
+        this.controlCommandService = controlCommandService;
+    }
+
     @PostMapping(value = "send-device-data")
     public HashMap<String, Double> receiveSensorsData(@RequestBody SensorsData sensorsData) {
         logger.info("Received data " + sensorsData.toString());
@@ -47,6 +54,7 @@ public class DeviceController {
             orders = cloudOrderService.getDeviceOrders(sensorsData.getDeviceName(),
                     sensorsData.getLogin(),
                     sensorsData.getPassword());
+            orders.putAll(controlCommandService.getCloudLogicOrders(sensorsData.getSensorsValue()));
             cloudOrderService.markOldOrdersAsRemoved(sensorsData);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

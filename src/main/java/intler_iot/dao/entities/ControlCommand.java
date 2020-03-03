@@ -12,6 +12,10 @@ import java.util.Objects;
 @Table(name = "control_commands")
 public class ControlCommand {
 
+    public static final int ACTION_TURN_ON = 1;
+    public static final int ACTION_TURN_OFF = 2;
+    public static final int ACTION_VALUE = 3;
+
     @Id
     @GenericGenerator(
             name = "control_command_sequence",
@@ -32,7 +36,7 @@ public class ControlCommand {
     private int action;
 
     @Column(name = "value")
-    private int value;
+    private double value;
 
     @OneToMany(mappedBy = "command", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<CommandCondition> conditions;
@@ -66,11 +70,11 @@ public class ControlCommand {
         this.action = action;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 

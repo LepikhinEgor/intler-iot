@@ -11,6 +11,12 @@ import java.util.Objects;
 @Table(name = "command_conditions")
 public class CommandCondition {
 
+    public static final int CONDITION_MORE = 1;
+    public static final int CONDITION_LESS = 2;
+    public static final int CONDITION_MORE_EQUALS = 3;
+    public static final int CONDITION_LESS_EQUALS = 4;
+    public static final int CONDITION_EQUALS = 5;
+
     @Id
     @GenericGenerator(
             name = "command_condition_sequence",
@@ -35,7 +41,7 @@ public class CommandCondition {
 
     @JsonIgnore
     @JoinColumn(name = "command_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ControlCommand command;
 
     public long getId() {
