@@ -307,7 +307,7 @@ var widgets = [];
 function requestWidgets() {
     $.ajax({
         type: "GET",
-        url: "/intler_iot_war_exploded/console/dashboard/get-widgets",
+        url: "console/dashboard/get-widgets",
         contentType: 'application/json',
         success: function(data) {
             console.log(data);
@@ -327,7 +327,7 @@ function requestWidgets() {
 function requestUpdateWidgets() {
     $.ajax({
         type: "GET",
-        url: "/intler_iot_war_exploded/console/dashboard/get-widgets",
+        url: "console/dashboard/get-widgets",
         contentType: 'application/json',
         success: function(data) {
             console.log(data);

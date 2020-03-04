@@ -21,7 +21,7 @@ var sensorsInfo = [];
 function requestSensorsLogs() {
     $.ajax({
         type: "GET",
-        url: "/intler_iot_war_exploded/console/get-sensors-logs",
+        url: "console/get-sensors-logs",
         contentType: 'application/json',
         success: function(data) {
             for (var key in data) {
@@ -134,7 +134,7 @@ function decSensorPage() {
 function requestSensorPage(sensorName, pageNum) {
     $.ajax({
         type: "GET",
-        url: "/intler_iot_war_exploded/console/get-sensor-logs-page?name="+sensorName + "&pageNum=" + pageNum,
+        url: "console/get-sensor-logs-page?name="+sensorName + "&pageNum=" + pageNum,
         contentType: 'application/json',
         success: function(data) {
              console.log(data);
