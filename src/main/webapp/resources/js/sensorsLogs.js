@@ -63,11 +63,7 @@ function addSensorTable(sensorName, sensorLogs, curPage, maxPage) {
         "                </table>";
     $(".tables-wrap").append(tableHtml);
 
-    for (var sensorLog in sensorLogs) {
-        var addedTable = $("#" + sensorName);
-        addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
-            sensorLogs[sensorLog]["value"] + "</td></tr>");
-    }
+    fillSensorTable(sensorName, sensorLogs, curPage, maxPage);
     $(".pag-input-page-num").html((curPage + 1) + " из " + maxPage);
 }
 
@@ -155,8 +151,11 @@ function fillSensorTable(sensorName, sensorLogs, curPage, maxPage) {
     var addedTable = $("#" + sensorName);
     addedTable.find(".sensorVal").remove();
     for (var sensorLog in sensorLogs) {
-        addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(sensorLogs[sensorLog]["key"]) + "</td> <td>" +
-            sensorLogs[sensorLog]["value"] + "</td></tr>");
+        var sensLogNum = sensorLogs[sensorLog];
+        for (var key in sensLogNum) {
+            addedTable.find(".pagination").before("<tr class='sensorVal'><td>" + parseTimestamp(key)+ "</td> <td>" +
+                sensLogNum[key]+ "</td></tr>");
+        }
     }
     addedTable.find(".pag-input-page-num").html((curPage + 1) + " из " + maxPage);
 }
