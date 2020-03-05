@@ -1,9 +1,9 @@
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:postgresql://ec2-54-247-169-129.eu-west-1.compute.amazonaws.com:5432/d515td35vm1ikv?sslmode=require</property> <!-- BD Mane -->
+        <property name="connection.url">jdbc:postgresql://79.143.30.97:5432/intler-cloud?sslmode=require</property> <!-- BD Mane -->
         <property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
-        <property name="connection.username">luhqnacyqtmazv</property> <!-- DB User -->
-        <property name="connection.password">d6be18a6336d33fc09b1145a3331fa30293f39dca523caf08434a90323cdf900</property> <!-- DB Password -->
+        <property name="connection.username">egor</property> <!-- DB User -->
+        <property name="connection.password">1111</property> <!-- DB Password -->
         <property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
 
         <property name="show_sql">false</property> <!-- Show SQL in console -->
