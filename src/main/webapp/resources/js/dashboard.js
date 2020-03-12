@@ -20,7 +20,9 @@ function refreshWidgetHandlers() {
     $("#add_new_widget").off('click');
     $(".toggle_button").off('click',);
     $(".choose-type-menu").off("change");
+    $(".delete_modal_widget").off("click");
 
+    $(".delete_modal_widget").on("click", requestDeleteWidget);
     $(".apply_modal_widget").on('click', applyWidgetChanges);
     $(".widget-config-button").on("click", updateWidgetAction);
     $("#add_new_widget").on('click', createWidgetAction);
@@ -130,6 +132,25 @@ function sendNewWidgetSize(event,ui) {
     requestChangeWidgetSize();
 }
 
+function requestDeleteWidget(e) {
+    e.preventDefault();
+
+    $.ajax({
+        type: "GET",
+        url: "console/dashboard/delete-widget?id=" +selectedWidgetId,
+        contentType: 'application/json',
+        statusCode: {
+            200: function(xhr) {
+                document.location.href = "#";
+                requestWidgets();
+            }
+        }
+        // success: function(data) {
+        //     document.location.href = "#";
+        // }
+    });
+}
+
 function requestChangeWidgetSize() {
     $.ajax({
         type: "POST",
@@ -198,6 +219,8 @@ function openModalWindowUpdate(widgetThis) {
     $(".input-widget-minValue").val(minValue);
     $(".input-widget-maxValue").val(maxValue);
 
+
+    $(".delete_modal_widget").show();
     document.location.href = "#widget_modal_window";
 }
 
@@ -226,6 +249,8 @@ function openModalWindowCreate() {
     $(".input-widget-minValue").val(0);
     $(".input-widget-maxValue").val(100);
 
+
+    $(".delete_modal_widget").hide();
     document.location.href = "#widget_modal_window";
 }
 

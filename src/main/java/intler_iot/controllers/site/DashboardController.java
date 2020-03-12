@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -59,6 +56,12 @@ public class DashboardController {
     @ResponseBody
     public void createWidget(@RequestBody Widget widget) {
         widgetService.createWidget(widget);
+    }
+
+    @GetMapping("console/dashboard/delete-widget")
+    @ResponseBody
+    public void createWidget(@RequestParam("id") long id) {
+        widgetService.deleteWidget(id);
     }
 
     @PostMapping("console/dashboard/update-widgets-size")

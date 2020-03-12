@@ -78,6 +78,20 @@ public class WidgetDaoHibernate extends WidgetDao {
         }
     }
 
+    public void delete(long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            Widget widget = session.get(Widget.class, id);
+            session.delete(widget);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw e;
+        }
+    }
+
     @Override
     public void update(Widget widget) {
         Session session = sessionFactory.getCurrentSession();

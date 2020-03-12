@@ -76,7 +76,11 @@
                 </div>
             </form>
         </div>
+        <div class="modal-flags">
+<#--            <input type="checkbox">-->
+        </div>
         <div class="modal_buttons">
+            <a href="#" class="delete_modal_widget">delete</a>
             <a href="#" class="close_modal_widget">close</a>
             <a href="#" class="apply_modal_widget">apply</a>
         </div>

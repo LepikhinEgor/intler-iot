@@ -48,6 +48,10 @@ public class WidgetService {
         widgetDao.create(widget);
     }
 
+    public void deleteWidget(long id) {
+        widgetDao.delete(id);
+    }
+
     public void updateWidget(Widget widget) {
         widgetDao.update(widget);
     }

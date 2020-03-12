@@ -130,14 +130,14 @@
 
 #widget_window {
     width: 460px;
-    height: 370px;
+    height: 400px;
 }
 
 
 #widget_modal_window:target
 {display: block;}
 
-.close_modal_widget, .apply_modal_widget{
+.close_modal_widget, .apply_modal_widget, .delete_modal_widget{
     width : 100px;
     height: 30px;
     border-radius: 3px;
@@ -163,6 +163,15 @@
     background: #2e8b00;
     color: #eee;
 }
+
+.delete_modal_widget {
+    background: #b31a1a;
+    color: #eee;
+}
+
+.delete_modal_widget:hover {
+    background: #8e0909;
+}
 .close_modal_widget:hover
 {background: #aaa;}
 
@@ -179,7 +188,7 @@
     width: 90%;
 }
 
-.modal_buttons {
+.modal_buttons, .modal-flags {
     margin: 12px auto;
     text-align: center;
     width: 100%;
