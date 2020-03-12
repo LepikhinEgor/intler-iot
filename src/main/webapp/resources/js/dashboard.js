@@ -218,6 +218,7 @@ function openModalWindowUpdate(widgetThis) {
     $(".choose-type-menu option[value != " + type + "]").attr("selected",false);
     $(".input-widget-minValue").val(minValue);
     $(".input-widget-maxValue").val(maxValue);
+    $(".choose-type-menu").change();
 
 
     $(".delete_modal_widget").show();
@@ -477,6 +478,7 @@ function updateWidgetBody(widget, sensor) {
                 value = maxVal;
         }
         var slider = widgetObj.find( ".slider" );
+        widgetObj.find(".slider_value_text").html(value);
         slider.slider({min:minVal, max:maxVal, value:value, step:0.1, animate: "fast"});
         break;
     }

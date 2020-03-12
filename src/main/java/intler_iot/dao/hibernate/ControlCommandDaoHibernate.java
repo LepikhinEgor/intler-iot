@@ -33,7 +33,6 @@ public class ControlCommandDaoHibernate extends ControlCommandDao {
             query.setParameter("user", user);
 
             List<ControlCommand> commands = query.list();
-            System.out.println(commands);
             tx.commit();
 
             return commands;
