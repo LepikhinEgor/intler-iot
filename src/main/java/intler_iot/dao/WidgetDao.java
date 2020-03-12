@@ -12,4 +12,5 @@ public abstract class WidgetDao {
     public abstract void recordWidgets(List<Widget> widgets);
     public abstract void update(Widget widget);
     public abstract void updateSize(Widget widget);
+    public abstract void updateLastValue(String sensorName, String deviceName, double value);
 }

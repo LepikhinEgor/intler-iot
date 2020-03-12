@@ -135,4 +135,23 @@ public class WidgetDaoHibernate extends WidgetDao {
             throw e;
         }
     }
+
+    @Override
+    public void updateLastValue(String sensorName, String deviceName, double value) {
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            Query query = session.createQuery("update Widget set lastValue = :value where deviceName = :deviceName and keyWard = :sensorName ");
+            query.setParameter("deviceName", deviceName);
+            query.setParameter("sensorName", sensorName);
+            query.setParameter("value", value);
+
+            query.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw e;
+        }
+    }
 }

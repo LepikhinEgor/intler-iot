@@ -84,6 +84,9 @@ public class Widget {
     @Column(name = "minValue")
     private int minValue;
 
+    @Column(name="last_value")
+    private double lastValue;
+
     @JsonIgnore
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -193,6 +196,14 @@ public class Widget {
         this.minValue = minValue;
     }
 
+    public double getLastValue() {
+        return lastValue;
+    }
+
+    public void setLastValue(double lastValue) {
+        this.lastValue = lastValue;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -206,6 +217,7 @@ public class Widget {
                 type == widget.type &&
                 maxValue == widget.maxValue &&
                 minValue == widget.minValue &&
+                lastValue == widget.lastValue &&
                 Objects.equals(name, widget.name) &&
                 Objects.equals(measure, widget.measure) &&
                 Objects.equals(keyWard, widget.keyWard) &&
@@ -215,7 +227,7 @@ public class Widget {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, type, deviceName, maxValue, minValue, user);
+        return Objects.hash(id, name, color, measure, keyWard, icon, width, height, type, deviceName, maxValue, minValue, lastValue, user);
     }
 
     @Override
@@ -233,6 +245,7 @@ public class Widget {
                 ", deviceName='" + deviceName + '\'' +
                 ", maxValue=" + maxValue +
                 ", minValue=" + minValue +
+                ", lastValue=" + lastValue +
                 ", user=" + user +
                 '}';
     }

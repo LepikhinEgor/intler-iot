@@ -66,11 +66,16 @@ public class WidgetService {
         List<Widget> createdWidgets = createWidgets(newSensors);
         widgetDao.recordWidgets(createdWidgets);
 
-        widgets.addAll(createdWidgets);
+        widgets.addAll(createdWidgets);//TODO refactor -> method HashMap<Widget,Sensor> match(widgets, lastSensors) + method updateWidgetsLastValue()
 
         List<WidgetData> widgetsData = transformToWidgetsData(widgets, lastSensors);
 
         return widgetsData;
+    }
+
+
+    public void updateWidgetLastValue(String sensorName, String deviceName, double value) {
+        widgetDao.updateLastValue(sensorName, deviceName, value);
     }
 
     private List<Sensor> getSensorsWithoutWidget(List<Sensor> lastSensors,List<Widget> widgets) {
@@ -118,6 +123,7 @@ public class WidgetService {
             for (Sensor sensor : lastSensors) {
                 if (widget.getKeyWard().equals(sensor.getName())) {
                     matchedSensor = sensor;
+                    widget.setLastValue(sensor.getValue());
                     break;
                 }
             }

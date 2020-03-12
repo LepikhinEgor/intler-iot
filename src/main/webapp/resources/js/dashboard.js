@@ -469,7 +469,7 @@ function updateWidgetBody(widget, sensor) {
         var value;
 
         if (sensor == null)
-            value = (minVal + maxVal) /2;
+            value = widget["lastValue"];
         else {
             value = sensor["value"];
             if (value < minVal)
@@ -515,7 +515,7 @@ function getWidgetBodyHtml(widget, sensor) {
         case 2 :
             var sliderVal;
             if (sensor == null)
-                sliderVal = widget["minValue"]/2 + widget["maxValue"]/2;
+                sliderVal = widget["lastValue"];
             else
                 sliderVal = sensor["value"];
             widgetBodyHtml = "<p class='slider_value_text' style=\"color: " + valueColor + "\">" + sliderVal + "</p>" +
@@ -534,7 +534,8 @@ function sliderInit(widget, sensor) {
     var value;
 
     if (sensor == null)
-        value = (minVal + maxVal) /2;
+        // value = (minVal + maxVal) /2;
+        value = widget["lastValue"];
     else {
         value = sensor["value"];
         if (value < minVal)
@@ -572,14 +573,11 @@ function sliderValChangeAction(event, ui) {
 }
 
 function sendCloudOrderSlider(keyWard, value, deviceName) {
-    console.log("change");
     var cloudOrder = {
         keyWard:keyWard,
         value: value,
         deviceName: deviceName
     }
-
-    console.log(cloudOrder);
 
     $.ajax({
         type: "POST",
