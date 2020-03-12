@@ -45,7 +45,7 @@
 .control_command_body {
     padding: 0px;
     height: 80%;
-    background: #f6f6f6;
+    background: transparent;
 }
 .control_command_margin {
     height: 10%;
@@ -56,6 +56,7 @@
     height: 100%;
     padding: 0px;
     margin: 0px;
+    background: transparent;
 }
 
 #logic-content input[type="number"] {
@@ -98,4 +99,33 @@
 }
 .add_command_img:hover {
     background: #5aaf5a;
+}
+
+.highlight_button {
+    /*border-radius: 4px;*/
+    /*border-left*/
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 3px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+    color: #fff;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: background-color 0.1s linear;
+    -moz-transition: background-color 0.1s linear;
+    -o-transition: background-color 0.1s linear;
+    transition: background-color 0.1s linear;
+}
+
+.highlight_button {
+    background-color: rgb( 43, 153, 91 );
+    border: 1px solid rgb( 33, 126, 74 );
+}
+
+.highlight_button:hover {
+    background-color: rgb( 75, 183, 141 );
 }

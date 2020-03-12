@@ -27,14 +27,39 @@ function fillLogicCommand(commandData) {
     commandObj.find(".logic-block-if-object").find("input").val(commandData["conditions"]["0"]["sensorName"]);
     commandObj.find(".logic-block-condition").find("select").val(commandData["conditions"]["0"]["conditionType"]);
     commandObj.find(".logic-block-if-object-val").find("input").val(commandData["conditions"]["0"]["value"]);
+    commandObj.find(".logic-block-action").find("select").change();
+    commandObj.find(".logic-block-submit").hide();
 }
 
 function refreshLogicPageEventHandlers() {
     $(".logic-block-submit").off("click");
     $(".add_new_command").off('click');
+    $(".logic-block-action").off('change', blockActionChanged);
+    $(".control_command").find("select").off("change");
+    $(".control_command").find("input").off("change");
 
     $(".add_new_command").on('click', addNewLocicCommand);
     $(".logic-block-submit").on("click", confirmUpdateLogicCommand);
+    $(".logic-block-action").on('change', blockActionChanged);
+
+    $(".control_command").find("select").on("change", commandUpdated);
+    $(".control_command").find("input").on("change", commandUpdated);
+}
+
+function commandUpdated() {
+    var command = $(this).closest(".control_command");
+    command.find(".logic-block-submit").show();
+}
+
+function blockActionChanged() {
+    var command = $(this).closest(".control_command");
+    var value = $(this).find(".select-order-action").val();
+    if (value == 3) {
+        command.find(".logic-block-value").show()
+    } else {
+        command.find(".logic-block-value").hide()
+    }
+    console.log(value);
 }
 
 function confirmUpdateLogicCommand() {
@@ -73,7 +98,7 @@ function confirmUpdateLogicCommand() {
     console.log(controlCommand);
 
     if (validCommandName && validCommandValue && validConditionValue)
-        requestCreateControlCommand(controlCommand);
+        requestCreateControlCommand(controlCommand,$(this));
 }
 
 function requestUserSensorsName() {
@@ -87,13 +112,14 @@ function requestUserSensorsName() {
     });
 }
 
-function requestCreateControlCommand(controlCommand) {
+function requestCreateControlCommand(controlCommand, confirmButton) {
     $.ajax({
         type: "POST",
         url: "console/logic/create-control-command",
         contentType: 'application/json',
         data: JSON.stringify(controlCommand),
         success: function(data) {
+            confirmButton.hide();
         }
     });
 }
@@ -131,13 +157,14 @@ function addNewLocicCommand(id) {
     } else
         logicCommand = "<div class=\"control_command\">";
 
+
+    logicCommand += getLogicCommandHtml("if-block");
+    logicCommand += getLogicCommandHtml("condition");
+    logicCommand += getLogicCommandHtml("if-object-val")
+    logicCommand += getLogicCommandHtml("do");
     logicCommand += getLogicCommandHtml("for");
     logicCommand += getLogicCommandHtml("action");
     logicCommand += getLogicCommandHtml("value");
-    logicCommand += getLogicCommandHtml("if");
-    logicCommand += getLogicCommandHtml("if-block");
-    logicCommand += getLogicCommandHtml("condition");
-    logicCommand += getLogicCommandHtml("if-object-val");
     logicCommand += getLogicCommandHtml("submit-block");
     logicCommand += "</div>";
 
@@ -172,7 +199,7 @@ function getLogicBlockClass(type) {
         case "value":
             blockClass = "logic-block-value";
             break;
-        case "if":
+        case "do":
             blockClass = "logic-block-if";
             break;
         case "if-block" :
@@ -185,7 +212,7 @@ function getLogicBlockClass(type) {
             blockClass = "logic-block-if-object-val";
             break;
         case "submit-block":
-            blockClass = "logic-block-submit";
+            blockClass = "logic-block-submit highlight_button";
             break;
     }
 
@@ -196,8 +223,8 @@ function getLogicCommandBodyHtml(type) {
     var blockBody;
     switch(type) {
         case "for":
-            blockBody = "<div>Для\n" +
-                "             <input type=\"search\" list=\"character\">\n" +
+            blockBody = "<div>для\n" +
+                "             <input class='input-sensor' type=\"search\" list=\"character\">\n" +
                 // "             <datalist id=\"character\">\n" +
                 // "                 <option value=\"Чебурашка\"></option>\n" +
                 // "                 <option value=\"Крокодил Гена\"></option>\n" +
@@ -215,11 +242,11 @@ function getLogicCommandBodyHtml(type) {
         case "value":
             blockBody = "<input class=\"control_command_value\" type=\"number\" name=\"type\"/>";
             break;
-        case "if":
-            blockBody = "<div style='padding-bottom: 4px'>Если</div>";
+        case "do":
+            blockBody = "<div style='padding-bottom: 4px'>то</div>";
             break;
         case "if-block" :
-            blockBody = "<div>Значение \n" +
+            blockBody = "<div>Если \n" +
                 "             <input type=\"search\" list=\"character\">\n" +
                 // "             <datalist id=\"character\">\n" +
                 // "                 <option value=\"Чебурашка\"></option>\n" +

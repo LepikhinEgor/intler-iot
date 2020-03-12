@@ -60,6 +60,8 @@ public class DeviceController {
             logger.error(e.getMessage(), e);
         }
 
+        logger.info(orders.toString());
+
         return orders;
     }
 
