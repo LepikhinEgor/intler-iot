@@ -1,6 +1,6 @@
 package intler_iot.controllers.site;
 
-import intler_iot.controllers.entities.WidgetData;
+import intler_iot.controllers.entities.WidgetDTO;
 import intler_iot.controllers.entities.WidgetSize;
 import intler_iot.dao.entities.Widget;
 import intler_iot.services.WidgetService;
@@ -8,8 +8,6 @@ import intler_iot.services.exceptions.NotAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +32,8 @@ public class DashboardController {
 
     @GetMapping("/console/dashboard/get-widgets")
     @ResponseBody
-    public List<WidgetData> getWidgetsList() throws NotAuthException {
-        List<WidgetData> widgets = null;
+    public List<WidgetDTO> getWidgetsList() throws NotAuthException {
+        List<WidgetDTO> widgets = null;
         try {
             widgets = widgetService.getWidgetsList();
         } catch (Throwable e) {

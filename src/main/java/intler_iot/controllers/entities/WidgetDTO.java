@@ -5,11 +5,11 @@ import intler_iot.dao.entities.Widget;
 
 import java.util.Objects;
 
-public class WidgetData {
+public class WidgetDTO {
     private Widget widget;
     private Sensor sensor;
 
-    public WidgetData(Widget widget, Sensor sensor) {
+    public WidgetDTO(Widget widget, Sensor sensor) {
         this.widget = widget;
         this.sensor = sensor;
     }
@@ -34,7 +34,7 @@ public class WidgetData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WidgetData that = (WidgetData) o;
+        WidgetDTO that = (WidgetDTO) o;
         return Objects.equals(widget, that.widget) &&
                 Objects.equals(sensor, that.sensor);
     }

@@ -31,13 +31,8 @@ public class SpringConfig {
         configuration.addAnnotatedClass(Widget.class);
         configuration.addAnnotatedClass(ControlCommand.class);
         configuration.addAnnotatedClass(CommandCondition.class);
-        String jdbcDbUrl = System.getenv("JDBC_DATABASE_URL");
 
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-        if (null != jdbcDbUrl) {
-            logger.info(jdbcDbUrl + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            builder.applySetting("hibernate.connection.url", System.getenv("JDBC_DATABASE_URL"));
-        }
         SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
 
         return sessionFactory;

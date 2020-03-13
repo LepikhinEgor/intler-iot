@@ -1,6 +1,6 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.WidgetData;
+import intler_iot.controllers.entities.WidgetDTO;
 import intler_iot.controllers.entities.WidgetSize;
 import intler_iot.dao.WidgetDao;
 import intler_iot.dao.entities.Sensor;
@@ -9,12 +9,9 @@ import intler_iot.dao.entities.Widget;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class WidgetService {
@@ -56,7 +53,7 @@ public class WidgetService {
         widgetDao.update(widget);
     }
 
-    public List<WidgetData> getWidgetsList() throws NotAuthException {
+    public List<WidgetDTO> getWidgetsList() throws NotAuthException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Sensor> lastSensors = sensorService.getLastSensors(user);
@@ -66,9 +63,9 @@ public class WidgetService {
         List<Widget> createdWidgets = createWidgets(newSensors);
         widgetDao.recordWidgets(createdWidgets);
 
-        widgets.addAll(createdWidgets);//TODO refactor -> method HashMap<Widget,Sensor> match(widgets, lastSensors) + method updateWidgetsLastValue()
-
-        List<WidgetData> widgetsData = transformToWidgetsData(widgets, lastSensors);
+        widgets.addAll(createdWidgets);
+        List<Map.Entry<Widget,Sensor>> widgetSensorPairs = matchWidgetsSensors(widgets, lastSensors);
+        List<WidgetDTO> widgetsData = transformToWidgetsData(widgetSensorPairs);
 
         return widgetsData;
     }
@@ -113,26 +110,5 @@ public class WidgetService {
         }
 
         return widgets;
-    }
-
-    private List<WidgetData> transformToWidgetsData(List<Widget> widgets, List<Sensor> lastSensors) {
-        List<WidgetData> widgetsData = new ArrayList<>();
-        for (Widget widget: widgets) {
-            WidgetData widgetData = null;
-            Sensor matchedSensor = null;
-            for (Sensor sensor : lastSensors) {
-                if (widget.getKeyWard().equals(sensor.getName())) {
-                    matchedSensor = sensor;
-                    widget.setLastValue(sensor.getValue());
-                    break;
-                }
-            }
-            widgetData = new WidgetData(widget, matchedSensor);
-
-            widgetsData.add(widgetData);
-        }
-
-        widgetsData.sort(Comparator.comparingLong((WidgetData wd) -> wd.getWidget().getId()));
-        return widgetsData;
     }
 }
