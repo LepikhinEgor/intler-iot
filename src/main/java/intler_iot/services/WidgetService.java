@@ -17,17 +17,11 @@ import java.util.*;
 @Service
 public class WidgetService {
 
-    private UserService userService;
     private SensorService sensorService;
 
     private WidgetDao widgetDao;
 
     private WidgetDTOConventer widgetDTOConventer;
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 
     @Autowired
     public void setSensorService(SensorService sensorService) {
@@ -61,6 +55,12 @@ public class WidgetService {
         widgetDao.update(widget);
     }
 
+    /***
+     * Method return list of old and new user widgets as WidgetDTO list.
+     * This method constantly calls by site every N seconds, when dashboard page is open
+     * @return all user widgets as WidgetDTO list
+     * @throws NotAuthException
+     */
     public List<WidgetDTO> getWidgetsList() throws NotAuthException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -72,10 +72,39 @@ public class WidgetService {
         return widgetsDTO;
     }
 
+    /***
+     * Update last value which was showing on widget. It necessary for sliders, because need save last changed slider value
+     * otherwise slider value will be reset every time by getWidgets request
+     * @param sensorName
+     * @param deviceName
+     * @param value
+     */
     public void updateWidgetLastValue(String sensorName, String deviceName, double value) {
         widgetDao.updateLastValue(sensorName, deviceName, value);
     }
 
+    /**
+     * Method save new widgets size to database
+     * @param widgetsSize
+     */
+    public void updateWidgetsSize(List<WidgetSize> widgetsSize) {
+        for (WidgetSize widgetSize : widgetsSize) {
+            Widget widget = new Widget();
+            widget.setId(widgetSize.getId());
+            widget.setWidth(widgetSize.getWidth());
+            widget.setHeight(widgetSize.getHeight());
+
+            widgetDao.updateSize(widget);
+        }
+    }
+
+    /***
+     * Method for getting user widgets.  If since last request db receive new sensor data
+     *  will be created new widgets with default parameters.
+     * @param user
+     * @param lastSensors list of all unique sensor with actual(latest) value
+     * @return
+     */
     private List<Widget> getAllWidgets(User user, List<Sensor> lastSensors ) {
         List<Widget> widgets = widgetDao.getWidgets(user);
 
@@ -88,6 +117,12 @@ public class WidgetService {
         return widgets;
     }
 
+    /**
+     * Method return list of new sensors which not showing by any widget
+     * @param lastSensors list of all unique sensor with actual(latest) value
+     * @param widgets old widgets from db
+     * @return
+     */
     private List<Sensor> getSensorsWithoutWidget(List<Sensor> lastSensors,List<Widget> widgets) {
         List<Sensor> newSensors = new ArrayList<>();
         for (Sensor sensor : lastSensors) {
@@ -104,17 +139,12 @@ public class WidgetService {
         return newSensors;
     }
 
-    public void updateWidgetsSize(List<WidgetSize> widgetsSize) {
-        for (WidgetSize widgetSize : widgetsSize) {
-            Widget widget = new Widget();
-            widget.setId(widgetSize.getId());
-            widget.setWidth(widgetSize.getWidth());
-            widget.setHeight(widgetSize.getHeight());
 
-            widgetDao.updateSize(widget);
-        }
-    }
-
+    /**
+     * Method create new widgets by last sensors value
+     * @param newSensors
+     * @return
+     */
     private List<Widget> createWidgets(List<Sensor> newSensors) {
         List<Widget> widgets = new ArrayList<>();
 

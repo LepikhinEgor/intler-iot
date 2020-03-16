@@ -35,6 +35,7 @@ public class Widget {
         this.deviceName = sensor.getDevice().getName();
         this.minValue = DEFAULT_MIN_VALUE;
         this.maxValue = DEFAULT_MAX_VALUE;
+        this.setLastValue(sensor.getValue());
     }
 
     @Id
