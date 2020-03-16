@@ -2,7 +2,7 @@ package intler_iot.controllers.entities;
 
 import java.util.Objects;
 
-public class RegistrationMessage {
+public class RegistrationDTO {
     public static final int SUCCESS = 0;
     public static final int FAIL = 1;
     public static final int LOGIN_INVALID = 2;
@@ -14,7 +14,7 @@ public class RegistrationMessage {
     private int status;
     private String message;
 
-    public RegistrationMessage(int status) {
+    public RegistrationDTO(int status) {
         this.status = status;
 
         switch(status) {
@@ -56,7 +56,7 @@ public class RegistrationMessage {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RegistrationMessage that = (RegistrationMessage) o;
+        RegistrationDTO that = (RegistrationDTO) o;
         return status == that.status &&
                 Objects.equals(message, that.message);
     }

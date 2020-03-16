@@ -1,6 +1,6 @@
 package intler_iot.controllers;
 
-import intler_iot.controllers.entities.OrderData;
+import intler_iot.controllers.entities.OrderDTO;
 import intler_iot.controllers.entities.RestResponce;
 import intler_iot.services.CloudOrderService;
 import intler_iot.services.WidgetService;
@@ -26,10 +26,10 @@ public class SiteController {
     }
 
     @PostMapping("console/dashboard/record-cloud-order")
-    public RestResponce getCloudOrder(@RequestBody OrderData orderData) {
+    public RestResponce getCloudOrder(@RequestBody OrderDTO orderDTO) {
         try {
-            widgetService.updateWidgetLastValue(orderData.getKeyWard(), orderData.getDeviceName(), orderData.getValue());
-            cloudOrderService.recordNewOrder(orderData);
+            widgetService.updateWidgetLastValue(orderDTO.getKeyWard(), orderDTO.getDeviceName(), orderDTO.getValue());
+            cloudOrderService.recordNewOrder(orderDTO);
         } catch (Exception e) {
             return new RestResponce(RestResponce.FAIL, e.toString());
         }

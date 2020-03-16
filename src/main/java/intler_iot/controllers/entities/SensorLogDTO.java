@@ -3,17 +3,17 @@ package intler_iot.controllers.entities;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class SensorLog {
+public class SensorLogDTO {
     private String sensorName;
     private int currentPage;
     private int pagesCount;
     private List<Map.Entry<Timestamp, Double>> sensorsLogs;
 
-    public SensorLog() {
+    public SensorLogDTO() {
         sensorsLogs = new ArrayList<>();
     }
 
-    public SensorLog(String sensorName, int currentPage, int pagesCount, List<Map.Entry<Timestamp, Double>> sensorsLogs) {
+    public SensorLogDTO(String sensorName, int currentPage, int pagesCount, List<Map.Entry<Timestamp, Double>> sensorsLogs) {
         this.sensorName = sensorName;
         this.currentPage = currentPage;
         this.pagesCount = pagesCount;
@@ -64,11 +64,11 @@ public class SensorLog {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SensorLog sensorLog = (SensorLog) o;
-        return currentPage == sensorLog.currentPage &&
-                pagesCount == sensorLog.pagesCount &&
-                Objects.equals(sensorName, sensorLog.sensorName) &&
-                Objects.equals(sensorsLogs, sensorLog.sensorsLogs);
+        SensorLogDTO sensorLogDTO = (SensorLogDTO) o;
+        return currentPage == sensorLogDTO.currentPage &&
+                pagesCount == sensorLogDTO.pagesCount &&
+                Objects.equals(sensorName, sensorLogDTO.sensorName) &&
+                Objects.equals(sensorsLogs, sensorLogDTO.sensorsLogs);
     }
 
     @Override

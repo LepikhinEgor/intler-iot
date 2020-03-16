@@ -1,6 +1,6 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.RegistrationMessage;
+import intler_iot.controllers.entities.RegistrationDTO;
 import intler_iot.dao.UserDao;
 import intler_iot.dao.entities.User;
 import intler_iot.services.exceptions.NotAuthException;
@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
-import java.util.List;
 
 @Service
 public class UserService {
@@ -83,14 +82,14 @@ public class UserService {
                 && authentication.isAuthenticated();
     }
 
-    public RegistrationMessage registerUser(User user) {
+    public RegistrationDTO registerUser(User user) {
         int validStatus = checkUserDataIsValid(user);
-        if (validStatus != RegistrationMessage.SUCCESS)
-            return new RegistrationMessage(validStatus);
+        if (validStatus != RegistrationDTO.SUCCESS)
+            return new RegistrationDTO(validStatus);
         if (!checkLoginIsFree(user.getLogin()))
-            return new RegistrationMessage(RegistrationMessage.LOGIN_BUSY);
+            return new RegistrationDTO(RegistrationDTO.LOGIN_BUSY);
         if (!checkEmailIsFree(user.getEmail()))
-            return new RegistrationMessage(RegistrationMessage.EMAIL_BUSY);
+            return new RegistrationDTO(RegistrationDTO.EMAIL_BUSY);
 
         user.setPassword(encodePassword(user.getPassword()));
 
@@ -98,10 +97,10 @@ public class UserService {
             userDao.create(user);
         } catch (Throwable th) {
             logger.error(th.getMessage(), th);
-            return new RegistrationMessage(RegistrationMessage.FAIL);
+            return new RegistrationDTO(RegistrationDTO.FAIL);
         }
 
-        return new RegistrationMessage(RegistrationMessage.SUCCESS);
+        return new RegistrationDTO(RegistrationDTO.SUCCESS);
     }
 
     public boolean checkLoginIsFree(String login) {
@@ -124,15 +123,15 @@ public class UserService {
 
     private int checkUserDataIsValid(User user) {
         if (!checkLoginIsValid(user.getLogin()))
-            return RegistrationMessage.LOGIN_INVALID;
+            return RegistrationDTO.LOGIN_INVALID;
 
         if (!checkEmailIsValid(user.getEmail()))
-            return RegistrationMessage.EMAIL_INVALID;
+            return RegistrationDTO.EMAIL_INVALID;
 
         if (!checkPasswordIsValid(user.getPassword()))
-            return RegistrationMessage.PASSWORD_INVALID;
+            return RegistrationDTO.PASSWORD_INVALID;
 
-        return RegistrationMessage.SUCCESS;
+        return RegistrationDTO.SUCCESS;
     }
 
     private boolean checkLoginIsValid(String login) {

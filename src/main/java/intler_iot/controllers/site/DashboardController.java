@@ -1,7 +1,7 @@
 package intler_iot.controllers.site;
 
 import intler_iot.controllers.entities.WidgetDTO;
-import intler_iot.controllers.entities.WidgetSize;
+import intler_iot.controllers.entities.WidgetSizeDTO;
 import intler_iot.dao.entities.Widget;
 import intler_iot.services.WidgetService;
 import intler_iot.services.exceptions.NotAuthException;
@@ -64,7 +64,7 @@ public class DashboardController {
 
     @PostMapping("console/dashboard/update-widgets-size")
     @ResponseBody
-    public void updateWidgetsSize(@RequestBody List<WidgetSize> widgetsSize) {
+    public void updateWidgetsSize(@RequestBody List<WidgetSizeDTO> widgetsSize) {
         widgetService.updateWidgetsSize(widgetsSize);
     }
 }

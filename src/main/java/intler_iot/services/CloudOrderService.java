@@ -1,7 +1,7 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.OrderData;
-import intler_iot.controllers.entities.SensorsData;
+import intler_iot.controllers.entities.OrderDTO;
+import intler_iot.controllers.entities.DeviceStateDTO;
 import intler_iot.dao.CloudOrderDao;
 import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.Device;
@@ -38,13 +38,13 @@ public class CloudOrderService {
         this.cloudOrderDao = cloudOrderDao;
     }
 
-    public void recordNewOrder(OrderData orderData) throws NotAuthException {
+    public void recordNewOrder(OrderDTO orderDTO) throws NotAuthException {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Device device = deviceService.getDeviceById(user, orderData.getDeviceName());
+        Device device = deviceService.getDeviceById(user, orderDTO.getDeviceName());
 
         CloudOrder order = new CloudOrder();
-        order.setKeyWard(orderData.getKeyWard());
-        order.setValue(orderData.getValue());
+        order.setKeyWard(orderDTO.getKeyWard());
+        order.setValue(orderDTO.getValue());
         order.setDevice(device);
         order.setTiming(new Timestamp(System.currentTimeMillis()));
         order.setUsed(false);
@@ -66,14 +66,14 @@ public class CloudOrderService {
         cloudOrderDao.deleteOld();
     }
 
-    public void markOldOrdersAsRemoved(SensorsData sensorsData) throws NotAuthException {
-        User user = userService.authUser(sensorsData.getLogin(), sensorsData.getPassword());
-        Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
+    public void markOldOrdersAsRemoved(DeviceStateDTO deviceStateDTO) throws NotAuthException {
+        User user = userService.authUser(deviceStateDTO.getLogin(), deviceStateDTO.getPassword());
+        Device device = deviceService.getDeviceById(user, deviceStateDTO.getDeviceName());
 
-        if (sensorsData.getOrdersAccepted().size() == 0)
+        if (deviceStateDTO.getOrdersAccepted().size() == 0)
             return;
 
-        cloudOrderDao.markRemoved(sensorsData.getOrdersAccepted(), device);
+        cloudOrderDao.markRemoved(deviceStateDTO.getOrdersAccepted(), device);
     }
 
     private HashMap<String, Double> ordersToMap(List<CloudOrder> ordersList) {

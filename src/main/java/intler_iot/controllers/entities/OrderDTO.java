@@ -2,7 +2,7 @@ package intler_iot.controllers.entities;
 
 import java.util.Objects;
 
-public class OrderData {
+public class OrderDTO {
     private String keyWard;
     private double value;
     private String deviceName;
@@ -35,10 +35,10 @@ public class OrderData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderData orderData = (OrderData) o;
-        return Double.compare(orderData.value, value) == 0 &&
-                Objects.equals(keyWard, orderData.keyWard) &&
-                Objects.equals(deviceName, orderData.deviceName);
+        OrderDTO orderDTO = (OrderDTO) o;
+        return Double.compare(orderDTO.value, value) == 0 &&
+                Objects.equals(keyWard, orderDTO.keyWard) &&
+                Objects.equals(deviceName, orderDTO.deviceName);
     }
 
     @Override

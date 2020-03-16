@@ -1,8 +1,6 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.SensorsData;
 import intler_iot.dao.ControlCommandDao;
-import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.CommandCondition;
 import intler_iot.dao.entities.ControlCommand;
 import intler_iot.dao.entities.User;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

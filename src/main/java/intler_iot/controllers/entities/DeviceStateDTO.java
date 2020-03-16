@@ -1,14 +1,10 @@
 package intler_iot.controllers.entities;
 
-import org.codehaus.jackson.map.ObjectMapper;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class SensorsData {
+public class DeviceStateDTO {
 
     private String login;
     private String password;
@@ -82,7 +78,7 @@ public class SensorsData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SensorsData that = (SensorsData) o;
+        DeviceStateDTO that = (DeviceStateDTO) o;
         return Objects.equals(login, that.login) &&
                 Objects.equals(password, that.password) &&
                 Objects.equals(deviceName, that.deviceName) &&

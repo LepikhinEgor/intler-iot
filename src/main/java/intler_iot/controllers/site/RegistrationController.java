@@ -1,11 +1,9 @@
 package intler_iot.controllers.site;
 
-import intler_iot.controllers.entities.RegistrationMessage;
+import intler_iot.controllers.entities.RegistrationDTO;
 import intler_iot.dao.entities.User;
 import intler_iot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +24,8 @@ public class RegistrationController {
 
     @PostMapping("registration/register-user")
     @ResponseBody
-    public RegistrationMessage registerUser(@RequestBody User user) {
-        RegistrationMessage message = userService.registerUser(user);
+    public RegistrationDTO registerUser(@RequestBody User user) {
+        RegistrationDTO message = userService.registerUser(user);
 
         return message;
     }

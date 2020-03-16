@@ -1,6 +1,6 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.SensorsData;
+import intler_iot.controllers.entities.DeviceStateDTO;
 import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
@@ -43,8 +43,8 @@ public class SensorServiceTest {
         sensorService.setUserService(userServiceMock);
     }
 
-    private SensorsData getValidSensorData() {
-        SensorsData sensorsData = new SensorsData();
+    private DeviceStateDTO getValidSensorData() {
+        DeviceStateDTO sensorsData = new DeviceStateDTO();
         sensorsData.setLogin("admin");
         sensorsData.setPassword("qwerty");
         sensorsData.setDeviceName("MyArduino");
@@ -81,7 +81,7 @@ public class SensorServiceTest {
 
     private List<Sensor> getSensorsList() {
         List<Sensor> sensors = new ArrayList<>();
-        SensorsData sensorsData = getValidSensorData();
+        DeviceStateDTO sensorsData = getValidSensorData();
 
         for (String sensorName: sensorsData.getSensorsValue().keySet()) {
             Sensor sensor = new Sensor();

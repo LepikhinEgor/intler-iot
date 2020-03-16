@@ -1,7 +1,6 @@
 package intler_iot.controllers;
 
-import intler_iot.controllers.entities.SensorsData;
-import intler_iot.dao.entities.CloudOrder;
+import intler_iot.controllers.entities.DeviceStateDTO;
 import intler_iot.services.CloudOrderService;
 import intler_iot.services.ControlCommandService;
 import intler_iot.services.DeviceService;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 public class DeviceController {
@@ -45,17 +43,17 @@ public class DeviceController {
     }
 
     @PostMapping(value = "send-device-data")
-    public HashMap<String, Double> receiveSensorsData(@RequestBody SensorsData sensorsData) {
-        logger.info("Received data " + sensorsData.toString());
+    public HashMap<String, Double> receiveSensorsData(@RequestBody DeviceStateDTO deviceStateDTO) {
+        logger.info("Received data " + deviceStateDTO.toString());
         HashMap<String, Double> orders = new HashMap<>();
 
         try {
-            sensorService.updateSensorsValues(sensorsData);
-            orders = cloudOrderService.getDeviceOrders(sensorsData.getDeviceName(),
-                    sensorsData.getLogin(),
-                    sensorsData.getPassword());
-            orders.putAll(controlCommandService.getCloudLogicOrders(sensorsData.getSensorsValue()));
-            cloudOrderService.markOldOrdersAsRemoved(sensorsData);
+            sensorService.updateSensorsValues(deviceStateDTO);
+            orders = cloudOrderService.getDeviceOrders(deviceStateDTO.getDeviceName(),
+                    deviceStateDTO.getLogin(),
+                    deviceStateDTO.getPassword());
+            orders.putAll(controlCommandService.getCloudLogicOrders(deviceStateDTO.getSensorsValue()));
+            cloudOrderService.markOldOrdersAsRemoved(deviceStateDTO);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

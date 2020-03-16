@@ -1,7 +1,7 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.SensorLog;
-import intler_iot.controllers.entities.SensorsData;
+import intler_iot.controllers.entities.SensorLogDTO;
+import intler_iot.controllers.entities.DeviceStateDTO;
 import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
@@ -42,12 +42,12 @@ public class SensorService {
         this.sensorDao = sensorDao;
     }
 
-    public void updateSensorsValues(SensorsData sensorsData) throws NotAuthException {
-        User user = userService.authUser(sensorsData.getLogin(), sensorsData.getPassword());
-        deviceService.connectDevice(sensorsData.getLogin(), sensorsData.getPassword(), sensorsData.getDeviceName(), sensorsData.getDeviceType());
-        Device device = deviceService.getDeviceById(user, sensorsData.getDeviceName());
+    public void updateSensorsValues(DeviceStateDTO deviceStateDTO) throws NotAuthException {
+        User user = userService.authUser(deviceStateDTO.getLogin(), deviceStateDTO.getPassword());
+        deviceService.connectDevice(deviceStateDTO.getLogin(), deviceStateDTO.getPassword(), deviceStateDTO.getDeviceName(), deviceStateDTO.getDeviceType());
+        Device device = deviceService.getDeviceById(user, deviceStateDTO.getDeviceName());
 
-        recordSensorsValues(device, sensorsData.getSensorsValue());
+        recordSensorsValues(device, deviceStateDTO.getSensorsValue());
     }
 
     private void recordSensorsValues(Device device, HashMap<String, Double> sensorsValues) {
@@ -90,17 +90,17 @@ public class SensorService {
         return lastSensors;
     }
 
-    public List<SensorLog> getUserSensors() throws NotAuthException {
+    public List<SensorLogDTO> getUserSensors() throws NotAuthException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Device> userDevices = deviceService.getUserDevices(user);
 
         List<Sensor> sensors = sensorDao.getAll(userDevices);
-        List<SensorLog> lastUnicSensors = transformToSensorLogs(sensors,userDevices);
+        List<SensorLogDTO> lastUnicSensors = transformToSensorLogs(sensors,userDevices);
 
         return lastUnicSensors;
     }
 
-    public SensorLog getSensorLogPage(String sensorName, int pageNum) throws NotAuthException {
+    public SensorLogDTO getSensorLogPage(String sensorName, int pageNum) throws NotAuthException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Sensor> sensors = sensorDao.getSensorValues(sensorName, user);
         if (pageNum == -1)
@@ -110,9 +110,9 @@ public class SensorService {
         int pagesCount = calulatePagesCount(sensors.size());
         List<Sensor> sensorsPage = pullSensorPage(sensors, pageNum);
 
-        SensorLog sensorLog = new SensorLog(sensorName, pageNum, pagesCount, sensorsToPairs(sensorsPage));
+        SensorLogDTO sensorLogDTO = new SensorLogDTO(sensorName, pageNum, pagesCount, sensorsToPairs(sensorsPage));
 
-        return sensorLog;
+        return sensorLogDTO;
     }
 
     public List<Sensor> pullSensorPage(List<Sensor> sensors, int pageNum) {
@@ -129,9 +129,9 @@ public class SensorService {
         return sensorsPage;
     }
 
-    private List<SensorLog> transformToSensorLogs(List<Sensor> sensors, List<Device> devices) {
+    private List<SensorLogDTO> transformToSensorLogs(List<Sensor> sensors, List<Device> devices) {
         HashSet<String> unicSensors = new HashSet<String>();
-        List<SensorLog> sensorLogs = new ArrayList<>();
+        List<SensorLogDTO> sensorLogDTOS = new ArrayList<>();
 
         for(Sensor sensor : sensors) {
             unicSensors.add(sensor.getName());
@@ -140,25 +140,25 @@ public class SensorService {
         sensors.sort((Sensor s1, Sensor s2) -> s2.getArriveTime().compareTo(s1.getArriveTime()));
 
         for (String name : unicSensors) {
-            SensorLog sensorLog = new SensorLog();
-            sensorLog.setSensorName(name);
+            SensorLogDTO sensorLogDTO = new SensorLogDTO();
+            sensorLogDTO.setSensorName(name);
 
             int sensorsFounded = 0;
             for (Sensor sensor : sensors) {
                 if (sensor.getName().equals(name)) {
                     if (sensorsFounded < 10) {
                         Map.Entry<Timestamp, Double> sensorVal = new AbstractMap.SimpleEntry<Timestamp, Double>(sensor.getArriveTime(), sensor.getValue());
-                        sensorLog.getSensorsLogs().add(sensorVal);
+                        sensorLogDTO.getSensorsLogs().add(sensorVal);
                     }
                     sensorsFounded++;
                 }
             }
 
-            sensorLog.setPagesCount(calulatePagesCount(sensorsFounded));
-            sensorLogs.add(sensorLog);
+            sensorLogDTO.setPagesCount(calulatePagesCount(sensorsFounded));
+            sensorLogDTOS.add(sensorLogDTO);
         }
 
-        return sensorLogs;
+        return sensorLogDTOS;
     }
 
     private List<Map.Entry<Timestamp, Double>> sensorsToPairs(List<Sensor> sensors) {

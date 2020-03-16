@@ -1,8 +1,6 @@
 package intler_iot.dao.entities;
 
-import intler_iot.controllers.entities.OrderData;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.criterion.Order;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;

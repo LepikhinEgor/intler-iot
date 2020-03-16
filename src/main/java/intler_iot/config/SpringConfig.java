@@ -1,16 +1,12 @@
 package intler_iot.config;
 
-import intler_iot.controllers.entities.OrderData;
 import intler_iot.dao.entities.*;
-import intler_iot.dao.hibernate.UserDaoHibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
