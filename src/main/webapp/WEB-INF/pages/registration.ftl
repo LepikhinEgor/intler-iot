@@ -3,10 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>22 лучших формы входа и регистрации | Vladmaxi.net</title>
+    <title>Регистрация Intler Cloud</title>
     <link rel="stylesheet" href="./resources/css/registration.css" media="screen" type="text/css" />
-    <link rel="icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./resources/images/pageIcon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="./resources/images/pageIcon.png" type="image/x-icon">
     <script src="./resources/js/jquery-3.4.1.js" type="text/javascript"></script>
     <script src="./resources/js/registration.js" type="text/javascript"></script>
 </head>

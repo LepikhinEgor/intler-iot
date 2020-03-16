@@ -4,7 +4,9 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <title>Whitesquare</title>
+    <title>Intler console</title>
+    <link rel="icon" href="./resources/images/pageIcon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="./resources/images/pageIcon.png" type="image/x-icon">
     <link rel="stylesheet" href="./resources/css/consoleStyle.css"/>
     <link rel="stylesheet" href="./resources/css/dashboard.css"/>
     <link rel="stylesheet" href="./resources/css/logic.css"/>
