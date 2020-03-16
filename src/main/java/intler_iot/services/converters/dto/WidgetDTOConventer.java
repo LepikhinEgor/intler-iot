@@ -10,11 +10,18 @@ import java.util.*;
 @Service
 public class WidgetDTOConventer {
 
-    private List<WidgetDTO> convertToWidgetsDTO(List<Widget> widgets, List<Sensor> sensors) {
-        List<Map.Entry<Widget,Sensor>> widgetSensorPairs = matchWidgetsSensors();
+    public List<WidgetDTO> convertToWidgetsDTO(List<Widget> widgets, List<Sensor> sensors) {
+        List<Map.Entry<Widget,Sensor>> widgetSensorPairs = matchWidgetsSensors(widgets,sensors);
+        List<WidgetDTO> widgetsList = convertToWidgetsDTO(widgetSensorPairs);
 
-        widgetsData.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getWidget().getId()));
-        return widgetsData;
+        widgetsList = sortWidgetsByOrder(widgetsList);
+        return widgetsList;
+    }
+
+    private List<WidgetDTO>  sortWidgetsByOrder(List<WidgetDTO> widgetsDTO) {
+        widgetsDTO.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getWidget().getId()));
+
+        return widgetsDTO;
     }
 
     private List<Map.Entry<Widget, Sensor>> matchWidgetsSensors(List<Widget> widgets, List<Sensor> sensors) {

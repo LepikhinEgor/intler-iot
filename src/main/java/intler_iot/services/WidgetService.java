@@ -6,6 +6,7 @@ import intler_iot.dao.WidgetDao;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
 import intler_iot.dao.entities.Widget;
+import intler_iot.services.converters.dto.WidgetDTOConventer;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,8 @@ public class WidgetService {
 
     private WidgetDao widgetDao;
 
+    private WidgetDTOConventer widgetDTOConventer;
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -34,6 +37,11 @@ public class WidgetService {
     @Autowired
     public void setWidgetDao(WidgetDao widgetDao) {
         this.widgetDao = widgetDao;
+    }
+
+    @Autowired
+    public void setWidgetDUOConverter(WidgetDTOConventer widgetDTOConventer) {
+        this.widgetDTOConventer = widgetDTOConventer;
     }
 
     public void createWidget(Widget widget) {
@@ -57,6 +65,18 @@ public class WidgetService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Sensor> lastSensors = sensorService.getLastSensors(user);
+        List<Widget> widgets = getAllWidgets(user, lastSensors);
+
+        List<WidgetDTO> widgetsDTO = widgetDTOConventer.convertToWidgetsDTO(widgets, lastSensors);
+
+        return widgetsDTO;
+    }
+
+    public void updateWidgetLastValue(String sensorName, String deviceName, double value) {
+        widgetDao.updateLastValue(sensorName, deviceName, value);
+    }
+
+    private List<Widget> getAllWidgets(User user, List<Sensor> lastSensors ) {
         List<Widget> widgets = widgetDao.getWidgets(user);
 
         List<Sensor> newSensors = getSensorsWithoutWidget(lastSensors, widgets);
@@ -64,15 +84,8 @@ public class WidgetService {
         widgetDao.recordWidgets(createdWidgets);
 
         widgets.addAll(createdWidgets);
-        List<Map.Entry<Widget,Sensor>> widgetSensorPairs = matchWidgetsSensors(widgets, lastSensors);
-        List<WidgetDTO> widgetsData = transformToWidgetsData(widgetSensorPairs);
 
-        return widgetsData;
-    }
-
-
-    public void updateWidgetLastValue(String sensorName, String deviceName, double value) {
-        widgetDao.updateLastValue(sensorName, deviceName, value);
+        return widgets;
     }
 
     private List<Sensor> getSensorsWithoutWidget(List<Sensor> lastSensors,List<Widget> widgets) {
