@@ -1,12 +1,14 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.SensorLogDTO;
+import intler_iot.controllers.entities.SensorPageDTO;
 import intler_iot.controllers.entities.DeviceStateDTO;
 import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.Sensor;
 import intler_iot.dao.entities.User;
+import intler_iot.services.converters.dto.SensorPageDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
+import intler_iot.services.exceptions.SensorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +20,10 @@ import java.util.*;
 @EnableScheduling
 public class SensorService {
 
-    private static final int SENSORS_ON_PAGE = 10;
+    static final int SENSORS_ON_PAGE = 10;
+    static final int LAST_PAGE_NUM = -1;
+
+    private SensorPageDTOConverter sensorPageDTOConverter;
 
     private DeviceService deviceService;
     private UserService userService;
@@ -40,6 +45,11 @@ public class SensorService {
     @Autowired
     public void setSensorDao(SensorDao sensorDao) {
         this.sensorDao = sensorDao;
+    }
+
+    @Autowired
+    public void setSensorPageDTOConverter(SensorPageDTOConverter sensorPageDTOConverter) {
+        this.sensorPageDTOConverter = sensorPageDTOConverter;
     }
 
     public void updateSensorsValues(DeviceStateDTO deviceStateDTO) throws NotAuthException {
@@ -66,7 +76,7 @@ public class SensorService {
     }
 
     public HashMap<String, Collection<String>> getSensorsName() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getCurrentUser();
         List<Device> userDevices = deviceService.getUserDevices(user);
 
         HashMap<String, Collection<String>> devicesSensors = new HashMap<>();
@@ -90,86 +100,92 @@ public class SensorService {
         return lastSensors;
     }
 
-    public List<SensorLogDTO> getUserSensors() throws NotAuthException {
+    public List<SensorPageDTO> getUserSensors() throws NotAuthException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Device> userDevices = deviceService.getUserDevices(user);
 
         List<Sensor> sensors = sensorDao.getAll(userDevices);
-        List<SensorLogDTO> lastUnicSensors = transformToSensorLogs(sensors,userDevices);
+        List<SensorPageDTO> lastUnicSensors = transformToSensorsPage(sensors,userDevices);
 
         return lastUnicSensors;
     }
 
-    public SensorLogDTO getSensorLogPage(String sensorName, int pageNum) throws NotAuthException {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    /**
+     * Method for getting sorted sensors value as table page. If needed sensor has not values throwing exception. This case may be when
+     * user request table page, but this sensor values was deleted recently
+     * @param sensorName
+     * @param pageNum
+     * @return table page with sensor values
+     * @throws NotAuthException
+     * @throws SensorNotFoundException
+     */
+    public SensorPageDTO getSensorLogPage(String sensorName, int pageNum) throws NotAuthException, SensorNotFoundException {
+        User user = userService.getCurrentUser();
         List<Sensor> sensors = sensorDao.getSensorValues(sensorName, user);
-        if (pageNum == -1)
-            pageNum = sensors.size() / SENSORS_ON_PAGE;
-        else
-            pageNum = pageNum;
+
+        if (sensors.size() == 0)
+            throw new SensorNotFoundException("Requested sensor page is empty, because not found sensor values from db. Propably " +
+                    "sensor data was auto deleted and not updated");
+
         int pagesCount = calulatePagesCount(sensors.size());
+        if (pageNum == LAST_PAGE_NUM || pageNum > pagesCount)
+            pageNum = pagesCount -1;
+
         List<Sensor> sensorsPage = pullSensorPage(sensors, pageNum);
 
-        SensorLogDTO sensorLogDTO = new SensorLogDTO(sensorName, pageNum, pagesCount, sensorsToPairs(sensorsPage));
+        SensorPageDTO sensorPageDTO = sensorPageDTOConverter.covertToDTO(sensorName, pageNum, pagesCount, sensorsPage);
 
-        return sensorLogDTO;
+        return sensorPageDTO;
     }
 
     public List<Sensor> pullSensorPage(List<Sensor> sensors, int pageNum) {
-        sensors.sort((Sensor s1, Sensor s2) -> s2.getArriveTime().compareTo(s1.getArriveTime()));
+        sensors = sortSensors(sensors);
+
         List<Sensor> sensorsPage = new LinkedList<>();
 
-        int startPage = pageNum * SENSORS_ON_PAGE;
-        int endPage = startPage + SENSORS_ON_PAGE;
+        int firstSensor = pageNum * SENSORS_ON_PAGE;
+        int lastSensor = firstSensor + SENSORS_ON_PAGE;
 
-        for (int i = startPage; i < sensors.size() && i < endPage;i++) {
+        for (int i = firstSensor; i < sensors.size() && i < lastSensor;i++) {
                 sensorsPage.add(sensors.get(i));
         }
 
         return sensorsPage;
     }
 
-    private List<SensorLogDTO> transformToSensorLogs(List<Sensor> sensors, List<Device> devices) {
-        HashSet<String> unicSensors = new HashSet<String>();
-        List<SensorLogDTO> sensorLogDTOS = new ArrayList<>();
-
-        for(Sensor sensor : sensors) {
-            unicSensors.add(sensor.getName());
-        }
-
+    private List<Sensor> sortSensors(List<Sensor> sensors) {
         sensors.sort((Sensor s1, Sensor s2) -> s2.getArriveTime().compareTo(s1.getArriveTime()));
 
+        return sensors;
+    }
+
+    private List<SensorPageDTO> transformToSensorsPage(List<Sensor> sensors, List<Device> devices) {
+        Collection<String> unicSensors = getUnicSensorNames(sensors);
+        List<SensorPageDTO> sensorPageDTOs = new ArrayList<>();
+
+        sensors = sortSensors(sensors);
+
         for (String name : unicSensors) {
-            SensorLogDTO sensorLogDTO = new SensorLogDTO();
-            sensorLogDTO.setSensorName(name);
+            List<Sensor> sensorValues = new LinkedList<>();
 
             int sensorsFounded = 0;
             for (Sensor sensor : sensors) {
                 if (sensor.getName().equals(name)) {
-                    if (sensorsFounded < 10) {
-                        Map.Entry<Timestamp, Double> sensorVal = new AbstractMap.SimpleEntry<Timestamp, Double>(sensor.getArriveTime(), sensor.getValue());
-                        sensorLogDTO.getSensorsLogs().add(sensorVal);
+                    if (sensorValues.size() < SENSORS_ON_PAGE) {
+                        sensorValues.add(sensor);
                     }
                     sensorsFounded++;
                 }
             }
 
-            sensorLogDTO.setPagesCount(calulatePagesCount(sensorsFounded));
-            sensorLogDTOS.add(sensorLogDTO);
+            int pagesCount =  calulatePagesCount(sensorsFounded);
+            SensorPageDTO sensorPageDTO = sensorPageDTOConverter.covertToDTO(name, 0,pagesCount, sensorValues);
+            sensorPageDTOs.add(sensorPageDTO);
         }
 
-        return sensorLogDTOS;
+        return sensorPageDTOs;
     }
 
-    private List<Map.Entry<Timestamp, Double>> sensorsToPairs(List<Sensor> sensors) {
-        List<Map.Entry<Timestamp, Double>> sensorPairs = new LinkedList<Map.Entry<Timestamp, Double>>();
-
-        for (Sensor sensor : sensors) {
-            sensorPairs.add(new AbstractMap.SimpleEntry<Timestamp, Double>(sensor.getArriveTime(), sensor.getValue()));
-        }
-
-        return sensorPairs;
-    }
 
     private Collection<String> getUnicSensorNames(List<Sensor> sensors) {
         HashSet<String> unicNames = new HashSet<>();

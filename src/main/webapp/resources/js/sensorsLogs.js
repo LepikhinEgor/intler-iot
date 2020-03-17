@@ -1,3 +1,4 @@
+const LAST_PAGE_NUM = -1;
 
 function sensorsLogPageStart() {
     requestSensorsLogs();
@@ -90,7 +91,7 @@ function toFirstPage() {
 function toLastPage() {
     var parentTable = $(this).closest("table");
     var sensorName = parentTable.attr("id");
-    var pageNum = -1;
+    var pageNum = LAST_PAGE_NUM;
 
     requestSensorPage(sensorName, pageNum);
 }

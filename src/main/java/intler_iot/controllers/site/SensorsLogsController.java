@@ -1,6 +1,6 @@
 package intler_iot.controllers.site;
 
-import intler_iot.controllers.entities.SensorLogDTO;
+import intler_iot.controllers.entities.SensorPageDTO;
 import intler_iot.services.SensorService;
 import intler_iot.services.exceptions.NotAuthException;
 import org.slf4j.Logger;
@@ -28,19 +28,19 @@ public class SensorsLogsController {
 
     @GetMapping("console/get-sensors-logs")
     @ResponseBody
-    public List<SensorLogDTO> getSensorLogs() {
+    public List<SensorPageDTO> getSensorLogs() {
 
-        List<SensorLogDTO> sensorLogDTOS;
+        List<SensorPageDTO> sensorPageDTOS;
         try {
-            sensorLogDTOS = sensorService.getUserSensors();
+            sensorPageDTOS = sensorService.getUserSensors();
         } catch (NotAuthException e) {
             logger.error(e.getMessage(),e);
-            return  new ArrayList<SensorLogDTO>();
+            return  new ArrayList<SensorPageDTO>();
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return null;
         }
-        return sensorLogDTOS;
+        return sensorPageDTOS;
     }
 
     @GetMapping("console/logs")
@@ -50,14 +50,14 @@ public class SensorsLogsController {
 
     @GetMapping("console/get-sensor-logs-page")
     @ResponseBody
-    public SensorLogDTO getSensorLogsPage(@RequestParam("name") String sensorName, @RequestParam("pageNum") int pageNum) {
+    public SensorPageDTO getSensorLogsPage(@RequestParam("name") String sensorName, @RequestParam("pageNum") int pageNum) {
 
-        SensorLogDTO sensorLogDTO = null;
+        SensorPageDTO sensorPageDTO = null;
         try {
-            sensorLogDTO = sensorService.getSensorLogPage(sensorName, pageNum);
+            sensorPageDTO = sensorService.getSensorLogPage(sensorName, pageNum);
         } catch (Exception e) {
             logger.info(e.getMessage(),e);
         }
-        return sensorLogDTO;
+        return sensorPageDTO;
     }
 }
