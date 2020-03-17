@@ -20,10 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 
@@ -270,5 +267,46 @@ public class SensorServiceTest {
         List<SensorPageDTO> pageSensors = sensorService.getUserSensors();
 
         assertEquals(0, pageSensors.size());
+    }
+
+    @Test
+    public void getSensorsName_return2DevicesWith1and2Sensors() {
+        List<Sensor> deviceSensors1 = getSensorsList("sensorName", 5);
+        deviceSensors1.addAll(getSensorsList("sensor2",3));
+        List<Sensor> deviceSensors2 = getSensorsList("sensorName", 5);
+        List<Device> userDevices = new LinkedList<>();
+
+        Device device1 = getValidDevice();
+        device1.setName("device1");
+        device1.setSensors(deviceSensors1);
+        Device device2 = getValidDevice();
+        device2.setName("device2");
+        device2.setSensors(deviceSensors2);
+
+        userDevices.add(device1);
+        userDevices.add(device2);
+
+        when(deviceServiceMock.getUserDevices(any())).thenReturn(userDevices);
+        when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
+        inject();
+
+        HashMap<String, Collection<String>> pageSensors = sensorService.getSensorsName();
+
+        assertEquals(2, pageSensors.keySet().size());
+        assertEquals(2, pageSensors.get("device1").size());
+        assertEquals(1, pageSensors.get("device2").size());
+    }
+
+    @Test
+    public void getSensorsName_returnZeroDevice() {
+        List<Device> userDevices = new LinkedList<>();
+
+        when(deviceServiceMock.getUserDevices(any())).thenReturn(userDevices);
+        when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
+        inject();
+
+        HashMap<String, Collection<String>> pageSensors = sensorService.getSensorsName();
+
+        assertEquals(0, pageSensors.keySet().size());
     }
 }
