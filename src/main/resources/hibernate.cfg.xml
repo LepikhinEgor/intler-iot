@@ -23,7 +23,7 @@
 
         <mapping class="intler_iot.dao.entities.User"/>
         <mapping class="intler_iot.dao.entities.Device"/>
-        <mapping class="intler_iot.dao.entities.Sensor"/>
+        <mapping class="intler_iot.dao.entities.SensorValue"/>
         <mapping class="intler_iot.dao.entities.CloudOrder"/>
         <mapping class="intler_iot.dao.entities.Widget" />
         <mapping class="intler_iot.dao.entities.CommandCondition" />

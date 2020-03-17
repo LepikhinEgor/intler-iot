@@ -1,7 +1,7 @@
 package intler_iot.services.converters.dto;
 
 import intler_iot.controllers.entities.WidgetDTO;
-import intler_iot.dao.entities.Sensor;
+import intler_iot.dao.entities.SensorValue;
 import intler_iot.dao.entities.Widget;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +10,8 @@ import java.util.*;
 @Service
 public class WidgetDTOConventer {
 
-    public List<WidgetDTO> convertToWidgetsDTO(List<Widget> widgets, List<Sensor> sensors) {
-        List<Map.Entry<Widget,Sensor>> widgetSensorPairs = matchWidgetsSensors(widgets,sensors);
+    public List<WidgetDTO> convertToWidgetsDTO(List<Widget> widgets, List<SensorValue> sensorValues) {
+        List<Map.Entry<Widget, SensorValue>> widgetSensorPairs = matchWidgetsSensors(widgets, sensorValues);
         List<WidgetDTO> widgetsList = convertToWidgetsDTO(widgetSensorPairs);
 
         widgetsList = sortWidgetsByOrder(widgetsList);
@@ -24,25 +24,25 @@ public class WidgetDTOConventer {
         return widgetsDTO;
     }
 
-    private List<Map.Entry<Widget, Sensor>> matchWidgetsSensors(List<Widget> widgets, List<Sensor> sensors) {
-        List<Map.Entry<Widget,Sensor>> pairs = new ArrayList<>();
+    private List<Map.Entry<Widget, SensorValue>> matchWidgetsSensors(List<Widget> widgets, List<SensorValue> sensorValues) {
+        List<Map.Entry<Widget, SensorValue>> pairs = new ArrayList<>();
         for (Widget widget: widgets) {
-            Sensor foundSensor = null;
-            for (Sensor sensor : sensors) {
-                if (widget.getKeyWard().equals(sensor.getName())) {
-                    foundSensor = sensor;
+            SensorValue foundSensorValue = null;
+            for (SensorValue sensorValue : sensorValues) {
+                if (widget.getKeyWard().equals(sensorValue.getName())) {
+                    foundSensorValue = sensorValue;
                     break;
                 }
             }
-            pairs.add(new AbstractMap.SimpleEntry<>(widget, foundSensor));
+            pairs.add(new AbstractMap.SimpleEntry<>(widget, foundSensorValue));
         }
 
         return pairs;
     }
 
-    private List<WidgetDTO> convertToWidgetsDTO(List<Map.Entry<Widget,Sensor>> widgetSensorPairs) {
+    private List<WidgetDTO> convertToWidgetsDTO(List<Map.Entry<Widget, SensorValue>> widgetSensorPairs) {
         List<WidgetDTO> widgetsData = new ArrayList<>();
-        for (Map.Entry<Widget,Sensor> pair: widgetSensorPairs) {
+        for (Map.Entry<Widget, SensorValue> pair: widgetSensorPairs) {
             WidgetDTO widgetDTO = new WidgetDTO(pair.getKey(), pair.getValue());
 
             widgetsData.add(widgetDTO);

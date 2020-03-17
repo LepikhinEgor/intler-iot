@@ -22,7 +22,7 @@ public class SpringConfig {
         org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration().configure();
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Device.class);
-        configuration.addAnnotatedClass(Sensor.class);
+        configuration.addAnnotatedClass(SensorValue.class);
         configuration.addAnnotatedClass(CloudOrder.class);
         configuration.addAnnotatedClass(Widget.class);
         configuration.addAnnotatedClass(ControlCommand.class);

@@ -3,7 +3,7 @@ package intler_iot.services;
 import intler_iot.controllers.entities.WidgetDTO;
 import intler_iot.controllers.entities.WidgetSizeDTO;
 import intler_iot.dao.WidgetDao;
-import intler_iot.dao.entities.Sensor;
+import intler_iot.dao.entities.SensorValue;
 import intler_iot.dao.entities.User;
 import intler_iot.dao.entities.Widget;
 import intler_iot.services.converters.dto.WidgetDTOConventer;
@@ -64,10 +64,10 @@ public class WidgetService {
     public List<WidgetDTO> getWidgetsList() throws NotAuthException {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        List<Sensor> lastSensors = sensorService.getLastSensors(user);
-        List<Widget> widgets = getAllWidgets(user, lastSensors);
+        List<SensorValue> lastSensorValues = sensorService.getLastSensors(user);
+        List<Widget> widgets = getAllWidgets(user, lastSensorValues);
 
-        List<WidgetDTO> widgetsDTO = widgetDTOConventer.convertToWidgetsDTO(widgets, lastSensors);
+        List<WidgetDTO> widgetsDTO = widgetDTOConventer.convertToWidgetsDTO(widgets, lastSensorValues);
 
         return widgetsDTO;
     }
@@ -102,14 +102,14 @@ public class WidgetService {
      * Method for getting user widgets.  If since last request db receive new sensor data
      *  will be created new widgets with default parameters.
      * @param user
-     * @param lastSensors list of all unique sensor with actual(latest) value
+     * @param lastSensorValues list of all unique sensor with actual(latest) value
      * @return
      */
-    private List<Widget> getAllWidgets(User user, List<Sensor> lastSensors ) {
+    private List<Widget> getAllWidgets(User user, List<SensorValue> lastSensorValues) {
         List<Widget> widgets = widgetDao.getWidgets(user);
 
-        List<Sensor> newSensors = getSensorsWithoutWidget(lastSensors, widgets);
-        List<Widget> createdWidgets = createWidgets(newSensors);
+        List<SensorValue> newSensorValues = getSensorsWithoutWidget(lastSensorValues, widgets);
+        List<Widget> createdWidgets = createWidgets(newSensorValues);
         widgetDao.recordWidgets(createdWidgets);
 
         widgets.addAll(createdWidgets);
@@ -119,37 +119,37 @@ public class WidgetService {
 
     /**
      * Method return list of new sensors which not showing by any widget
-     * @param lastSensors list of all unique sensor with actual(latest) value
+     * @param lastSensorValues list of all unique sensor with actual(latest) value
      * @param widgets old widgets from db
      * @return
      */
-    private List<Sensor> getSensorsWithoutWidget(List<Sensor> lastSensors,List<Widget> widgets) {
-        List<Sensor> newSensors = new ArrayList<>();
-        for (Sensor sensor : lastSensors) {
+    private List<SensorValue> getSensorsWithoutWidget(List<SensorValue> lastSensorValues, List<Widget> widgets) {
+        List<SensorValue> newSensorValues = new ArrayList<>();
+        for (SensorValue sensorValue : lastSensorValues) {
             boolean isExist = false;
             for (Widget widget: widgets) {
-                if (sensor.getName().equals(widget.getKeyWard())) {
+                if (sensorValue.getName().equals(widget.getKeyWard())) {
                     isExist = true;
                 }
             }
             if (!isExist)
-                newSensors.add(sensor);
+                newSensorValues.add(sensorValue);
         }
 
-        return newSensors;
+        return newSensorValues;
     }
 
 
     /**
      * Method create new widgets by last sensors value
-     * @param newSensors
+     * @param newSensorValues
      * @return
      */
-    private List<Widget> createWidgets(List<Sensor> newSensors) {
+    private List<Widget> createWidgets(List<SensorValue> newSensorValues) {
         List<Widget> widgets = new ArrayList<>();
 
-        for (Sensor sensor: newSensors) {
-            widgets.add(new Widget(sensor));
+        for (SensorValue sensorValue : newSensorValues) {
+            widgets.add(new Widget(sensorValue));
         }
 
         return widgets;

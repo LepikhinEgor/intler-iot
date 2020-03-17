@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +42,7 @@ public class Device {
     private User owner;
 
     @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Sensor> sensors;
+    private List<SensorValue> sensorValues;
 
     @OneToMany(mappedBy = "device", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CloudOrder> orders;
@@ -110,12 +109,12 @@ public class Device {
         this.id = id;
     }
 
-    public List<Sensor> getSensors() {
-        return sensors;
+    public List<SensorValue> getSensorValues() {
+        return sensorValues;
     }
 
-    public void setSensors(List<Sensor> sensors) {
-        this.sensors = sensors;
+    public void setSensorValues(List<SensorValue> sensorValues) {
+        this.sensorValues = sensorValues;
     }
 
     public void setOwner(User owner) {

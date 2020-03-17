@@ -3,7 +3,6 @@ package intler_iot.dao.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "sensors")
-public class Sensor {
+public class SensorValue {
 
     @Id
     @GenericGenerator(
@@ -86,12 +85,12 @@ public class Sensor {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Sensor sensor = (Sensor) o;
-        return id == sensor.id &&
-                Double.compare(sensor.value, value) == 0 &&
-                Objects.equals(name, sensor.name) &&
-                Objects.equals(device, sensor.device) &&
-                Objects.equals(arriveTime, sensor.arriveTime);
+        SensorValue sensorValue = (SensorValue) o;
+        return id == sensorValue.id &&
+                Double.compare(sensorValue.value, value) == 0 &&
+                Objects.equals(name, sensorValue.name) &&
+                Objects.equals(device, sensorValue.device) &&
+                Objects.equals(arriveTime, sensorValue.arriveTime);
     }
 
     @Override

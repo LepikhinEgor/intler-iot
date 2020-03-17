@@ -24,18 +24,18 @@ public class Widget {
         super();
     }
 
-    public Widget(Sensor sensor) {
+    public Widget(SensorValue sensorValue) {
         this.measure = "";
-        this.keyWard = sensor.getName();
-        this.name = sensor.getName();
-        this.user = sensor.getDevice().getOwner();
+        this.keyWard = sensorValue.getName();
+        this.name = sensorValue.getName();
+        this.user = sensorValue.getDevice().getOwner();
         this.width = DEFAULT_WIDTH;
         this.height = DEFAULT_HEIGHT;
         this.type = TYPE_TEXT;
-        this.deviceName = sensor.getDevice().getName();
+        this.deviceName = sensorValue.getDevice().getName();
         this.minValue = DEFAULT_MIN_VALUE;
         this.maxValue = DEFAULT_MAX_VALUE;
-        this.setLastValue(sensor.getValue());
+        this.setLastValue(sensorValue.getValue());
     }
 
     @Id

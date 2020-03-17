@@ -4,7 +4,7 @@ import intler_iot.controllers.entities.DeviceStateDTO;
 import intler_iot.controllers.entities.SensorPageDTO;
 import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
-import intler_iot.dao.entities.Sensor;
+import intler_iot.dao.entities.SensorValue;
 import intler_iot.dao.entities.User;
 import intler_iot.services.converters.dto.SensorPageDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
@@ -12,7 +12,6 @@ import intler_iot.services.exceptions.SensorNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
@@ -24,7 +23,7 @@ import java.util.*;
 
 import static org.mockito.Mockito.*;
 
-public class SensorServiceTest {
+public class SensorValueServiceTest {
 
     private SensorService sensorService;
 
@@ -85,21 +84,21 @@ public class SensorServiceTest {
        return device;
     }
 
-    private List<Sensor> getSensorsList(String name, int size) {
-        List<Sensor> sensors = new ArrayList<>();
+    private List<SensorValue> getSensorsList(String name, int size) {
+        List<SensorValue> sensorValues = new ArrayList<>();
         DeviceStateDTO sensorsData = getValidSensorData();
 
         for(int i = 0; i < size; i++) {
-            Sensor sensor = new Sensor();
-            sensor.setName(name);
-            sensor.setValue(0);
-            sensor.setDevice(getValidDevice());
-            sensor.setArriveTime(new Timestamp(System.currentTimeMillis()));
+            SensorValue sensorValue = new SensorValue();
+            sensorValue.setName(name);
+            sensorValue.setValue(0);
+            sensorValue.setDevice(getValidDevice());
+            sensorValue.setArriveTime(new Timestamp(System.currentTimeMillis()));
 
-            sensors.add(sensor);
+            sensorValues.add(sensorValue);
         }
 
-        return sensors;
+        return sensorValues;
     }
 
     @Test
@@ -191,12 +190,12 @@ public class SensorServiceTest {
 
     @Test
     public void getUserSensors_successReturnThreeFullPage() throws NotAuthException {
-        List<Sensor> userSensors = new LinkedList<>();
-        userSensors.addAll(getSensorsList("sensor1", 15));
-        userSensors.addAll(getSensorsList("sensor2", 25));
-        userSensors.addAll(getSensorsList("sensor3", 30));
+        List<SensorValue> userSensorValues = new LinkedList<>();
+        userSensorValues.addAll(getSensorsList("sensor1", 15));
+        userSensorValues.addAll(getSensorsList("sensor2", 25));
+        userSensorValues.addAll(getSensorsList("sensor3", 30));
 
-        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensorValues);
         when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
         inject();
 
@@ -210,10 +209,10 @@ public class SensorServiceTest {
 
     @Test
     public void getUserSensors_successReturnHalfFilledPage() throws NotAuthException {
-        List<Sensor> userSensors = new LinkedList<>();
-        userSensors.addAll(getSensorsList("sensor1", 5));
+        List<SensorValue> userSensorValues = new LinkedList<>();
+        userSensorValues.addAll(getSensorsList("sensor1", 5));
 
-        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensorValues);
         when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
         inject();
 
@@ -228,18 +227,18 @@ public class SensorServiceTest {
 
     @Test
     public void getUserSensors_successReturn3PagesFromRandomSensorList() throws NotAuthException {
-        List<Sensor> userSensors = new LinkedList<>();
-        userSensors.addAll(getSensorsList("sensor1", 1));
-        userSensors.addAll(getSensorsList("sensor2", 1));
-        userSensors.addAll(getSensorsList("sensor3", 1));
-        userSensors.addAll(getSensorsList("sensor2", 1));
-        userSensors.addAll(getSensorsList("sensor2", 1));
-        userSensors.addAll(getSensorsList("sensor3", 1));
-        userSensors.addAll(getSensorsList("sensor1", 1));
-        userSensors.addAll(getSensorsList("sensor2", 1));
-        userSensors.addAll(getSensorsList("sensor3", 1));
+        List<SensorValue> userSensorValues = new LinkedList<>();
+        userSensorValues.addAll(getSensorsList("sensor1", 1));
+        userSensorValues.addAll(getSensorsList("sensor2", 1));
+        userSensorValues.addAll(getSensorsList("sensor3", 1));
+        userSensorValues.addAll(getSensorsList("sensor2", 1));
+        userSensorValues.addAll(getSensorsList("sensor2", 1));
+        userSensorValues.addAll(getSensorsList("sensor3", 1));
+        userSensorValues.addAll(getSensorsList("sensor1", 1));
+        userSensorValues.addAll(getSensorsList("sensor2", 1));
+        userSensorValues.addAll(getSensorsList("sensor3", 1));
 
-        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensorValues);
         when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
         inject();
 
@@ -258,9 +257,9 @@ public class SensorServiceTest {
 
     @Test
     public void getUserSensors_successReturnZeroPages() throws NotAuthException {
-        List<Sensor> userSensors = new LinkedList<>();
+        List<SensorValue> userSensorValues = new LinkedList<>();
 
-        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensorValues);
         when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
         inject();
 
@@ -271,17 +270,17 @@ public class SensorServiceTest {
 
     @Test
     public void getSensorsName_return2DevicesWith1and2Sensors() {
-        List<Sensor> deviceSensors1 = getSensorsList("sensorName", 5);
+        List<SensorValue> deviceSensors1 = getSensorsList("sensorName", 5);
         deviceSensors1.addAll(getSensorsList("sensor2",3));
-        List<Sensor> deviceSensors2 = getSensorsList("sensorName", 5);
+        List<SensorValue> deviceSensors2 = getSensorsList("sensorName", 5);
         List<Device> userDevices = new LinkedList<>();
 
         Device device1 = getValidDevice();
         device1.setName("device1");
-        device1.setSensors(deviceSensors1);
+        device1.setSensorValues(deviceSensors1);
         Device device2 = getValidDevice();
         device2.setName("device2");
-        device2.setSensors(deviceSensors2);
+        device2.setSensorValues(deviceSensors2);
 
         userDevices.add(device1);
         userDevices.add(device2);

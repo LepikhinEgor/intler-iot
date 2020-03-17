@@ -2,7 +2,7 @@ package intler_iot.dao.hibernate;
 
 import intler_iot.dao.SensorDao;
 import intler_iot.dao.entities.Device;
-import intler_iot.dao.entities.Sensor;
+import intler_iot.dao.entities.SensorValue;
 import intler_iot.dao.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,12 +25,12 @@ public class SensorDaoHibernate extends SensorDao {
     }
 
     @Override
-    public void create(Sensor sensor) {
+    public void create(SensorValue sensorValue) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            session.save(sensor);
+            session.save(sensorValue);
 
             transaction.commit();
         } catch (Exception e) {
@@ -40,13 +40,13 @@ public class SensorDaoHibernate extends SensorDao {
     }
 
     @Override
-    public void recordAll(List<Sensor> sensors) {
+    public void recordAll(List<SensorValue> sensorValues) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            for (Sensor sensor : sensors)
-                session.save(sensor);
+            for (SensorValue sensorValue : sensorValues)
+                session.save(sensorValue);
 
             transaction.commit();
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class SensorDaoHibernate extends SensorDao {
         Transaction transaction = session.beginTransaction();
 
         try {
-            Query query = session.createQuery("delete from Sensor where arriveTime < :deadline");
+            Query query = session.createQuery("delete from SensorValue where arriveTime < :deadline");
             query.setParameter("deadline", deadline);
             query.executeUpdate();
 
@@ -73,38 +73,38 @@ public class SensorDaoHibernate extends SensorDao {
     }
 
     @Override
-    public List<Sensor> getAll(List<Device> userDevices) {
+    public List<SensorValue> getAll(List<Device> userDevices) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         try{
-            Query query = session.createQuery("from Sensor s where s.device in (:devices)");
+            Query query = session.createQuery("from SensorValue s where s.device in (:devices)");
             query.setParameterList("devices", userDevices);
-            List<Sensor> userSensors = query.list();
+            List<SensorValue> userSensorValues = query.list();
 
             transaction.commit();
 
-            return userSensors;
+            return userSensorValues;
         } catch (Exception e) {
             transaction.rollback();
             throw e;
         }
     }
 
-    public List<Sensor> getSensorValues(String sensorName, User user) {
+    public List<SensorValue> getSensorValues(String sensorName, User user) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
         try {
-            Query query = session.createQuery("select s from Sensor s inner join Device d on d = s.device where s.name = :sensorName and d.owner = :user");
+            Query query = session.createQuery("select s from SensorValue s inner join Device d on d = s.device where s.name = :sensorName and d.owner = :user");
             query.setParameter("user", user);
             query.setParameter("sensorName", sensorName);
 
-            List<Sensor> sensors = query.list();
+            List<SensorValue> sensorValues = query.list();
 
             transaction.commit();
 
-            return sensors;
+            return sensorValues;
         } catch (Exception e) {
             transaction.rollback();
             throw e;
@@ -112,7 +112,7 @@ public class SensorDaoHibernate extends SensorDao {
     }
 
     @Override
-    public List<Sensor> getLastSensors(User user) {
+    public List<SensorValue> getLastSensors(User user) {
 
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -121,13 +121,13 @@ public class SensorDaoHibernate extends SensorDao {
             Query query = session.createSQLQuery("select * from sensors s1 \n" +
                     "                inner join (select s1.name, max(s1.id) as sens_id from sensors s1 group by s1.name) s2\n" +
                     "                on s1.name = s2.name and s1.id = s2.sens_id\n" +
-                    "                inner join devices d on s1.device_id = d.id where d.owner_id  = :user_id").addEntity(Sensor.class);
+                    "                inner join devices d on s1.device_id = d.id where d.owner_id  = :user_id").addEntity(SensorValue.class);
             query.setParameter("user_id", user.getId());
 
-            List<Sensor> lastSensors = query.list();
+            List<SensorValue> lastSensorValues = query.list();
             transaction.commit();
 
-            return lastSensors;
+            return lastSensorValues;
         } catch (Exception e) {
             transaction.rollback();
             throw e;

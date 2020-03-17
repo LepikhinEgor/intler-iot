@@ -1,7 +1,6 @@
 package intler_iot.controllers.site;
 
 import intler_iot.dao.entities.ControlCommand;
-import intler_iot.dao.entities.Sensor;
 import intler_iot.services.ControlCommandService;
 import intler_iot.services.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
