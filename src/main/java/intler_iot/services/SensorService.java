@@ -101,13 +101,13 @@ public class SensorService {
     }
 
     public List<SensorPageDTO> getUserSensors() throws NotAuthException {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getCurrentUser();
         List<Device> userDevices = deviceService.getUserDevices(user);
 
         List<Sensor> sensors = sensorDao.getAll(userDevices);
-        List<SensorPageDTO> lastUnicSensors = transformToSensorsPage(sensors,userDevices);
+        List<SensorPageDTO> sensorsPage = transformToSensorsPage(sensors,userDevices);
 
-        return lastUnicSensors;
+        return sensorsPage;
     }
 
     /**

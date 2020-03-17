@@ -88,13 +88,13 @@ public class SensorServiceTest {
        return device;
     }
 
-    private List<Sensor> getSensorsList(int size) {
+    private List<Sensor> getSensorsList(String name, int size) {
         List<Sensor> sensors = new ArrayList<>();
         DeviceStateDTO sensorsData = getValidSensorData();
 
         for(int i = 0; i < size; i++) {
             Sensor sensor = new Sensor();
-            sensor.setName("sensor");
+            sensor.setName(name);
             sensor.setValue(0);
             sensor.setDevice(getValidDevice());
             sensor.setArriveTime(new Timestamp(System.currentTimeMillis()));
@@ -114,7 +114,7 @@ public class SensorServiceTest {
         when(userServiceMock.authUser(any(), any())).thenReturn(user);
         when(deviceServiceMock.getDeviceById(user, device.getName())).thenReturn(device);
         doNothing().when(deviceServiceMock).connectDevice(user.getLogin(), user.getPassword(), device.getName(), device.getType());
-        doNothing().when(sensorDaoMock).recordAll(getSensorsList(23));
+        doNothing().when(sensorDaoMock).recordAll(getSensorsList("sensor",23));
         inject();
 
         sensorService.updateSensorsValues(getValidSensorData());
@@ -139,8 +139,9 @@ public class SensorServiceTest {
     public void getSensorLogPage_expected5From15items() throws NotAuthException, SensorNotFoundException {
         String sensorName = "temp";
         int pageNum = 1;
+        int sensorsCount = SensorService.SENSORS_ON_PAGE + 5;
 
-        when(sensorDaoMock.getSensorValues(any(), any())).thenReturn(getSensorsList(15));
+        when(sensorDaoMock.getSensorValues(any(), any())).thenReturn(getSensorsList("sensor",sensorsCount));
         when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
         inject();
 
@@ -150,11 +151,25 @@ public class SensorServiceTest {
     }
 
     @Test
+    public void getSensorLogPage_expectedMaxByPageFrom15items() throws NotAuthException, SensorNotFoundException {
+        String sensorName = "temp";
+        int pageNum = 0;
+
+        when(sensorDaoMock.getSensorValues(any(), any())).thenReturn(getSensorsList("sensor",15));
+        when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
+        inject();
+
+        SensorPageDTO pageSensors = sensorService.getSensorLogPage(sensorName, pageNum);
+
+        assertEquals(SensorService.SENSORS_ON_PAGE, pageSensors.getSensorsLogs().size());
+    }
+
+    @Test
     public void getSensorLogPage_outOfBoundsPage_returnLastPage() throws NotAuthException, SensorNotFoundException {
         String sensorName = "temp";
         int pageNum = 5;
 
-        when(sensorDaoMock.getSensorValues(any(), any())).thenReturn(getSensorsList(15));
+        when(sensorDaoMock.getSensorValues(any(), any())).thenReturn(getSensorsList("sensor",15));
         when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
         inject();
 
@@ -168,12 +183,92 @@ public class SensorServiceTest {
         String sensorName = "temp";
         int pageNum = 5;
 
-        when(sensorDaoMock.getSensorValues(any(), any())).thenReturn(getSensorsList(0));
+        when(sensorDaoMock.getSensorValues(any(), any())).thenReturn(getSensorsList(sensorName,0));
         when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
         inject();
 
         SensorPageDTO pageSensors = sensorService.getSensorLogPage(sensorName, pageNum);
 
         assertEquals(5, pageSensors.getSensorsLogs().size());
+    }
+
+    @Test
+    public void getUserSensors_successReturnThreeFullPage() throws NotAuthException {
+        List<Sensor> userSensors = new LinkedList<>();
+        userSensors.addAll(getSensorsList("sensor1", 15));
+        userSensors.addAll(getSensorsList("sensor2", 25));
+        userSensors.addAll(getSensorsList("sensor3", 30));
+
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
+        inject();
+
+        List<SensorPageDTO> pageSensors = sensorService.getUserSensors();
+
+        assertEquals(3, pageSensors.size());
+        assertEquals(10, pageSensors.get(0).getSensorsLogs().size());
+        assertEquals(10, pageSensors.get(1).getSensorsLogs().size());
+        assertEquals(10, pageSensors.get(2).getSensorsLogs().size());
+    }
+
+    @Test
+    public void getUserSensors_successReturnHalfFilledPage() throws NotAuthException {
+        List<Sensor> userSensors = new LinkedList<>();
+        userSensors.addAll(getSensorsList("sensor1", 5));
+
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
+        inject();
+
+        List<SensorPageDTO> pageSensors = sensorService.getUserSensors();
+
+        assertEquals(1, pageSensors.size());
+        for (SensorPageDTO sensorPageDTOL : pageSensors) {
+            if (sensorPageDTOL.getSensorName().equals("sensor1"))
+                assertEquals(5, sensorPageDTOL.getSensorsLogs().size());
+        }
+    }
+
+    @Test
+    public void getUserSensors_successReturn3PagesFromRandomSensorList() throws NotAuthException {
+        List<Sensor> userSensors = new LinkedList<>();
+        userSensors.addAll(getSensorsList("sensor1", 1));
+        userSensors.addAll(getSensorsList("sensor2", 1));
+        userSensors.addAll(getSensorsList("sensor3", 1));
+        userSensors.addAll(getSensorsList("sensor2", 1));
+        userSensors.addAll(getSensorsList("sensor2", 1));
+        userSensors.addAll(getSensorsList("sensor3", 1));
+        userSensors.addAll(getSensorsList("sensor1", 1));
+        userSensors.addAll(getSensorsList("sensor2", 1));
+        userSensors.addAll(getSensorsList("sensor3", 1));
+
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
+        inject();
+
+        List<SensorPageDTO> pageSensors = sensorService.getUserSensors();
+
+        assertEquals(3, pageSensors.size());
+        for (SensorPageDTO sensorPageDTOL : pageSensors) {
+            if (sensorPageDTOL.getSensorName().equals("sensor1"))
+                assertEquals(2, sensorPageDTOL.getSensorsLogs().size());
+            if (sensorPageDTOL.getSensorName().equals("sensor2"))
+                assertEquals(4, sensorPageDTOL.getSensorsLogs().size());
+            if (sensorPageDTOL.getSensorName().equals("sensor3"))
+                assertEquals(3, sensorPageDTOL.getSensorsLogs().size());
+        }
+    }
+
+    @Test
+    public void getUserSensors_successReturnZeroPages() throws NotAuthException {
+        List<Sensor> userSensors = new LinkedList<>();
+
+        when(sensorDaoMock.getAll(any())).thenReturn(userSensors);
+        when(userServiceMock.getCurrentUser()).thenReturn(getValidUser());
+        inject();
+
+        List<SensorPageDTO> pageSensors = sensorService.getUserSensors();
+
+        assertEquals(0, pageSensors.size());
     }
 }
