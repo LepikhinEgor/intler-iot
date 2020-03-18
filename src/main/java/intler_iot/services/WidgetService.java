@@ -18,6 +18,7 @@ import java.util.*;
 public class WidgetService {
 
     private SensorService sensorService;
+    private UserService userService;
 
     private WidgetDao widgetDao;
 
@@ -34,12 +35,18 @@ public class WidgetService {
     }
 
     @Autowired
-    public void setWidgetDUOConverter(WidgetDTOConventer widgetDTOConventer) {
+    public void setWidgetDTOConverter(WidgetDTOConventer widgetDTOConventer) {
         this.widgetDTOConventer = widgetDTOConventer;
     }
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     public void createWidget(Widget widget) {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getCurrentUser();
+
         widget.setUser(user);
         widget.setWidth(Widget.DEFAULT_WIDTH);
         widget.setHeight(Widget.DEFAULT_HEIGHT);
@@ -62,12 +69,13 @@ public class WidgetService {
      * @throws NotAuthException
      */
     public List<WidgetDTO> getWidgetsList() throws NotAuthException {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getCurrentUser();
 
         List<SensorValue> lastSensorValues = sensorService.getLastSensors(user);
         List<Widget> widgets = getAllWidgets(user, lastSensorValues);
 
         List<WidgetDTO> widgetsDTO = widgetDTOConventer.convertToWidgetsDTO(widgets, lastSensorValues);
+        widgetsDTO = sortWidgetsByOrder(widgetsDTO);
 
         return widgetsDTO;
     }
@@ -98,6 +106,12 @@ public class WidgetService {
         }
     }
 
+    private List<WidgetDTO>  sortWidgetsByOrder(List<WidgetDTO> widgetsDTO) {
+        widgetsDTO.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getWidget().getId()));
+
+        return widgetsDTO;
+    }
+
     /***
      * Method for getting user widgets.  If since last request db receive new sensor data
      *  will be created new widgets with default parameters.
@@ -123,7 +137,7 @@ public class WidgetService {
      * @param widgets old widgets from db
      * @return
      */
-    private List<SensorValue> getSensorsWithoutWidget(List<SensorValue> lastSensorValues, List<Widget> widgets) {
+    List<SensorValue> getSensorsWithoutWidget(List<SensorValue> lastSensorValues, List<Widget> widgets) {
         List<SensorValue> newSensorValues = new ArrayList<>();
         for (SensorValue sensorValue : lastSensorValues) {
             boolean isExist = false;

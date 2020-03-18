@@ -14,15 +14,9 @@ public class WidgetDTOConventer {
         List<Map.Entry<Widget, SensorValue>> widgetSensorPairs = matchWidgetsSensors(widgets, sensorValues);
         List<WidgetDTO> widgetsList = convertToWidgetsDTO(widgetSensorPairs);
 
-        widgetsList = sortWidgetsByOrder(widgetsList);
         return widgetsList;
     }
 
-    private List<WidgetDTO>  sortWidgetsByOrder(List<WidgetDTO> widgetsDTO) {
-        widgetsDTO.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getWidget().getId()));
-
-        return widgetsDTO;
-    }
 
     private List<Map.Entry<Widget, SensorValue>> matchWidgetsSensors(List<Widget> widgets, List<SensorValue> sensorValues) {
         List<Map.Entry<Widget, SensorValue>> pairs = new ArrayList<>();

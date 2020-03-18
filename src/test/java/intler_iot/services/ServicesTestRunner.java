@@ -4,6 +4,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({UserServiceTest.class, SensorServiceTest.class, UserDetailsServiceTest.class})
+@Suite.SuiteClasses({
+        UserServiceTest.class,
+        SensorServiceTest.class,
+        UserDetailsServiceTest.class,
+        WidgetServiceTest.class})
 public class ServicesTestRunner {
 }
