@@ -226,7 +226,6 @@ public class SensorService {
 
 
     /**
-     *
      * @param sensorValues
      * @return Collection of unique sensors name
      */
@@ -238,7 +237,7 @@ public class SensorService {
 
         return unicNames;
     }
-    
+
     private int calulatePagesCount(int sensorsCount) {
         int pagesCount;
         if (sensorsCount % 10 == 0)

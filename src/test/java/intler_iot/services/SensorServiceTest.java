@@ -23,7 +23,7 @@ import java.util.*;
 
 import static org.mockito.Mockito.*;
 
-public class SensorValueServiceTest {
+public class SensorServiceTest {
 
     private SensorService sensorService;
 

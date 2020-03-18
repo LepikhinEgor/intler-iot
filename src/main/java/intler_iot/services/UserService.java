@@ -80,7 +80,7 @@ public class UserService {
         return user;
     }
 
-    private boolean isAuthenticated() {
+    boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         return authentication != null
@@ -122,9 +122,7 @@ public class UserService {
     }
 
     private String encodePassword(String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        return encoder.encode(password);
+        return passwordEncoder.encode(password);
     }
 
     private int checkUserDataIsValid(User user) {
@@ -141,7 +139,7 @@ public class UserService {
     }
 
     private boolean checkLoginIsValid(String login) {
-        return login.matches("^(?!.*\\.\\.)(?!\\.)(?!.*\\.$)(?!\\d+$)[a-zA-Z0-9_.]{5,50}$");
+        return login.matches("[a-zA-Z0-9_]{5,50}$");
     }
 
     private boolean checkEmailIsValid(String email) {
