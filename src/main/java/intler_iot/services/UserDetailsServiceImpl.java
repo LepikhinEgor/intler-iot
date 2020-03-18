@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             if (foundUser == null)
                 throw new UsernameNotFoundException("User with login " + login + " not found");
-        } catch (Exception e ) {
+        } catch (Throwable e ) {
             throw new UsernameNotFoundException(e.getMessage(), e);
         }
 
