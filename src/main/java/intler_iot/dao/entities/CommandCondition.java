@@ -37,7 +37,7 @@ public class CommandCondition {
     private int conditionType;
 
     @Column(name = "value")
-    private long value;
+    private double value;
 
     @JsonIgnore
     @JoinColumn(name = "command_id")
@@ -68,11 +68,11 @@ public class CommandCondition {
         this.conditionType = conditionType;
     }
 
-    public long getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(long value) {
+    public void setValue(double value) {
         this.value = value;
     }
 

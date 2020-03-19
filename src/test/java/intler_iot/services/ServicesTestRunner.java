@@ -8,6 +8,10 @@ import org.junit.runners.Suite;
         UserServiceTest.class,
         SensorServiceTest.class,
         UserDetailsServiceTest.class,
-        WidgetServiceTest.class})
+        WidgetServiceTest.class,
+        DeviceServiceTest.class,
+        ControlCommandServiceTest.class
+})
 public class ServicesTestRunner {
+
 }

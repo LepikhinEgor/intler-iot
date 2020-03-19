@@ -14,6 +14,10 @@ import java.util.List;
 @Service
 public class ControlCommandService {
 
+    public static final double VALUE_ACCURACY = 0.00001;
+
+    private UserService userService;
+
     private ControlCommandDao controlCommandDao;
 
     @Autowired
@@ -21,8 +25,13 @@ public class ControlCommandService {
         this.controlCommandDao = controlCommandDao;
     }
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     public void saveControlCommand(ControlCommand command) {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user =  userService.getCurrentUser();
 
         command.getConditions().forEach(condition -> condition.setCommand(command));
         command.setUser(user);
@@ -31,7 +40,7 @@ public class ControlCommandService {
     }
 
     public List<ControlCommand> getControlCommands() {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user =  userService.getCurrentUser();
 
         List<ControlCommand>  commands = controlCommandDao.getAll(user);
 
@@ -65,7 +74,7 @@ public class ControlCommandService {
             case CommandCondition.CONDITION_LESS: isMet = sensorValue < condition.getValue(); break;
             case CommandCondition.CONDITION_MORE_EQUALS: isMet = sensorValue >= condition.getValue(); break;
             case CommandCondition.CONDITION_LESS_EQUALS: isMet = sensorValue <= condition.getValue(); break;
-            case CommandCondition.CONDITION_EQUALS: isMet = sensorValue == condition.getValue(); break;
+            case CommandCondition.CONDITION_EQUALS: isMet = isDoubleValuesEquals(sensorValue,condition.getValue()); break;
         }
 
         return isMet;
@@ -83,5 +92,9 @@ public class ControlCommandService {
         }
 
         return value;
+    }
+
+    private boolean isDoubleValuesEquals(Double d1, Double d2) {
+        return  Math.abs(d1-d2) <= VALUE_ACCURACY;
     }
 }
