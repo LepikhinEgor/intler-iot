@@ -6,6 +6,7 @@ import intler_iot.dao.CloudOrderDao;
 import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.User;
+import intler_iot.services.converters.dto.CloudOrderDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,8 @@ import java.util.List;
 
 @Service
 public class CloudOrderService {
+
+    private CloudOrderDTOConverter cloudOrderDTOConverter;
 
     private UserService userService;
     private DeviceService deviceService;
@@ -38,35 +41,35 @@ public class CloudOrderService {
         this.cloudOrderDao = cloudOrderDao;
     }
 
-    public void recordNewOrder(OrderDTO orderDTO) throws NotAuthException {
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @Autowired
+    public void setCloudOrderDTOConverter(CloudOrderDTOConverter cloudOrderDTOConverter) {
+        this.cloudOrderDTOConverter = cloudOrderDTOConverter;
+    }
+
+    public void recordNewOrder(OrderDTO orderDTO) {
+        User user = userService.getCurrentUser();
         Device device = deviceService.getDeviceById(user, orderDTO.getDeviceName());
 
-        CloudOrder order = new CloudOrder();
-        order.setKeyWard(orderDTO.getKeyWard());
-        order.setValue(orderDTO.getValue());
-        order.setDevice(device);
-        order.setTiming(new Timestamp(System.currentTimeMillis()));
-        order.setUsed(false);
-        order.setRemoved(false);
+        CloudOrder order = cloudOrderDTOConverter.convertToDomain(orderDTO, device);
 
         cloudOrderDao.save(order);
     }
 
-    public HashMap<String, Double> getDeviceOrders(String deviceName, String login, String password) throws NotAuthException {
+    public HashMap<String, Double> getDeviceOrders(String deviceName, String login, String password) {
         User user = userService.authUser(login, password);
         Device device = deviceService.getDeviceById(user, deviceName);
 
         List<CloudOrder> orders = cloudOrderDao.getDeviceOrders(device);
 
-        return ordersToMap(orders);
+        HashMap<String, Double> ordersDTO = cloudOrderDTOConverter.convertToDTO(orders);
+        return ordersDTO;
     }
 
     public void deleteOldOrders() {
         cloudOrderDao.deleteOld();
     }
 
-    public void markOldOrdersAsRemoved(DeviceStateDTO deviceStateDTO) throws NotAuthException {
+    public void markOldOrdersAsRemoved(DeviceStateDTO deviceStateDTO) {
         User user = userService.authUser(deviceStateDTO.getLogin(), deviceStateDTO.getPassword());
         Device device = deviceService.getDeviceById(user, deviceStateDTO.getDeviceName());
 
@@ -74,15 +77,6 @@ public class CloudOrderService {
             return;
 
         cloudOrderDao.markRemoved(deviceStateDTO.getOrdersAccepted(), device);
-    }
-
-    private HashMap<String, Double> ordersToMap(List<CloudOrder> ordersList) {
-        HashMap<String, Double> ordersMap = new HashMap<>();
-        for (CloudOrder order: ordersList) {
-            ordersMap.put(order.getKeyWard(), order.getValue());
-        }
-
-        return ordersMap;
     }
 
 }
