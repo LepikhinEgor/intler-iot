@@ -74,10 +74,17 @@ public class UserService {
         }
     }
 
-    public User getCurrentUser() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public User getCurrentUser() throws NotAuthException {
+        try {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (user == null)
+                throw new RuntimeException("User is null");
 
-        return user;
+            return user;
+        } catch (Throwable th) {
+            logger.error("Cannot get current user", th);
+            throw new NotAuthException("Fail getting current user");
+        }
     }
 
     boolean isAuthenticated() {
