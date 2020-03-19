@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
         UserDetailsServiceTest.class,
         WidgetServiceTest.class,
         DeviceServiceTest.class,
-        ControlCommandServiceTest.class
+        ControlCommandServiceTest.class,
+        CloudOrderServiceTest.class
 })
 public class ServicesTestRunner {
 
