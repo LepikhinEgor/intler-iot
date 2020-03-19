@@ -1,6 +1,6 @@
 package intler_iot.services.exceptions;
 
-public class NotAuthException extends Exception {
+public class NotAuthException extends RuntimeException {
     public NotAuthException() {
         super();
     }
