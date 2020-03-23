@@ -1,5 +1,6 @@
 package intler_iot.services;
 
+import intler_iot.services.converters.dto.ConvertersTestRunner;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -11,7 +12,8 @@ import org.junit.runners.Suite;
         WidgetServiceTest.class,
         DeviceServiceTest.class,
         ControlCommandServiceTest.class,
-        CloudOrderServiceTest.class
+        CloudOrderServiceTest.class,
+        ConvertersTestRunner.class
 })
 public class ServicesTestRunner {
 

@@ -1,6 +1,8 @@
 package intler_iot.services.converters.dto;
 
+import intler_iot.controllers.entities.OrderDTO;
 import intler_iot.dao.entities.CloudOrder;
+import intler_iot.dao.entities.Device;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +13,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class CloudOrderDTOConverterTest {
 
@@ -40,6 +41,21 @@ public class CloudOrderDTOConverterTest {
         assertTrue(ordersMap.containsKey("order2"));
         assertTrue(ordersMap.containsKey("order3"));
 
+    }
+
+    @Test
+    public void convertToDomain_success() {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setDeviceName("arduino");
+        orderDTO.setKeyWard("keyword");
+        orderDTO.setValue(1);
+
+        CloudOrder cloudOrder = cloudOrderDTOConverter.convertToDomain(orderDTO, new Device());
+
+        assertNotNull(cloudOrder.getDevice());
+        assertNotNull(cloudOrder.getTiming());
+        assertNotNull(cloudOrder.getKeyWard());
+        assertEquals(cloudOrder.getValue(), 1, 0.001);
     }
 
 }
