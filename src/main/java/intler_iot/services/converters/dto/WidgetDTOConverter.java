@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class WidgetDTOConventer {
+public class WidgetDTOConverter {
 
     public List<WidgetDTO> convertToWidgetsDTO(List<Widget> widgets, List<SensorValue> sensorValues) {
         List<Map.Entry<Widget, SensorValue>> widgetSensorPairs = matchWidgetsSensors(widgets, sensorValues);
@@ -42,7 +42,7 @@ public class WidgetDTOConventer {
             widgetsData.add(widgetDTO);
         }
 
-        widgetsData.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getWidget().getId()));
+        widgetsData.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getId()));
         return widgetsData;
     }
 }

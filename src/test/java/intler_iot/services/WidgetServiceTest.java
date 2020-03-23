@@ -1,20 +1,16 @@
 package intler_iot.services;
 
-import intler_iot.controllers.entities.DeviceStateDTO;
 import intler_iot.controllers.entities.WidgetDTO;
 import intler_iot.controllers.entities.WidgetSizeDTO;
 import intler_iot.dao.WidgetDao;
 import intler_iot.dao.entities.Device;
 import intler_iot.dao.entities.SensorValue;
-import intler_iot.dao.entities.User;
 import intler_iot.dao.entities.Widget;
-import intler_iot.services.converters.dto.WidgetDTOConventer;
+import intler_iot.services.converters.dto.WidgetDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
@@ -39,7 +35,7 @@ public class WidgetServiceTest {
     WidgetDao widgetDaoMock;
 
     @Spy
-    WidgetDTOConventer widgetDTOConventer;
+    WidgetDTOConverter widgetDTOConverter;
 
     private Widget getWidget(String name, long id) {
         Widget widget = new Widget();
@@ -76,7 +72,7 @@ public class WidgetServiceTest {
         widgetService.setWidgetDao(widgetDaoMock);
         widgetService.setSensorService(sensorServiceMock);
         widgetService.setUserService(userServiceMock);
-        widgetService.setWidgetDTOConverter(widgetDTOConventer);
+        widgetService.setWidgetDTOConverter(widgetDTOConverter);
     }
 
     @Test
@@ -96,7 +92,7 @@ public class WidgetServiceTest {
         List<WidgetDTO> widgetsDTO = widgetService.getWidgetsList();
 
         for (WidgetDTO widgetDTO: widgetsDTO) {
-            assertEquals(widgetDTO.getWidget().getId(), 0);//created(without id)
+            assertEquals(widgetDTO.getId(), 0);//created(without id)
         }
     }
 
@@ -119,10 +115,10 @@ public class WidgetServiceTest {
         List<WidgetDTO> widgetsDTO = widgetService.getWidgetsList();
 
         for (WidgetDTO widgetDTO: widgetsDTO) {
-            switch (widgetDTO.getWidget().getKeyWard()) {
-                case "sensor1":assertEquals(widgetDTO.getWidget().getId(), widgetDTO.getWidget().getId()); break;
-                case "sensor2":assertEquals(2, widgetDTO.getWidget().getId()); break;
-                default: assertEquals(0, widgetDTO.getWidget().getId()); break; //created(without id)
+            switch (widgetDTO.getKeyword()) {
+                case "sensor1":assertEquals(1, widgetDTO.getId()); break;
+                case "sensor2":assertEquals(2, widgetDTO.getId()); break;
+                default: assertEquals(0, widgetDTO.getId()); break; //created(without id)
             }
         }
     }
@@ -144,7 +140,7 @@ public class WidgetServiceTest {
         List<WidgetDTO> widgetsDTO = widgetService.getWidgetsList();
 
         for (WidgetDTO widgetDTO: widgetsDTO) {
-            assertNotEquals(0, widgetDTO.getWidget().getId()); break; //created(without id)
+            assertNotEquals(0, widgetDTO.getId()); break; //created(without id)
         }
     }
 

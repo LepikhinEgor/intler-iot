@@ -2,53 +2,180 @@ package intler_iot.controllers.entities;
 
 import intler_iot.dao.entities.SensorValue;
 import intler_iot.dao.entities.Widget;
+import org.codehaus.jackson.annotate.JsonProperty;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class WidgetDTO {
-    private Widget widget;
-    private SensorValue sensorValue;
+    private long id;
+    private String measure;
+    @JsonProperty(value = "keyWard")
+    private String keyword;
+    private int width;
+    private int height;
+    private int type;
+    private String deviceName;
+    private int minValue;
+    private int maxValue;
+
+    private boolean hasValue;
+    private double value;
+    private Timestamp updateTime;
 
     public WidgetDTO(Widget widget, SensorValue sensorValue) {
-        this.widget = widget;
-        this.sensorValue = sensorValue;
+        this.id = widget.getId();
+        this.measure = widget.getMeasure();
+        this.keyword = widget.getKeyWard();
+        this.width = widget.getWidth();
+        this.height = widget.getHeight();
+        this.type = widget.getType();
+        this.deviceName = widget.getDeviceName();
+        this.minValue = widget.getMinValue();
+        this.maxValue = widget.getMaxValue();
+
+        if (sensorValue != null) {
+            this.hasValue = true;
+            this.value = sensorValue.getValue();
+            this.updateTime = sensorValue.getArriveTime();
+        }
     }
 
-    public Widget getWidget() {
-        return widget;
+    public long getId() {
+        return id;
     }
 
-    public void setWidget(Widget widget) {
-        this.widget = widget;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public SensorValue getSensorValue() {
-        return sensorValue;
+    public String getMeasure() {
+        return measure;
     }
 
-    public void setSensorValue(SensorValue sensorValue) {
-        this.sensorValue = sensorValue;
+    public void setMeasure(String measure) {
+        this.measure = measure;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public int getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
+    }
+
+    public int getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
+    }
+
+    public boolean isHasValue() {
+        return hasValue;
+    }
+
+    public void setHasValue(boolean hasValue) {
+        this.hasValue = hasValue;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WidgetDTO that = (WidgetDTO) o;
-        return Objects.equals(widget, that.widget) &&
-                Objects.equals(sensorValue, that.sensorValue);
+        WidgetDTO widgetDTO = (WidgetDTO) o;
+        return id == widgetDTO.id &&
+                width == widgetDTO.width &&
+                height == widgetDTO.height &&
+                type == widgetDTO.type &&
+                minValue == widgetDTO.minValue &&
+                maxValue == widgetDTO.maxValue &&
+                hasValue == widgetDTO.hasValue &&
+                Double.compare(widgetDTO.value, value) == 0 &&
+                Objects.equals(measure, widgetDTO.measure) &&
+                Objects.equals(keyword, widgetDTO.keyword) &&
+                Objects.equals(deviceName, widgetDTO.deviceName) &&
+                Objects.equals(updateTime, widgetDTO.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(widget, sensorValue);
+        return Objects.hash(id, measure, keyword, width, height, type, deviceName, minValue, maxValue, hasValue, value, updateTime);
     }
 
     @Override
     public String toString() {
-        return "WidgetData{" +
-                "widget=" + widget +
-                ", sensor=" + sensorValue +
+        return "WidgetDTO{" +
+                "id=" + id +
+                ", measure='" + measure + '\'' +
+                ", keyword='" + keyword + '\'' +
+                ", width=" + width +
+                ", height=" + height +
+                ", type=" + type +
+                ", deviceName='" + deviceName + '\'' +
+                ", minValue=" + minValue +
+                ", maxValue=" + maxValue +
+                ", hasValue=" + hasValue +
+                ", value=" + value +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

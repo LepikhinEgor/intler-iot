@@ -6,10 +6,9 @@ import intler_iot.dao.WidgetDao;
 import intler_iot.dao.entities.SensorValue;
 import intler_iot.dao.entities.User;
 import intler_iot.dao.entities.Widget;
-import intler_iot.services.converters.dto.WidgetDTOConventer;
+import intler_iot.services.converters.dto.WidgetDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,7 +21,7 @@ public class WidgetService {
 
     private WidgetDao widgetDao;
 
-    private WidgetDTOConventer widgetDTOConventer;
+    private WidgetDTOConverter widgetDTOConverter;
 
     @Autowired
     public void setSensorService(SensorService sensorService) {
@@ -35,8 +34,8 @@ public class WidgetService {
     }
 
     @Autowired
-    public void setWidgetDTOConverter(WidgetDTOConventer widgetDTOConventer) {
-        this.widgetDTOConventer = widgetDTOConventer;
+    public void setWidgetDTOConverter(WidgetDTOConverter widgetDTOConverter) {
+        this.widgetDTOConverter = widgetDTOConverter;
     }
 
     @Autowired
@@ -74,7 +73,7 @@ public class WidgetService {
         List<SensorValue> lastSensorValues = sensorService.getLastSensors(user);
         List<Widget> widgets = getAllWidgets(user, lastSensorValues);
 
-        List<WidgetDTO> widgetsDTO = widgetDTOConventer.convertToWidgetsDTO(widgets, lastSensorValues);
+        List<WidgetDTO> widgetsDTO = widgetDTOConverter.convertToWidgetsDTO(widgets, lastSensorValues);
         widgetsDTO = sortWidgetsByOrder(widgetsDTO);
 
         return widgetsDTO;
@@ -107,7 +106,7 @@ public class WidgetService {
     }
 
     private List<WidgetDTO>  sortWidgetsByOrder(List<WidgetDTO> widgetsDTO) {
-        widgetsDTO.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getWidget().getId()));
+        widgetsDTO.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getId()));
 
         return widgetsDTO;
     }

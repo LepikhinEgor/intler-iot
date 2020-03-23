@@ -339,10 +339,7 @@ function requestWidgets() {
             console.log(data);
             $(".widget").remove();
             for (var widget_num in data) {
-                let widget = data[widget_num]["widget"];
-
-                let sensor = data[widget_num]["sensor"];
-                addWidget(widget, sensor);
+                addWidget(data);
             }
             clearInterval(widgetsUpdateInterval);
             widgetsUpdateInterval = setInterval(requestUpdateWidgets, WIDGET_UPDATE_TIMEOUT);
@@ -367,7 +364,7 @@ function requestUpdateWidgets() {
     });
 }
 
-function updateWidget(widget, sensor)  {
+function updateWidget(widget)  {
     var borderColor = getBorderColorString(widget["color"], 0.3);
     var valueColor = getValueColorString(widget["color"]);
     var configColor = getBorderColorString(widget["color"], 0.4);
@@ -382,20 +379,20 @@ function updateWidget(widget, sensor)  {
     widgetObj.find(".widget-icon").attr("src", iconStr);
     widgetObj.find(".widget-name span").html(widget["name"]);
     // widgetObj.find(".widget-content").html(getWidgetBodyHtml(widget, sensor));
-    updateWidgetBody(widget, sensor);
+    updateWidgetBody(widget);
     widgetObj.find(".widget-keyword").html(widget["keyWard"]);
     widgetObj.find(".widget-config-button").css("background: " + configColor + ";");
     widgetObj.find(".widget-config-button").attr("onmouseover", "this.style.backgroundColor='" +  configActiveColor+ "'");
     widgetObj.find(".widget-config-button").attr("onmouseout", "this.style.backgroundColor='" +  configColor+ "'");
 
     if (widget["type"] == 2)
-        sliderInit(widget, sensor);
+        sliderInit(widget);
 
     memWidget(widget);
     refreshWidgetHandlers();
 }
 
-function addWidget(widget, sensor) {
+function addWidget(widget) {
     var borderColor = getBorderColorString(widget["color"], 0.3);
     var valueColor = getValueColorString(widget["color"]);
     var configColor = getBorderColorString(widget["color"], 0.4);
@@ -409,7 +406,7 @@ function addWidget(widget, sensor) {
         "                        <td></td></tr>\n" +
         "                        <tr>\n" +
         "                            <td class=\"widget-content\" colspan=\"3\">\n" +
-        "                               "  + getWidgetBodyHtml(widget, sensor) +
+        "                               "  + getWidgetBodyHtml(widget) +
         "                            </td>\n" +
         "                        </tr>\n" +
         "                        <tr>\n" +
@@ -427,18 +424,18 @@ function addWidget(widget, sensor) {
     $("#add_new_widget").before(widgetHtml);
 
     if (widget["type"] == 2)
-        sliderInit(widget, sensor);
+        sliderInit(widget);
 
     memWidget(widget);
     refreshWidgetHandlers();
 }
 
-function updateWidgetBody(widget, sensor) {
+function updateWidgetBody(widget) {
     var valueColor = getValueColorString(widget["color"]);
     var configColor = getBorderColorString(widget["color"], 0.4);
     var configActiveColor = getBorderColorString(widget["color"], 0.8);
     var imagePath;
-    if (sensor != null && sensor["value"] != 0)
+    if (widget["hasValue"] == true && widget["value"] != 0)
         imagePath = "./resources/images/toggleButtonOn.png";
     else
         imagePath = "./resources/images/toggleButtonOff.png";
@@ -447,7 +444,7 @@ function updateWidgetBody(widget, sensor) {
     switch (widget["type"]) {
     case 0 :
         let val;
-        val = sensor ==null? "?": sensor["value"];
+        val = widget["hasValue"] == true? "?": widget["value"];
 
         widgetObj.find(".widget-content h1").css("color: " + valueColor);
         widgetObj.find(".widget-content h1").html(val);
@@ -468,10 +465,10 @@ function updateWidgetBody(widget, sensor) {
         var maxVal = +widget["maxValue"];
         var value;
 
-        if (sensor == null)
+        if (widget["hasValue"] == true)
             value = widget["lastValue"];
         else {
-            value = sensor["value"];
+            value = widget["value"];
             if (value < minVal)
                 value = minVal;
             if (value > maxVal)
@@ -485,12 +482,12 @@ function updateWidgetBody(widget, sensor) {
 
 }
 
-function getWidgetBodyHtml(widget, sensor) {
+function getWidgetBodyHtml(widget) {
     var valueColor = getValueColorString(widget["color"]);
     var configColor = getBorderColorString(widget["color"], 0.4);
     var configActiveColor = getBorderColorString(widget["color"], 0.8);
     var imagePath;
-    if (sensor != null && sensor["value"] != 0)
+    if (widget["hasValue"] == true && widget["value"] != 0)
         imagePath = "./resources/images/toggleButtonOn.png";
     else
         imagePath = "./resources/images/toggleButtonOff.png";
@@ -498,7 +495,7 @@ function getWidgetBodyHtml(widget, sensor) {
     switch (widget["type"]) {
         case 0 :
             let val;
-            if (sensor == null)
+            if (widget["hasValue"] == true)
                 val = "?";
             else
                 val = sensor["value"];
@@ -514,10 +511,10 @@ function getWidgetBodyHtml(widget, sensor) {
             break;
         case 2 :
             var sliderVal;
-            if (sensor == null)
+            if (widget["hasValue"] == true)
                 sliderVal = widget["lastValue"];
             else
-                sliderVal = sensor["value"];
+                sliderVal = widget["value"];
             widgetBodyHtml = "<p class='slider_value_text' style=\"color: " + valueColor + "\">" + sliderVal + "</p>" +
                 "<div class='slider'></div>" +
                 "<p class='widget-measure'>" + widget["measure"] + "</p>";
@@ -528,16 +525,16 @@ function getWidgetBodyHtml(widget, sensor) {
     return widgetBodyHtml;
 }
 
-function sliderInit(widget, sensor) {
+function sliderInit(widget) {
     var minVal = +widget["minValue"];
     var maxVal = +widget["maxValue"];
     var value;
 
-    if (sensor == null)
+    if (widget["hasValue"] == true)
         // value = (minVal + maxVal) /2;
         value = widget["lastValue"];
     else {
-        value = sensor["value"];
+        value = widget["value"];
         if (value < minVal)
             value = minVal;
         if (value > maxVal)
