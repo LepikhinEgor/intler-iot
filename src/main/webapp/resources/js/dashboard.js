@@ -339,7 +339,7 @@ function requestWidgets() {
             console.log(data);
             $(".widget").remove();
             for (var widget_num in data) {
-                addWidget(data);
+                addWidget(data[widget_num]);
             }
             clearInterval(widgetsUpdateInterval);
             widgetsUpdateInterval = setInterval(requestUpdateWidgets, WIDGET_UPDATE_TIMEOUT);

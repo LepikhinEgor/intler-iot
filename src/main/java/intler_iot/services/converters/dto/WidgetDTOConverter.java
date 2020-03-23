@@ -42,7 +42,6 @@ public class WidgetDTOConverter {
             widgetsData.add(widgetDTO);
         }
 
-        widgetsData.sort(Comparator.comparingLong((WidgetDTO wd) -> wd.getId()));
         return widgetsData;
     }
 }
