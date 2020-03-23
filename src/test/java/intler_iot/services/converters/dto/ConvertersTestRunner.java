@@ -6,7 +6,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CloudOrderDTOConverterTest.class
+        CloudOrderDTOConverterTest.class,
+        SensorDTOConverterTest.class,
+        WidgetDTOConverterTest.class
 })
 public class ConvertersTestRunner {
 }
