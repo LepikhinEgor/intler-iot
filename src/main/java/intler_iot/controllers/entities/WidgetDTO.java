@@ -48,6 +48,8 @@ public class WidgetDTO {
             this.hasValue = true;
             this.value = sensorValue.getValue();
             this.updateTime = sensorValue.getArriveTime();
+        } else {
+            this.value = widget.getLastValue();
         }
     }
 

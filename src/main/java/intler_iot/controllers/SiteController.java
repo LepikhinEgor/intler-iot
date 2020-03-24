@@ -28,7 +28,7 @@ public class SiteController {
     @PostMapping("console/dashboard/record-cloud-order")
     public RestResponce getCloudOrder(@RequestBody OrderDTO orderDTO) {
         try {
-            widgetService.updateWidgetLastValue(orderDTO.getKeyWard(), orderDTO.getDeviceName(), orderDTO.getValue());
+            widgetService.updateWidgetLastValue(orderDTO.getKeyword(), orderDTO.getDeviceName(), orderDTO.getValue());
             cloudOrderService.recordNewOrder(orderDTO);
         } catch (Exception e) {
             return new RestResponce(RestResponce.FAIL, e.toString());

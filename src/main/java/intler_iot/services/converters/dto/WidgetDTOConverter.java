@@ -29,6 +29,7 @@ public class WidgetDTOConverter {
         widget.setDeviceName(widgetDTO.getDeviceName());
         widget.setType(widgetDTO.getType());
         widget.setName(widgetDTO.getName());
+        widget.setMeasure(widgetDTO.getMeasure());
 
         return widget;
     }

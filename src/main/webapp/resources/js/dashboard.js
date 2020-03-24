@@ -435,7 +435,7 @@ function updateWidgetBody(widget) {
     var configColor = getBorderColorString(widget["color"], 0.4);
     var configActiveColor = getBorderColorString(widget["color"], 0.8);
     var imagePath;
-    if (widget["hasValue"] == true && widget["value"] != 0)
+    if (widget["value"] != 0)
         imagePath = "./resources/images/toggleButtonOn.png";
     else
         imagePath = "./resources/images/toggleButtonOff.png";
@@ -444,7 +444,7 @@ function updateWidgetBody(widget) {
     switch (widget["type"]) {
     case 0 :
         let val;
-        val = widget["hasValue"] == true? "?": widget["value"];
+        val = widget["hasValue"] == true? widget["value"] : "?";
 
         widgetObj.find(".widget-content h1").css("color: " + valueColor);
         widgetObj.find(".widget-content h1").html(val);
@@ -466,14 +466,14 @@ function updateWidgetBody(widget) {
         var value;
 
         if (widget["hasValue"] == true)
-            value = widget["lastValue"];
-        else {
             value = widget["value"];
-            if (value < minVal)
-                value = minVal;
-            if (value > maxVal)
-                value = maxVal;
+        else {
+            value = widget["lastValue"];
         }
+        if (value < minVal)
+            value = minVal;
+        if (value > maxVal)
+            value = maxVal;
         var slider = widgetObj.find( ".slider" );
         widgetObj.find(".slider_value_text").html(value);
         slider.slider({min:minVal, max:maxVal, value:value, step:0.1, animate: "fast"});
@@ -484,7 +484,7 @@ function updateWidgetBody(widget) {
 
 function getLastUpdateTiming(widget) {
     if (widget["hasValue"] == false)
-        return "no";
+        return "";
     var updateTime = widget["updateTime"];
 
     var currentTime = new Date().getTime();
@@ -508,7 +508,7 @@ function getWidgetBodyHtml(widget) {
     var configColor = getBorderColorString(widget["color"], 0.4);
     var configActiveColor = getBorderColorString(widget["color"], 0.8);
     var imagePath;
-    if (widget["hasValue"] == true && widget["value"] != 0)
+    if (widget["value"] != 0)
         imagePath = "./resources/images/toggleButtonOn.png";
     else
         imagePath = "./resources/images/toggleButtonOff.png";
@@ -517,9 +517,9 @@ function getWidgetBodyHtml(widget) {
         case 0 :
             let val;
             if (widget["hasValue"] == true)
-                val = "?";
-            else
                 val = widget["value"];
+            else
+                val = "?";
             widgetBodyHtml = "<h1 style=\"color: " + valueColor + "\"> " + val + "</h1>\n" +
                 "                                <p class='widget-measure'>" + widget["measure"] + "</p>";
             break;
@@ -533,9 +533,9 @@ function getWidgetBodyHtml(widget) {
         case 2 :
             var sliderVal;
             if (widget["hasValue"] == true)
-                sliderVal = widget["lastValue"];
-            else
                 sliderVal = widget["value"];
+            else
+                sliderVal = widget["lastValue"];
             widgetBodyHtml = "<p class='slider_value_text' style=\"color: " + valueColor + "\">" + sliderVal + "</p>" +
                 "<div class='slider'></div>" +
                 "<p class='widget-measure'>" + widget["measure"] + "</p>";

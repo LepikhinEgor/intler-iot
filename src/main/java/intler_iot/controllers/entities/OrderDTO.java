@@ -3,7 +3,7 @@ package intler_iot.controllers.entities;
 import java.util.Objects;
 
 public class OrderDTO {
-    private String keyWard;
+    private String keyword;
     private double value;
     private String deviceName;
 
@@ -15,12 +15,12 @@ public class OrderDTO {
         this.value = value;
     }
 
-    public String getKeyWard() {
-        return keyWard;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setKeyWard(String keyWard) {
-        this.keyWard = keyWard;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getDeviceName() {
@@ -37,19 +37,19 @@ public class OrderDTO {
         if (o == null || getClass() != o.getClass()) return false;
         OrderDTO orderDTO = (OrderDTO) o;
         return Double.compare(orderDTO.value, value) == 0 &&
-                Objects.equals(keyWard, orderDTO.keyWard) &&
+                Objects.equals(keyword, orderDTO.keyword) &&
                 Objects.equals(deviceName, orderDTO.deviceName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(keyWard, value, deviceName);
+        return Objects.hash(keyword, value, deviceName);
     }
 
     @Override
     public String toString() {
-        return "OrderData{" +
-                "keyWard='" + keyWard + '\'' +
+        return "OrderDTO{" +
+                "keyword='" + keyword + '\'' +
                 ", value=" + value +
                 ", deviceName='" + deviceName + '\'' +
                 '}';

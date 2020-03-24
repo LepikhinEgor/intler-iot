@@ -47,7 +47,7 @@ public class CloudOrderDTOConverterTest {
     public void convertToDomain_success() {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setDeviceName("arduino");
-        orderDTO.setKeyWard("keyword");
+        orderDTO.setKeyword("keyword");
         orderDTO.setValue(1);
 
         CloudOrder cloudOrder = cloudOrderDTOConverter.convertToDomain(orderDTO, new Device());

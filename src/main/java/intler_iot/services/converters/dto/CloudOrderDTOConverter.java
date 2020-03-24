@@ -14,7 +14,7 @@ public class CloudOrderDTOConverter {
 
     public CloudOrder convertToDomain(OrderDTO orderDTO, Device device) {
         CloudOrder order = new CloudOrder();
-        order.setKeyWard(orderDTO.getKeyWard());
+        order.setKeyWard(orderDTO.getKeyword());
         order.setValue(orderDTO.getValue());
         order.setDevice(device);
         order.setTiming(new Timestamp(System.currentTimeMillis()));
