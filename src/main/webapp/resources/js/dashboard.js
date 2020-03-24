@@ -55,7 +55,7 @@ function toggleButtonAction() {
         }
     }
 
-    var keyWard = widgetObj["keyWard"];
+    var keyword = widgetObj["keyword"];
     var deviceName = widgetObj["deviceName"];
     var value;
     if ($(this).attr("src") === "./resources/images/toggleButtonOff.png") {
@@ -66,13 +66,13 @@ function toggleButtonAction() {
     }
 
 
-    sendCloudOrderButton(keyWard, value, deviceName, $(this));
+    sendCloudOrderButton(keyword, value, deviceName, $(this));
 
 }
 
-function sendCloudOrderButton(keyWard, value, deviceName, button) {
+function sendCloudOrderButton(keyword, value, deviceName, button) {
     var cloudOrder = {
-        keyWard:keyWard,
+        keyword:keyword,
         value: value,
         deviceName: deviceName
     }
@@ -187,7 +187,7 @@ function openModalWindowUpdate(widgetThis) {
     var widget =widgetThis.closest(".widget");
     var id = widget.attr("id")
     var name = widget.find(".widget-name").find("span").html();
-    var keyward = widget.find(".widget-keyword").html();
+    var keyword = widget.find(".widget-keyword").html();
     var measure = widget.find(".widget-measure").html();
 
     selectedWidgetId = id;
@@ -201,7 +201,7 @@ function openModalWindowUpdate(widgetThis) {
 
     var optionColor = getOptionColor(widgetObj["color"]);
     var icon = getIconOption(widgetObj["icon"]);
-    var keyWard = widgetObj["keyWard"];
+    var keyword = widgetObj["keyword"];
     var type = widgetObj["type"];
     var deviceName = widgetObj["deviceName"];
     var minValue = widgetObj["minValue"];
@@ -212,7 +212,7 @@ function openModalWindowUpdate(widgetThis) {
     $(".input_widget_measure").val(measure);
     $(".choose-color-menu").val(optionColor);
     $(".choose-icon-menu").val(icon);
-    $(".input_widget_keyward").val(keyWard);
+    $(".input_widget_keyward").val(keyword);
     $(".input_widget_deviceName").val(deviceName);
     $(".choose-type-menu option[value = " + type + "]").attr("selected",true);
     $(".choose-type-menu option[value != " + type + "]").attr("selected",false);
@@ -266,7 +266,7 @@ function applyWidgetChanges(e) {
     var optionType = $(".choose-type-menu option:selected").attr("value");
     var colorNum = getColorNum(optionColor);
     var iconNum = getIconNum(optionIcon);
-    var keyWard = $(".input_widget_keyward").val();
+    var keyword = $(".input_widget_keyward").val();
     var deviceName = $(".input_widget_deviceName").val();
     var minValue = $(".input-widget-minValue").val();
     var maxValue = $(".input-widget-maxValue").val();
@@ -283,7 +283,7 @@ function applyWidgetChanges(e) {
         name: name,
         color: colorNum,
         measure: measure,
-        keyWard: keyWard,
+        keyword: keyword,
         icon:iconNum,
         type:optionType,
         deviceName: deviceName,
@@ -376,10 +376,11 @@ function updateWidget(widget)  {
         widgetObj.css("width: " + widget["width"] + "px; height: " +widget["height"] + "px;");
     }
     widgetObj.find(".widget-icon").attr("src", iconStr);
+    widgetObj.find(".widget_timing").html(getLastUpdateTiming(widget));
     widgetObj.find(".widget-name span").html(widget["name"]);
     // widgetObj.find(".widget-content").html(getWidgetBodyHtml(widget, sensor));
     updateWidgetBody(widget);
-    widgetObj.find(".widget-keyword").html(widget["keyWard"]);
+    widgetObj.find(".widget-keyword").html(widget["keyword"]);
     widgetObj.find(".widget-config-button").css("background: " + configColor + ";");
     widgetObj.find(".widget-config-button").attr("onmouseover", "this.style.backgroundColor='" +  configActiveColor+ "'");
     widgetObj.find(".widget-config-button").attr("onmouseout", "this.style.backgroundColor='" +  configColor+ "'");
@@ -402,7 +403,7 @@ function addWidget(widget) {
         "                    <table class=\"widget-table\">\n" +
         "                        <tr><td><img class='widget-icon' src=\"" + iconStr + "\"></td>\n" +
         "                            <td class=\"widget-name\"><span>" + widget["name"] + "</span></td>\n" +
-        "                        <td></td></tr>\n" +
+        "                        <td class='widget_timing'>" + getLastUpdateTiming(widget) +"</td></tr>\n" +
         "                        <tr>\n" +
         "                            <td class=\"widget-content\" colspan=\"3\">\n" +
         "                               "  + getWidgetBodyHtml(widget) +
@@ -411,7 +412,7 @@ function addWidget(widget) {
         "                        <tr>\n" +
         "                            <td class=\"widget-icon-wrap\">\n" +
         "                            </td>\n" +
-        "                            <td class=\"widget-keyword\">" + widget["keyWard"] + "</td>\n" +
+        "                            <td class=\"widget-keyword\">" + widget["keyword"] + "</td>\n" +
         "                            <td class=\"widget-config-wrap\">\n" +
         "                                <img class='widget-config-button' style='background: " + configColor + "' src=\"./resources/images/config-inv.png\" onmouseover=\"this.style.backgroundColor='" +  configActiveColor+ "'\"" +
         "onmouseout=\"this.style.backgroundColor='" +  configColor+ "'\">\n" +
@@ -479,6 +480,27 @@ function updateWidgetBody(widget) {
         break;
     }
 
+}
+
+function getLastUpdateTiming(widget) {
+    if (widget["hasValue"] == false)
+        return "no";
+    var updateTime = widget["updateTime"];
+
+    var currentTime = new Date().getTime();
+    var diffSeconds = Math.floor((currentTime - updateTime)/1000);
+
+    var resultStr = "";
+    if (diffSeconds < 60)
+        return resultStr = diffSeconds + " c.";
+    else if (diffSeconds < 60 * 60)
+        resultStr = Math.ceil(diffSeconds/60) + " м";
+    else if (diffSeconds < 60 * 60 * 24)
+        resultStr = Math.ceil(diffSeconds/60/60) + " ч";
+    else
+        resultStr = Math.ceil(diffSeconds/60/60/24) + " дн";
+
+    return resultStr;
 }
 
 function getWidgetBodyHtml(widget) {
@@ -562,15 +584,15 @@ function sliderValChangeAction(event, ui) {
             widgetObj = widgets[widgetVal];
         }
     }
-    var keyWord = widgetObj["keyWard"];
+    var keyWord = widgetObj["keyword"];
     var device = widgetObj["deviceName"];
 
     sendCloudOrderSlider(keyWord,value, device);
 }
 
-function sendCloudOrderSlider(keyWard, value, deviceName) {
+function sendCloudOrderSlider(keyword, value, deviceName) {
     var cloudOrder = {
-        keyWard:keyWard,
+        keyword:keyword,
         value: value,
         deviceName: deviceName
     }
