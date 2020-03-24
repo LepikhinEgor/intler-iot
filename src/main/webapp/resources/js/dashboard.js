@@ -355,10 +355,9 @@ function requestUpdateWidgets() {
         success: function(data) {
             console.log(data);
             for (var widget_num in data) {
-                let widget = data[widget_num]["widget"];
+                let widget = data[widget_num];
 
-                let sensor = data[widget_num]["sensor"];
-                updateWidget(widget, sensor);
+                updateWidget(widget);
             }
         }
     });
@@ -498,7 +497,7 @@ function getWidgetBodyHtml(widget) {
             if (widget["hasValue"] == true)
                 val = "?";
             else
-                val = sensor["value"];
+                val = widget["value"];
             widgetBodyHtml = "<h1 style=\"color: " + valueColor + "\"> " + val + "</h1>\n" +
                 "                                <p class='widget-measure'>" + widget["measure"] + "</p>";
             break;
