@@ -9,8 +9,8 @@ import java.util.Objects;
 
 public class WidgetDTO {
     private long id;
+    private String name;
     private String measure;
-    @JsonProperty(value = "keyWard")
     private String keyword;
     private int width;
     private int height;
@@ -26,6 +26,9 @@ public class WidgetDTO {
     private double value;
     private Timestamp updateTime;
 
+    public WidgetDTO() {
+    }
+
     public WidgetDTO(Widget widget, SensorValue sensorValue) {
         this.id = widget.getId();
         this.measure = widget.getMeasure();
@@ -39,6 +42,7 @@ public class WidgetDTO {
         this.minValue = widget.getMinValue();
         this.maxValue = widget.getMaxValue();
         this.lastValue = widget.getLastValue();
+        this.name = widget.getName();
 
         if (sensorValue != null) {
             this.hasValue = true;
@@ -167,6 +171,14 @@ public class WidgetDTO {
         this.lastValue = lastValue;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -180,9 +192,10 @@ public class WidgetDTO {
                 maxValue == widgetDTO.maxValue &&
                 icon == widgetDTO.icon &&
                 color == widgetDTO.color &&
-                lastValue == widgetDTO.lastValue &&
+                Double.compare(widgetDTO.lastValue, lastValue) == 0 &&
                 hasValue == widgetDTO.hasValue &&
                 Double.compare(widgetDTO.value, value) == 0 &&
+                Objects.equals(name, widgetDTO.name) &&
                 Objects.equals(measure, widgetDTO.measure) &&
                 Objects.equals(keyword, widgetDTO.keyword) &&
                 Objects.equals(deviceName, widgetDTO.deviceName) &&
@@ -191,13 +204,14 @@ public class WidgetDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, measure, keyword, width, height, type, deviceName, minValue, maxValue, icon, color, lastValue, hasValue, value, updateTime);
+        return Objects.hash(id, name, measure, keyword, width, height, type, deviceName, minValue, maxValue, icon, color, lastValue, hasValue, value, updateTime);
     }
 
     @Override
     public String toString() {
         return "WidgetDTO{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", measure='" + measure + '\'' +
                 ", keyword='" + keyword + '\'' +
                 ", width=" + width +

@@ -10,6 +10,29 @@ import java.util.*;
 @Service
 public class WidgetDTOConverter {
 
+    public Widget convertToWidget(WidgetDTO widgetDTO) {
+        Widget widget = new Widget();
+        widget.setId(widgetDTO.getId());
+        widget.setKeyWard(widgetDTO.getKeyword());
+
+        if (widgetDTO.isHasValue())
+            widget.setLastValue(widgetDTO.getValue());
+        else
+            widget.setLastValue(widgetDTO.getLastValue());
+
+        widget.setMaxValue(widgetDTO.getMaxValue());
+        widget.setMinValue(widgetDTO.getMinValue());
+        widget.setHeight(widgetDTO.getHeight());
+        widget.setWidth(widgetDTO.getWidth());
+        widget.setIcon(widgetDTO.getIcon());
+        widget.setColor(widgetDTO.getColor());
+        widget.setDeviceName(widgetDTO.getDeviceName());
+        widget.setType(widgetDTO.getType());
+        widget.setName(widgetDTO.getName());
+
+        return widget;
+    }
+
     public List<WidgetDTO> convertToWidgetsDTO(List<Widget> widgets, List<SensorValue> sensorValues) {
         List<Map.Entry<Widget, SensorValue>> widgetSensorPairs = matchWidgetsSensors(widgets, sensorValues);
         List<WidgetDTO> widgetsList = convertToWidgetsDTO(widgetSensorPairs);

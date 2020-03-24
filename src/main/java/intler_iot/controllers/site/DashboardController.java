@@ -4,6 +4,7 @@ import intler_iot.controllers.entities.WidgetDTO;
 import intler_iot.controllers.entities.WidgetSizeDTO;
 import intler_iot.dao.entities.Widget;
 import intler_iot.services.WidgetService;
+import intler_iot.services.converters.dto.WidgetDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,16 @@ public class DashboardController {
 
     private WidgetService widgetService;
 
+    private WidgetDTOConverter widgetDTOConverter;
+
     @Autowired
     public void setWidgetService(WidgetService widgetService) {
         this.widgetService = widgetService;
+    }
+
+    @Autowired
+    public void setWidgetDTOConverter(WidgetDTOConverter widgetDTOConverter) {
+        this.widgetDTOConverter = widgetDTOConverter;
     }
 
     @GetMapping("/console/dashboard")
@@ -45,14 +53,16 @@ public class DashboardController {
 
     @PostMapping("console/dashboard/update-widget")
     @ResponseBody
-    public void updateWidget(@RequestBody Widget widget) {
-        logger.info(widget.toString());
+    public void updateWidget(@RequestBody WidgetDTO widgetDTO) {
+        logger.info(widgetDTO.toString());
+        Widget widget = widgetDTOConverter.convertToWidget(widgetDTO);
         widgetService.updateWidget(widget);
     }
 
     @PostMapping("console/dashboard/create-widget")
     @ResponseBody
-    public void createWidget(@RequestBody Widget widget) {
+    public void createWidget(@RequestBody WidgetDTO widgetDTO) {
+        Widget widget = widgetDTOConverter.convertToWidget(widgetDTO);
         widgetService.createWidget(widget);
     }
 
