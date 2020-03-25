@@ -1,8 +1,11 @@
 <hibernate-configuration>
     <session-factory>
 <!--        <property name="connection.url">jdbc:postgresql://79.143.30.97:5432/intler-cloud?sslmode=require</property> &lt;!&ndash; BD Mane &ndash;&gt;-->
-        <property name="connection.url">jdbc:postgresql://localhost/intler_iot</property> <!-- BD Mane -->
-        <property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
+<!--        <property name="connection.url">jdbc:postgresql://localhost/intler_iot</property> &lt;!&ndash; BD Mane &ndash;&gt;-->
+        <property name="connection.url">jdbc:h2:file:~/db/intler_iot.db</property> <!-- BD Mane -->
+            <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+<!--        <property name="connection.driver_class">org.postgresql.Driver</property> &lt;!&ndash; DB Driver &ndash;&gt;-->
+        <property name="connection.driver_class">org.h2.Driver</property> <!-- DB Driver -->
         <property name="connection.username">egor</property> <!-- DB User -->
         <property name="connection.password">1111</property> <!-- DB Password -->
         <property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
