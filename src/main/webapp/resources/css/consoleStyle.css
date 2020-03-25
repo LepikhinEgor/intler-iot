@@ -373,7 +373,7 @@ footer p {
 }
 
 .top-panel {
-	height: 52px;
+	height: 50px;
 	background-color: #efefef;
 	border-bottom: 1px solid #aaa;
 	border-left: 1px solid #aaa;
@@ -383,10 +383,11 @@ footer p {
 	float: right;
 	height: 100%;
 	display: flex;
-  overflow: hidden;
+  overflow: visible;
+	/*margin-right: 10px;*/
 }
 
-.user-bar > span {
+.user-bar  span {
 	color: #444;
 	font: 14px 'Linotype', sans-serif;
 	font-weight: bolder;
@@ -394,7 +395,7 @@ footer p {
 
 }
 
-.user-bar > img {
+.user-bar  img {
 	width: 40px;
 	height: 40px;
 	margin: auto 5px;
@@ -467,6 +468,104 @@ footer p {
 
 .logout-button {
 	cursor: pointer;
+}
+
+
+.wrapper-dropdown-5 {
+	/* Size & position */
+	position: relative;
+	width: 60px;
+	margin: 0 auto;
+	padding: 5px 0px;
+
+	/* Styles */
+	/*background: #fff;*/
+	cursor: pointer;
+	outline: none;
+}
+
+.wrapper-dropdown-5:after { /* Little arrow */
+	content: "";
+	width: 0;
+	height: 0;
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	margin-top: -3px;
+}
+
+.wrapper-dropdown-5 .dropdown {
+	/* Size & position */
+	position: absolute;
+	top: 100%;
+	left: -100%;
+	right: 10%;
+
+	margin:0px;
+	padding-left:20px;
+	/* Styles */
+	background: #efefef;
+	border-radius: 0 0 5px 5px;
+	border: 1px solid rgba(0,0,0,0.5);
+	border-top: none;
+	border-bottom: none;
+	list-style: none;
+	/*-webkit-transition: all 0.3s ease-out;*/
+	/*-moz-transition: all 0.3s ease-out;*/
+	/*-ms-transition: all 0.3s ease-out;*/
+	/*-o-transition: all 0.3s ease-out;*/
+	/*transition: all 0.3s ease-out;*/
+
+	/* Hiding */
+	z-index: 5;
+	max-height: 0;
+	overflow: hidden;
+}
+
+.wrapper-dropdown-5 .dropdown li {
+	/*padding: 0 10px ;*/
+}
+
+.wrapper-dropdown-5 .dropdown li a {
+	display: block;
+	text-decoration: none;
+	color: #333;
+	padding: 10px 0;
+	transition: all 0.3s ease-out;
+	border-bottom: 1px solid #e6e8ea;
+}
+
+.wrapper-dropdown-5 .dropdown li:last-of-type a {
+	border: none;
+}
+
+.wrapper-dropdown-5 .dropdown li i {
+	margin-right: 5px;
+	color: inherit;
+	vertical-align: middle;
+}
+
+/* Hover state */
+
+.wrapper-dropdown-5 .dropdown li:hover a {
+	color: #2e8b00;
+}
+
+/* Active state */
+
+.wrapper-dropdown-5.active {
+	box-shadow: none;
+	border-bottom: none;
+	color: white;
+}
+
+.wrapper-dropdown-5.active:after {
+	border-color: #82d1ff transparent;
+}
+
+.wrapper-dropdown-5.active .dropdown {
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+	max-height: 400px;
 }
 
 

@@ -12,6 +12,12 @@ $(document).ready(function() {
 function addEventHandlers() {
     $(".aside-menu").find("li").on("click", pressMenuTab);
     $(".logout-button").on("click", requestLogout);
+    $("#dd").on('click', openUserMenu);
+}
+
+function openUserMenu(event){
+    $(this).toggleClass('active');
+    event.stopPropagation();
 }
 
 function requestLogout() {
