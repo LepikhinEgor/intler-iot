@@ -373,7 +373,7 @@ footer p {
 }
 
 .top-panel {
-	height: 50px;
+	height: 60px;
 	background-color: #efefef;
 	border-bottom: 1px solid #aaa;
 	border-left: 1px solid #aaa;
@@ -476,7 +476,7 @@ footer p {
 	position: relative;
 	width: 60px;
 	margin: 0 auto;
-	padding: 5px 0px;
+	padding: 10px 0px;
 
 	/* Styles */
 	/*background: #fff;*/

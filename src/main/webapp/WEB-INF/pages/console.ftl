@@ -46,8 +46,8 @@
                 <div id="dd" class="wrapper-dropdown-5">
                     <img class="user-icon-img" src="./resources/images/user_icon.png">
                     <ul class="dropdown">
-                        <li><a href="#">Профиль</a></li>
-                        <li><a href="#">Настройки</a></li>
+                        <li><a href="profile">Профиль</a></li>
+<#--                        <li><a href="#">Настройки</a></li>-->
                         <li class="logout-button"><a href="#">Выйти</a></li>
                     </ul>
                 </div>
