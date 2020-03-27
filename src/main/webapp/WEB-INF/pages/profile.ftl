@@ -29,6 +29,9 @@
         <p><span class="prop_key">Login:</span><span class="prop_value">${login}</span></p>
         <p><span class="prop_key">Email:</span><span class="prop_value">${email}</span></p>
         <p><span class="prop_key">Server IP:</span><span class="prop_value">${serverIP}</span></p>
+        <div class="to_console_wrap" onclick="document.location.href='console'">
+            <a href="console" class="to_console_button">To console</a>
+        </div>
     </div>
 </div>
 </body>
