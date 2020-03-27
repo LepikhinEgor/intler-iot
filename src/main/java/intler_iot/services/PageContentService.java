@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -18,7 +21,7 @@ public class PageContentService {
 
     private UserService userService;
 
-    @Autowired
+//    @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
@@ -33,6 +36,22 @@ public class PageContentService {
 
         return properties;
     }
+
+    public Map<String, String> get500ErrorPageProperties(HttpServletRequest request, Exception e) {
+        Map<String, String> properties = new HashMap<>();
+
+        properties.put("url", request.getRequestURL().toString());
+        properties.put("stacktrace", stackTraceToString(e));
+
+        return properties;
+    }
+
+    private String stackTraceToString(Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
+    }
+
 
     String getLocalHostIP() {
         String serverIP;
