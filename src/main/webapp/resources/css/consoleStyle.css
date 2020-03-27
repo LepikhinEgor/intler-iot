@@ -14,9 +14,9 @@ img {
 	border: 0;
 }
 
-h2 {
-	font-weight: 400;
-}
+/*h2 {*/
+/*	font-weight: 400;*/
+/*}*/
 
 input[type="text"] {
 	width: 193px;
@@ -72,14 +72,14 @@ aside {
 	border-right: 1px solid #222;
 }
 
-aside > h2 {
-	background-color: #2c3338;
-	font: 14px 'Oswald', sans-serif;
-	color: #fff;
-	padding: 10px;
-	margin: 30px 0 0 0;
-	text-align: center;
-}
+/*aside > h2 {*/
+/*	background-color: #2c3338;*/
+/*	font: 14px 'Oswald', sans-serif;*/
+/*	color: #fff;*/
+/*	padding: 10px;*/
+/*	margin: 30px 0 0 0;*/
+/*	text-align: center;*/
+/*}*/
 
 aside > p {
 	padding: 10px;
@@ -210,14 +210,14 @@ section > figure + figure {
 	margin-left: 28px;
 }
 
-section > h2 {
-	background: #29c5e6;
-	font: 30px 'Oswald', sans-serif;
-	font-weight: 300;
-	color: #fff;
-	padding: 0 10px;
-	margin: 30px 0 0 0;
-}
+/*section > h2 {*/
+/*	background: #29c5e6;*/
+/*	font: 30px 'Oswald', sans-serif;*/
+/*	font-weight: 300;*/
+/*	color: #fff;*/
+/*	padding: 0 10px;*/
+/*	margin: 30px 0 0 0;*/
+/*}*/
 
 figure figcaption {
 	font-size: 16px;

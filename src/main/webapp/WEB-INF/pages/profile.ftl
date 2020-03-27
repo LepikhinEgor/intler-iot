@@ -22,6 +22,14 @@
     <div class="top_panel_name"><h1>Profile</h1></div>
 </div>
 <div class="content-panel">
+    <div class="content-panel-page">
+        <h2>
+           Account
+        </h2>
+        <p><span class="prop_key">Login:</span><span class="prop_value">${login}</span></p>
+        <p><span class="prop_key">Email:</span><span class="prop_value">${email}</span></p>
+        <p><span class="prop_key">Server IP:</span><span class="prop_value">${serverIP}</span></p>
+    </div>
 </div>
 </body>
 </html>
