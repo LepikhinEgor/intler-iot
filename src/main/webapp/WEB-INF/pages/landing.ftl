@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meilleur - Free Responsive Single Page BS3 Template</title>
+    <title>Intler cloud</title>
     <!-- Stylesheets -->
     <link type="text/css" href="./resources/landing/css/bootstrap.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic,500italic,500,300italic,300'
@@ -64,8 +64,8 @@
                         <p>
                             Поддержка плат Arduino Uno, Nano, Mega</p>
                     </div>
-                    <a href="login" class="btn btn-outline btn-lg">Login</a>&nbsp; <a href="registration"
-                                                                                      class="btn btn-outline btn-lg">Registration </a>
+                    <a href="login" class="btn btn-outline btn-lg">Войти</a>&nbsp; <a href="registration"
+                                                                                      class="btn btn-outline btn-lg">Регистрация </a>
                 </div>
             </div>
         </div>
