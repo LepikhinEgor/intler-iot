@@ -1,4 +1,4 @@
 package intler_iot.controllers.exceptions;
 
-public class ResourceNotFoundException {
+public class ResourceNotFoundException extends RuntimeException {
 }
