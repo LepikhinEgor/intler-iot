@@ -13,7 +13,7 @@
         <property name="show_sql">false</property> <!-- Show SQL in console -->
         <property name="format_sql">false</property> <!-- Show SQL formatted -->
 
-        <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+        <property name="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
 
         <property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>

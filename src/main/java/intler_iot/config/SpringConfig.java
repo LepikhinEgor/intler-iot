@@ -5,12 +5,19 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableAspectJAutoProxy
+@EnableTransactionManagement
 @Import({ SecurityConfig.class })
 @ComponentScan(basePackages = {"intler_iot.controllers", "intler_iot.services", "intler_iot.dao"})
 public class SpringConfig {
@@ -32,5 +39,14 @@ public class SpringConfig {
         SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
 
         return sessionFactory;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(){
+        JpaTransactionManager transactionManager
+                = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(
+                getSessionFactory());
+        return transactionManager;
     }
 }
