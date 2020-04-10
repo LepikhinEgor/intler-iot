@@ -25,87 +25,55 @@ public class CloudOrderDaoHibernate extends CloudOrderDao {
     @Override
     public void save(CloudOrder order) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query getOldOrder = session.createQuery("from CloudOrder where keyWard = :keyWord and used != true and device = :device order by id").setMaxResults(1);
-            getOldOrder.setParameter("keyWord", order.getKeyWard());
-            getOldOrder.setParameter("device", order.getDevice());
+        Query getOldOrder = session.createQuery("from CloudOrder where keyWard = :keyWord and used != true and device = :device order by id").setMaxResults(1);
+        getOldOrder.setParameter("keyWord", order.getKeyWard());
+        getOldOrder.setParameter("device", order.getDevice());
 
-            CloudOrder oldOrder = (CloudOrder)getOldOrder.uniqueResult();
-            if (oldOrder != null) {
-                oldOrder.setValue(order.getValue());
-                session.update(oldOrder);
-            } else {
-                session.save(order);
-            }
-
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
+        CloudOrder oldOrder = (CloudOrder)getOldOrder.uniqueResult();
+        if (oldOrder != null) {
+            oldOrder.setValue(order.getValue());
+            session.update(oldOrder);
+        } else {
+            session.save(order);
         }
     }
 
     @Override
     public List<CloudOrder> getDeviceOrders(Device device) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query getQuery = session.createQuery("FROM CloudOrder where device = :device and used = false");
-            getQuery.setParameter("device", device);
+        Query getQuery = session.createQuery("FROM CloudOrder where device = :device and used = false");
+        getQuery.setParameter("device", device);
 
-            List<CloudOrder> orders = getQuery.list();
+        List<CloudOrder> orders = getQuery.list();
 
-            Query updateQuery = session.createQuery("update CloudOrder set used = true where device = :device");
-            updateQuery.setParameter("device", device);
-            updateQuery.executeUpdate();
+        Query updateQuery = session.createQuery("update CloudOrder set used = true where device = :device");
+        updateQuery.setParameter("device", device);
+        updateQuery.executeUpdate();
 
-            transaction.commit();
-
-            return orders;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        return orders;
     }
 
     @Override
     public void deleteOld() {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query query = session.createQuery("delete from CloudOrder where removed = true");
+        Query query = session.createQuery("delete from CloudOrder where removed = true");
 
-            query.executeUpdate();
-
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        query.executeUpdate();
     }
 
     @Override
     public void markRemoved(List<String> ordersName, Device device) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query query = session.createQuery("update CloudOrder set removed = true where device = :device and keyWard in (:names)");
-            query.setParameter("device", device);
-            query.setParameter("names", ordersName);
-            query.executeUpdate();
+        Query query = session.createQuery("update CloudOrder set removed = true where device = :device and keyWard in (:names)");
+        query.setParameter("device", device);
+        query.setParameter("names", ordersName);
+        query.executeUpdate();
 
-            query.executeUpdate();
-
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        query.executeUpdate();
     }
 
 }

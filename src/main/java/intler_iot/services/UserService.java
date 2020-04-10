@@ -15,10 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 
 @Service
+@Transactional
 public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -44,12 +47,14 @@ public class UserService {
         this.webSecurityConfigurerAdapter = webSecurityConfigurerAdapter;
     }
 
+    @Transactional
     public User getByLogin(String login) {
         User user = userDao.getByLogin(login);
 
         return user;
     }
 
+    @Transactional
     public User authUser(String login, String password) throws NotAuthException{
         try {
             User user;
@@ -95,11 +100,12 @@ public class UserService {
                 && authentication.isAuthenticated();
     }
 
+    @Transactional
     public RegistrationDTO registerUser(User user) {
         int validStatus = checkUserDataIsValid(user);
         if (validStatus != RegistrationDTO.SUCCESS)
             return new RegistrationDTO(validStatus);
-        if (!checkLoginIsFree(user.getLogin()))
+        if (!this.checkLoginIsFree(user.getLogin()))
             return new RegistrationDTO(RegistrationDTO.LOGIN_BUSY);
         if (!checkEmailIsFree(user.getEmail()))
             return new RegistrationDTO(RegistrationDTO.EMAIL_BUSY);

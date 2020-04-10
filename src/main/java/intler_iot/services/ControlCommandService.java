@@ -7,6 +7,7 @@ import intler_iot.dao.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ControlCommandService {
         this.userService = userService;
     }
 
+    @Transactional
     public void saveControlCommand(ControlCommand command) {
         User user =  userService.getCurrentUser();
 
@@ -39,6 +41,7 @@ public class ControlCommandService {
         controlCommandDao.save(command);
     }
 
+    @Transactional
     public List<ControlCommand> getControlCommands() {
         User user =  userService.getCurrentUser();
 
@@ -47,6 +50,7 @@ public class ControlCommandService {
         return commands;
     }
 
+    @Transactional
     public HashMap<String,Double> getCloudLogicOrders(HashMap<String, Double> sensorsValues) {
         List<ControlCommand> controlCommands = getControlCommands();
         HashMap<String,Double> cloudOrders = new HashMap<>();

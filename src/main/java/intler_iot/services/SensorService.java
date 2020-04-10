@@ -12,6 +12,8 @@ import intler_iot.services.exceptions.SensorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -56,6 +58,7 @@ public class SensorService {
      * @param deviceStateDTO sensors data from device
      * @throws NotAuthException
      */
+    @Transactional
     public void updateSensorsValues(DeviceStateDTO deviceStateDTO) throws NotAuthException {
         User user = userService.authUser(deviceStateDTO.getLogin(), deviceStateDTO.getPassword());
         deviceService.connectDevice(deviceStateDTO.getLogin(), deviceStateDTO.getPassword(), deviceStateDTO.getDeviceName(), deviceStateDTO.getDeviceType());
@@ -87,6 +90,7 @@ public class SensorService {
     /**
      * @return Map with sensors name from devices. Key contains device name, Value contains list of sensors name of this device
      */
+    @Transactional
     public HashMap<String, Collection<String>> getSensorsName() {
         User user = userService.getCurrentUser();
         List<Device> userDevices = deviceService.getUserDevices(user);
@@ -104,6 +108,7 @@ public class SensorService {
     /**
      * Method remove old sensors value, which arrive time old the defined bound
      */
+    @Transactional
     public void removeOldSensorsValue() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() - DAY_IN_MILLIS * SENSORS_HOLD_DAYS);
         sensorDao.removeOldValues(timestamp);
@@ -114,6 +119,7 @@ public class SensorService {
      * @param user
      * @return List of last user sensors with unique names from all devices
      */
+    @Transactional
     public List<SensorValue> getLastSensors(User user) {
         List<SensorValue> lastSensorValues = sensorDao.getLastSensors(user);
 
@@ -125,6 +131,7 @@ public class SensorService {
      * @return all unique sensors as first table page.
      * @throws NotAuthException
      */
+    @Transactional
     public List<SensorPageDTO> getUserSensors() throws NotAuthException {
         User user = userService.getCurrentUser();
         List<Device> userDevices = deviceService.getUserDevices(user);
@@ -144,6 +151,7 @@ public class SensorService {
      * @throws NotAuthException
      * @throws SensorNotFoundException
      */
+    @Transactional
     public SensorPageDTO getSensorLogPage(String sensorName, int pageNum) throws NotAuthException, SensorNotFoundException {
         User user = userService.getCurrentUser();
         List<SensorValue> sensorValues = sensorDao.getSensorValues(sensorName, user);

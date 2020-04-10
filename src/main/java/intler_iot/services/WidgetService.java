@@ -10,6 +10,7 @@ import intler_iot.services.converters.dto.WidgetDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -43,6 +44,7 @@ public class WidgetService {
         this.userService = userService;
     }
 
+    @Transactional
     public void createWidget(Widget widget) {
         User user = userService.getCurrentUser();
 
@@ -53,10 +55,12 @@ public class WidgetService {
         widgetDao.create(widget);
     }
 
+    @Transactional
     public void deleteWidget(long id) {
         widgetDao.delete(id);
     }
 
+    @Transactional
     public void updateWidget(Widget widget) {
         widgetDao.update(widget);
     }
@@ -67,6 +71,7 @@ public class WidgetService {
      * @return all user widgets as WidgetDTO list
      * @throws NotAuthException
      */
+    @Transactional
     public List<WidgetDTO> getWidgetsList() throws NotAuthException {
         User user = userService.getCurrentUser();
 
@@ -86,6 +91,7 @@ public class WidgetService {
      * @param deviceName
      * @param value
      */
+    @Transactional
     public void updateWidgetLastValue(String sensorName, String deviceName, double value) {
         widgetDao.updateLastValue(sensorName, deviceName, value);
     }
@@ -94,6 +100,7 @@ public class WidgetService {
      * Method save new widgets size to database
      * @param widgetsSize
      */
+    @Transactional
     public void updateWidgetsSize(List<WidgetSizeDTO> widgetsSize) {
         for (WidgetSizeDTO widgetSizeDTO : widgetsSize) {
             Widget widget = new Widget();

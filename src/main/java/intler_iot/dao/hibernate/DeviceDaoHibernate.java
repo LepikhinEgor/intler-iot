@@ -25,70 +25,47 @@ public class DeviceDaoHibernate extends DeviceDao {
     @Override
     public void connectDevice(Device device) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query getDeviceQuery = session.createQuery("from Device d where name = :name and d.owner = :owner");
-            getDeviceQuery.setParameter("owner", device.getOwner());
-            getDeviceQuery.setParameter("name", device.getName());
-            List<Device> foundDevices = getDeviceQuery.list();
+        Query getDeviceQuery = session.createQuery("from Device d where name = :name and d.owner = :owner");
+        getDeviceQuery.setParameter("owner", device.getOwner());
+        getDeviceQuery.setParameter("name", device.getName());
 
-            if (foundDevices.isEmpty()) {
-                session.save(device);
-                System.out.println("EMptry");
-            }
-            else {
-                Query query = session.createQuery("update Device set lastDeviceMessageTime = :time where name = :name and owner = :user");
-                query.setParameter("time", device.getLastDeviceMessageTime());
-                query.setParameter("name", device.getName());
-                query.setParameter("user", device.getOwner());
+        List<Device> foundDevices = getDeviceQuery.list();
 
-                query.executeUpdate();
-            }
+        if (foundDevices.isEmpty()) {
+            session.save(device);
+        }
+        else {
+            Query query = session.createQuery("update Device set lastDeviceMessageTime = :time where name = :name and owner = :user");
+            query.setParameter("time", device.getLastDeviceMessageTime());
+            query.setParameter("name", device.getName());
+            query.setParameter("user", device.getOwner());
 
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
+            query.executeUpdate();
         }
     }
 
     @Override
     public Device getUserDeviceByName(String name, User user) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query query = session.createQuery("FROM Device WHERE owner = :ownerId AND name = :name");
-            query.setParameter("ownerId", user);
-            query.setParameter("name", name);
-            Device foundDevice = (Device)query.list().get(0);
+        Query query = session.createQuery("FROM Device WHERE owner = :ownerId AND name = :name");
+        query.setParameter("ownerId", user);
+        query.setParameter("name", name);
 
-            transaction.commit();
+        Device foundDevice = (Device)query.list().get(0);
 
-            return foundDevice;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        return foundDevice;
     }
 
     @Override
     public List<Device> getUserDevices(User user) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query query = session.createQuery("FROM Device WHERE owner = :ownerId");
-            query.setParameter("ownerId", user);
-            List<Device> foundDevices = query.list();
+        Query query = session.createQuery("FROM Device WHERE owner = :ownerId");
+        query.setParameter("ownerId", user);
+        List<Device> foundDevices = query.list();
 
-            transaction.commit();
-
-            return foundDevices;
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        return foundDevices;
     }
 }

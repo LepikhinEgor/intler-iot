@@ -7,6 +7,7 @@ import intler_iot.dao.entities.User;
 import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,6 +29,7 @@ public class DeviceService {
         this.deviceDao = deviceDao;
     }
 
+    @Transactional
     public void connectDevice(String login, String password, String deviceName, String deviceType) throws NotAuthException {
         User owner = userService.authUser(login, password);
 
@@ -40,12 +42,14 @@ public class DeviceService {
         deviceDao.connectDevice(device);
     }
 
+    @Transactional
     public Device getDeviceById(User user, String deviceName) {
         Device foundDevice = deviceDao.getUserDeviceByName(deviceName, user);
 
         return foundDevice;
     }
 
+    @Transactional
     public List<Device> getUserDevices(User user) {
         List<Device> devices = deviceDao.getUserDevices(user);
 

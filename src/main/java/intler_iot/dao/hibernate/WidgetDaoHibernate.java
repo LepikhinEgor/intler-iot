@@ -28,130 +28,76 @@ public class WidgetDaoHibernate extends WidgetDao {
     @Override
     public List<Widget> getWidgets(User user) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query query = session.createQuery("from Widget w where w.user = :user");
-            query.setParameter("user", user);
+        Query query = session.createQuery("from Widget w where w.user = :user");
+        query.setParameter("user", user);
 
-            List<Widget> widgets = query.list();
+        List<Widget> widgets = query.list();
 
-            transaction.commit();
-
-            return widgets;
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            transaction.rollback();
-            throw e;
-        }
-
+        return widgets;
     }
 
     @Override
     public void recordWidgets(List<Widget> widgets) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            for (Widget widget : widgets) {
-                session.save(widget);
-            }
-
-            transaction.commit();
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            transaction.rollback();
-            throw e;
+        for (Widget widget : widgets) {
+            session.save(widget);
         }
     }
 
     public void create(Widget widget) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            session.save(widget);
 
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-            throw e;
-        }
+        session.save(widget);
     }
 
     public void delete(long id) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            Widget widget = session.get(Widget.class, id);
-            session.delete(widget);
 
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-            throw e;
-        }
+        Widget widget = session.get(Widget.class, id);
+
+        session.delete(widget);
     }
 
     @Override
     public void update(Widget widget) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            Widget oldWidget = session.get(Widget.class, widget.getId());
-            oldWidget.setName(widget.getName());
-            oldWidget.setColor(widget.getColor());
-            oldWidget.setMeasure(widget.getMeasure());
-            oldWidget.setKeyWard(widget.getKeyWard());
-            oldWidget.setIcon(widget.getIcon());
-            oldWidget.setType(widget.getType());
-            oldWidget.setDeviceName(widget.getDeviceName());
-            oldWidget.setMaxValue(widget.getMaxValue());
-            oldWidget.setMinValue(widget.getMinValue());
 
-            session.save(oldWidget);
+        Widget oldWidget = session.get(Widget.class, widget.getId());
+        oldWidget.setName(widget.getName());
+        oldWidget.setColor(widget.getColor());
+        oldWidget.setMeasure(widget.getMeasure());
+        oldWidget.setKeyWard(widget.getKeyWard());
+        oldWidget.setIcon(widget.getIcon());
+        oldWidget.setType(widget.getType());
+        oldWidget.setDeviceName(widget.getDeviceName());
+        oldWidget.setMaxValue(widget.getMaxValue());
+        oldWidget.setMinValue(widget.getMinValue());
 
-            tx.commit();
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            tx.rollback();
-            throw e;
-        }
+        session.save(oldWidget);
     }
 
     @Override
     public void updateSize(Widget widget) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Widget oldWidget = session.get(Widget.class, widget.getId());
-            oldWidget.setWidth(widget.getWidth());
-            oldWidget.setHeight(widget.getHeight());
+        Widget oldWidget = session.get(Widget.class, widget.getId());
+        oldWidget.setWidth(widget.getWidth());
+        oldWidget.setHeight(widget.getHeight());
 
-            session.save(oldWidget);
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        session.save(oldWidget);
     }
 
     @Override
     public void updateLastValue(String sensorName, String deviceName, double value) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
 
-        try {
-            Query query = session.createQuery("update Widget set lastValue = :value where deviceName = :deviceName and keyWard = :sensorName ");
-            query.setParameter("deviceName", deviceName);
-            query.setParameter("sensorName", sensorName);
-            query.setParameter("value", value);
+        Query query = session.createQuery("update Widget set lastValue = :value where deviceName = :deviceName and keyWard = :sensorName ");
+        query.setParameter("deviceName", deviceName);
+        query.setParameter("sensorName", sensorName);
+        query.setParameter("value", value);
 
-            query.executeUpdate();
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw e;
-        }
+        query.executeUpdate();
     }
 }

@@ -26,34 +26,19 @@ public class ControlCommandDaoHibernate extends ControlCommandDao {
     @Override
     public List<ControlCommand> getAll(User user) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
 
-        try {
-            Query query = session.createQuery("from ControlCommand where user = :user");
-            query.setParameter("user", user);
+        Query query = session.createQuery("from ControlCommand where user = :user");
+        query.setParameter("user", user);
 
-            List<ControlCommand> commands = query.list();
-            tx.commit();
+        List<ControlCommand> commands = query.list();
 
-            return commands;
-        } catch (Exception e) {
-            tx.rollback();
-            throw e;
-        }
+        return commands;
     }
 
     @Override
     public void save(ControlCommand command) {
         Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
 
-        try {
-            session.saveOrUpdate(command);
-
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-            throw e;
-        }
+        session.saveOrUpdate(command);
     }
 }

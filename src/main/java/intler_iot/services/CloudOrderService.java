@@ -11,6 +11,7 @@ import intler_iot.services.exceptions.NotAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class CloudOrderService {
         this.cloudOrderDTOConverter = cloudOrderDTOConverter;
     }
 
+    @Transactional
     public void recordNewOrder(OrderDTO orderDTO) {
         User user = userService.getCurrentUser();
         Device device = deviceService.getDeviceById(user, orderDTO.getDeviceName());
@@ -55,6 +57,7 @@ public class CloudOrderService {
         cloudOrderDao.save(order);
     }
 
+    @Transactional
     public HashMap<String, Double> getDeviceOrders(String deviceName, String login, String password) {
         User user = userService.authUser(login, password);
         Device device = deviceService.getDeviceById(user, deviceName);
@@ -65,10 +68,12 @@ public class CloudOrderService {
         return ordersDTO;
     }
 
+    @Transactional
     public void deleteOldOrders() {
         cloudOrderDao.deleteOld();
     }
 
+    @Transactional
     public void markOldOrdersAsRemoved(DeviceStateDTO deviceStateDTO) {
         User user = userService.authUser(deviceStateDTO.getLogin(), deviceStateDTO.getPassword());
         Device device = deviceService.getDeviceById(user, deviceStateDTO.getDeviceName());
