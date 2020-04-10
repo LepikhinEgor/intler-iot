@@ -68,7 +68,7 @@ function confirmUpdateLogicCommand() {
 
     var commandName = parent.find(".logic-block-for").find("input").val();
     var commandAction = parent.find(".logic-block-action").find("select").val();
-    var commandValue = parent.find(".logic-block-value").find("input").val();
+    var commandValue = getCommandValue(commandAction);
     var ifSensorName = parent.find(".logic-block-if-object").find("input").val();
     var condition = parent.find(".logic-block-condition").find("select").val();
     var conditionValue = parent.find(".logic-block-if-object-val").find("input").val();
@@ -99,6 +99,18 @@ function confirmUpdateLogicCommand() {
 
     if (validCommandName && validCommandValue && validConditionValue)
         requestCreateControlCommand(controlCommand,$(this));
+}
+
+function getCommandValue(commandAction) {
+    var value;
+
+    switch (commandAction) {
+        case "0": value = 0; break;
+        case "1": value = 1; break;
+        case "2": value =  parent.find(".logic-block-value").find("input").val();
+    }
+
+    return value;
 }
 
 function requestUserSensorsName() {
