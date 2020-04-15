@@ -11,6 +11,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.sql.DataSource;
 
@@ -48,5 +49,12 @@ public class SpringConfig {
         transactionManager.setEntityManagerFactory(
                 getSessionFactory());
         return transactionManager;
+    }
+
+    @Bean
+    public DispatcherServlet dispatcherServlet() {
+        DispatcherServlet dispatcherServlet = new DispatcherServlet();
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+        return dispatcherServlet;
     }
 }

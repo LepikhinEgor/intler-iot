@@ -41,12 +41,6 @@ public class ExceptionController {
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public String getPageNotFoundPage(Exception e) {
-//        logger.info("!!!!!!!");
-//        logger.error(e.getMessage(),e);
-////        Map<String,String> pageProperties = pageContentService.get500ErrorPageProperties(request, e);
-////        System.out.println(pageProperties);
-////        model.addAllAttributes(pageProperties);
-
         return "errors/error404";
     }
 }

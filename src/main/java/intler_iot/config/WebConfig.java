@@ -18,9 +18,6 @@ import java.io.IOException;
 @EnableWebMvc
 public class WebConfig {
 
-    @Autowired
-    private ApplicationContext applicationContext;
-
     @Bean
     public ViewResolver getViewResolver() {
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
