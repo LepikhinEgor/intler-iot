@@ -1,11 +1,10 @@
 package intler_iot.services;
 
 import intler_iot.dao.entities.User;
-import org.junit.Assert;
+import intler_iot.services.security.UserDetailsServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

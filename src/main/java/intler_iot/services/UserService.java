@@ -4,9 +4,11 @@ import intler_iot.controllers.entities.RegistrationDTO;
 import intler_iot.dao.UserDao;
 import intler_iot.dao.entities.User;
 import intler_iot.services.exceptions.NotAuthException;
+import intler_iot.services.security.UserDetailsAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -43,7 +45,7 @@ public class UserService {
     }
 
     @Autowired
-    public void setWebSecurityConfigurerAdapter(WebSecurityConfigurerAdapter webSecurityConfigurerAdapter) {
+    public void setWebSecurityConfigurerAdapter(@Qualifier("securityConfig") WebSecurityConfigurerAdapter webSecurityConfigurerAdapter) {
         this.webSecurityConfigurerAdapter = webSecurityConfigurerAdapter;
     }
 
@@ -60,7 +62,7 @@ public class UserService {
             User user;
 
             if (isAuthenticated()) {
-                user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                user = getCurrentUser();
             }
             else {
                 Authentication auth = new UsernamePasswordAuthenticationToken(login,password);
@@ -80,14 +82,17 @@ public class UserService {
     }
 
     public User getCurrentUser() throws NotAuthException {
+        User user;
         try {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (user == null)
-                throw new RuntimeException("User is null");
+            UserDetailsAdapter adapter = (UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (adapter != null)
+                user = adapter.getUser();
+            else
+                throw new NoResultException();
 
             return user;
-        } catch (Throwable th) {
-            logger.error("Cannot get current user", th);
+        } catch (Exception e) {
+            logger.error("Cannot get current user", e);
             throw new NotAuthException("Fail getting current user");
         }
     }
