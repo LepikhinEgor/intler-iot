@@ -10,11 +10,9 @@ public class LoginController {
 
     @GetMapping("login")
     public ModelAndView login(
-
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "logout", required = false) String logout) {
 
-        System.out.println("Login controller 17");
         ModelAndView model = new ModelAndView();
         if (error != null) {
             model.addObject("error", "Invalid username and password!");
