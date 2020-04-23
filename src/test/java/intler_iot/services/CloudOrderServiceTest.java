@@ -8,6 +8,7 @@ import intler_iot.controllers.entities.OrderDTO;
 import intler_iot.dao.CloudOrderDao;
 import intler_iot.dao.entities.CloudOrder;
 import intler_iot.dao.entities.Device;
+import intler_iot.dao.entities.User;
 import intler_iot.services.converters.dto.CloudOrderDTOConverter;
 import intler_iot.services.exceptions.NotAuthException;
 import org.junit.Test;
@@ -51,6 +52,9 @@ public class CloudOrderServiceTest {
 
     @Test
     public void getDeviceOrders_successReturnOrders() {
+        when(userService.authUser(anyString(), anyString())).thenReturn(new User());
+        when(deviceService.getDeviceById(any(User.class), anyString())).thenReturn(new Device());
+        
         cloudOrderService.getDeviceOrders("device", "login", "password");
 
         verify(cloudOrderDao).getDeviceOrders(any(Device.class));

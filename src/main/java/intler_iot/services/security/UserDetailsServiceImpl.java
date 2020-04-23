@@ -39,7 +39,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException("User with login " + login + " not found");
 
             userDetails = userDetailsFactory.createUserDetails(foundUser);
-            System.out.println(userDetails.getAuthorities());
         } catch (Throwable e ) {
             throw new UsernameNotFoundException(e.getMessage(), e);
         }
